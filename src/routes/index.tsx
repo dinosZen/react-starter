@@ -1,9 +1,12 @@
 import React, { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "@/components/Layout";
 import Login from "@/pages/Login";
+import Transactions from "@/pages/Transactions";
+import Wallets from "@/pages/Wallets";
+import Reports from "@/pages/Reports";
+import Settings from "@/pages/Settings";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("../pages/Users"));
@@ -41,6 +44,46 @@ const router = createBrowserRouter([
           <ProtectedRoute isAuth={true}>
             <Suspense fallback={<div>Loading...</div>}>
               <UserDetails />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "transactions",
+        element: (
+          <ProtectedRoute isAuth={true}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Transactions />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "wallets",
+        element: (
+          <ProtectedRoute isAuth={true}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Wallets />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "reports",
+        element: (
+          <ProtectedRoute isAuth={true}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Reports />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute isAuth={true}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Settings />
             </Suspense>
           </ProtectedRoute>
         ),
