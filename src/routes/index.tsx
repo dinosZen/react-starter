@@ -6,7 +6,7 @@ import Login from "@/pages/Login";
 import Transactions from "@/pages/Transactions";
 import Wallets from "@/pages/Wallets";
 import Reports from "@/pages/Reports";
-import Settings from "@/pages/Settings";
+import Settings from "@/pages/settings";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("../pages/Users"));
