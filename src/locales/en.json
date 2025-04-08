@@ -1,5 +1,30 @@
 {
-    "dashboard": {
-        "welcome": "Welcome to our app!"
-    }
+  "dashboard": {
+    "welcome": "Welcome to our app!"
+  },
+  "settings": {
+    "settings": "Settings",
+    "search": "Search",
+    "settings-text": "Manage your account settings and set e-mail preferences.",
+    "agents": "Agents",
+    "roles": "Roles",
+    "notifications": "Notifications",
+    "supportHelp": "Support & Help",
+    "addNew": "Add New"
+  },
+  "agentsTable": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "suspended": "Suspended",
+    "revoked": "Revoked",
+    "expired": "Expired",
+    "edit": "Edit",
+    "delete": "Delete"
+  }
 }

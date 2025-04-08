@@ -2,7 +2,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 
 function Header() {
   return (
-    <div className="bg-gray-100 p-4">
+    <div className="p-4">
       <SidebarTrigger />
     </div>
   );

@@ -10,11 +10,10 @@ function Layout() {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <div className="layout grid grid-cols-[1fr] grid-rows-[auto_1fr] h-screen  w-full">
+      <div className="layout grid grid-cols-[1fr] grid-rows-[auto_1fr] h-screen w-full">
         <Header />
         <div className="layout-content grid grid-cols-[auto_1fr] grid-rows-[1fr]">
-          <main className="p-4">
-            <h1 className="text-2xl font-bold">Main Content</h1>
+          <main className="col-span-full">
             <Outlet />
           </main>
         </div>
