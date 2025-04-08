@@ -4,6 +4,7 @@ import App from "../App";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "@/components/Layout";
 import Login from "@/pages/Login";
+import Settings from "@/pages/settings";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("../pages/Users"));
@@ -41,6 +42,16 @@ const router = createBrowserRouter([
           <ProtectedRoute isAuth={true}>
             <Suspense fallback={<div>Loading...</div>}>
               <UserDetails />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute isAuth={true}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Settings />
             </Suspense>
           </ProtectedRoute>
         ),

@@ -8,8 +8,7 @@ function Layout() {
       <Header />
       <div className="layout-content grid grid-cols-[auto_1fr] grid-rows-[1fr]">
         <SideNav />
-        <main className="p-4">
-          <h1 className="text-2xl font-bold">Main Content</h1>
+        <main className="p-0">
           <Outlet />
         </main>
       </div>
