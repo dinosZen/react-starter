@@ -1,66 +1,47 @@
 import {
-  FileBarChart2,
-  Gauge,
-  Settings,
-  SwitchCamera,
-  Users,
-  Wallet,
-} from "lucide-react";
-
-import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
+import { SidebarItems } from "@/constants/sidebar";
+import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
+import { NavUser } from "./nav-user"
 
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/",
-    icon: Gauge,
-  },
-  {
-    title: "Users",
-    url: "/users",
-    icon: Users,
-  },
-  {
-    title: "Transactions",
-    url: "/transactions",
-    icon: SwitchCamera,
-  },
-  {
-    title: "Wallets",
-    url: "/wallets",
-    icon: Wallet,
-  },
-  {
-    title: "Reports",
-    url: "/reports",
-    icon: FileBarChart2,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
-];
+const data = {
+    user: {
+      name: "Azer Maric",
+      email: "azer.maric@zendev.se",
+      avatar: "https://gravatar.com/avatar/86e0f728541fd7f95b35ab16dafef76b?s=400&d=robohash&r=x",
+    },
+};
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible={"icon"}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href={"/"}>
+                <img src={SidebarLogo} alt="Search" />
+                Cambix
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Cambix</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {SidebarItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
@@ -74,6 +55,10 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
