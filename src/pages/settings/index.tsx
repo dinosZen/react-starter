@@ -1,9 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "./data-table";
-import { useAgentColumns } from "./agentColumns";
+import { DataTable } from "./components/DataTable";
 import { useTranslation } from "react-i18next";
+import { useAgentColumns } from "./table-columns/AgentColumns";
 import { AgentDialog } from "./components/AddNewAgentDialog";
 import { agentTableMockData } from "@/lib/constants";
 
