@@ -77,4 +77,81 @@ export const agentTableMockData = [
     status: "expired",
     permissions: ["approve", "reject", "archive", "restore"],
   },
+  {
+    id: 6,
+    name: "John Doe6",
+    email: "sample@mail.com",
+    role: {
+      label: "Super Agent",
+      value: "super",
+    },
+    status: "active",
+    permissions: ["read", "create", "manage"],
+  },
+  {
+    id: 7,
+    name: "John Doe7",
+    email: "sample@mail.com",
+    role: {
+      label: "Admin Agent",
+      value: "admin",
+    },
+    status: "pending",
+    permissions: ["read", "create", "manage", "reject", "archive", "restore"],
+  },
+  {
+    id: 8,
+    name: "John Doe8",
+    email: "sample@mail.com",
+    role: {
+      label: "Support Agent",
+      value: "support",
+    },
+    status: "suspended",
+    permissions: ["read", "create"],
+  },
+  {
+    id: 9,
+    name: "John Doe9",
+    email: "sample@mail.com",
+    role: {
+      label: "Read-Only Agent",
+      value: "read-only",
+    },
+    status: "revoked",
+    permissions: ["read", "create", "manage"],
+  },
+  {
+    id: 10,
+    name: "John Doe10",
+    email: "sample@mail.com",
+    role: {
+      label: "Transaction Agent",
+      value: "transaction",
+    },
+    status: "expired",
+    permissions: ["approve", "reject", "archive", "restore"],
+  },
+  {
+    id: 11,
+    name: "John Doe11",
+    email: "sample@mail.com",
+    role: {
+      label: "Super Agent",
+      value: "super",
+    },
+    status: "active",
+    permissions: ["read", "create", "manage"],
+  },
+  {
+    id: 12,
+    name: "John Doe12",
+    email: "sample@mail.com",
+    role: {
+      label: "Admin Agent",
+      value: "admin",
+    },
+    status: "pending",
+    permissions: ["read", "create", "manage", "reject", "archive", "restore"],
+  },
 ];

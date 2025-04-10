@@ -42,7 +42,6 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     {
       accessorKey: "email",
       header: t("agent.email"),
-      size: 170,
       cell: ({ row }) => {
         const agent = row.original;
         //cut the email if it's longer than 20 characters and add "..."
@@ -55,7 +54,6 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "role",
-      size: 120,
       header: ({ column }) => {
         return (
           <Button
@@ -172,7 +170,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         const isEditing = editRowId === agent.id;
 
         return (
-          <div className="flex space-x-2">
+          <div className="flex justify-end space-x-3 mr-1">
             {isEditing ? (
               <div className="flex space-x-2">
                 <TooltipProvider>
@@ -224,7 +222,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="!hover:bg-background transition-colors transition duration-300 ease-in-out"
+                        className="!hover:bg-background transition duration-300 ease-in-out"
                         onClick={(e) => {
                           e.stopPropagation();
                           setEditRowId((current) =>
@@ -246,7 +244,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="!hover:bg-background transition-colors transition duration-300 ease-in-out"
+                        className="!hover:bg-background transition duration-300 ease-in-out"
                         onClick={(e) => {
                           e.stopPropagation();
                           // deleteAction(agent.id);
