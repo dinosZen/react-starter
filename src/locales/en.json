@@ -9,14 +9,19 @@
     "agents": "Agents",
     "roles": "Roles",
     "notifications": "Notifications",
-    "supportHelp": "Support & Help",
-    "addNew": "Add New"
+    "supportHelp": "Support & Help"
   },
-  "agentsTable": {
+  "agent": {
     "name": "Name",
+    "agentName": "Agent name",
+    "enterName": "Enter name",
     "email": "Email",
+    "agentEmail": "Email address",
+    "enterEmail": "Enter email",
     "role": "Role",
+    "selectRole": "Select role",
     "status": "Status",
+    "permissions": "Custom Permissions",
     "actions": "Actions",
     "active": "Active",
     "inactive": "Inactive",
@@ -25,6 +30,11 @@
     "revoked": "Revoked",
     "expired": "Expired",
     "edit": "Edit",
-    "delete": "Delete"
-  }
+    "delete": "Delete",
+    "sendInvitation": "Send invitation",
+    "newPermission": "Add new Permission"
+  },
+  "search": "Search",
+  "searchPlaceholder": "Search...",
+  "addNew": "Add New"
 }
