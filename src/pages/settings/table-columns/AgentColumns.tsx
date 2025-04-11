@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Agent } from "@/types/agent";
-import { Pencil, Trash2, ArrowUpDown, Plus, Check, X } from "lucide-react";
+import { Pencil, Trash2, ArrowUpDown, Check, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +19,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { agentRoleOptions } from "@/lib/constants";
+import { ManageRoleDialog } from "../components/ManageRoleDialog";
 
 export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
@@ -89,9 +90,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                 </SelectItem>
               ))}
               <Separator className="my-2" />
-              <span className="flex items-center space-x-2 text-sm cursor-pointer">
-                <Plus className="h-4 w-4 mx-1.5" /> {t("agent.newPermission")}
-              </span>
+              <ManageRoleDialog />
             </SelectContent>
           </Select>
         );
