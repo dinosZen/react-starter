@@ -35,7 +35,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         return agent.status === "pending" ? (
           <span className="text-gray-500">-</span>
         ) : (
-          <span>{agent.name}</span>
+          <span className="opacity-">{agent.name}</span>
         );
       },
     },
@@ -99,6 +99,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "permissions",
+      maxSize: 150,
       header: t("agent.permissions"),
       cell: ({ row }) => {
         const agent = row.original;
