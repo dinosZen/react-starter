@@ -67,8 +67,6 @@ export function DataTable<TData, TValue>({
       </>
     );
   };
-  const nekiData = table.getRowModel().rows[0]?.original;
-  console.log("table", nekiData);
 
   return (
     <div className="space-y-4">

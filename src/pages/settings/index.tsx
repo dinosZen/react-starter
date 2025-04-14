@@ -7,12 +7,16 @@ import { useAgentColumns } from "./table-columns/AgentColumns";
 import { AgentDialog } from "./components/AddNewAgentDialog";
 import { agentTableMockData } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import { useAgents } from "./api/agent/getAgents";
 
 function Settings() {
   const getAgentsColumns = useAgentColumns();
   const agentsColumns = getAgentsColumns();
   const { t } = useTranslation();
 
+  const { data: agentsData, isLoading: isLoadingAgents } = useAgents();
+
+  //console.log("agentsData", agentsData, "isLoadingAgents", isLoadingAgents);
   ///////
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {

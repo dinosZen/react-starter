@@ -3,6 +3,7 @@ import Header from "./Header";
 import { AppSidebar } from "./app-sidebar";
 import { SidebarProvider } from "./ui/sidebar";
 import { getCookieValue } from "@/lib/cookies";
+import { Toaster } from "@/components/ui/sonner";
 
 function Layout() {
   const defaultOpen = getCookieValue("sidebar_state") === "true";
@@ -16,6 +17,7 @@ function Layout() {
           <main className="col-span-full">
             <Outlet />
           </main>
+          <Toaster position="top-right" />
         </div>
       </div>
     </SidebarProvider>
