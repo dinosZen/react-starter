@@ -1,11 +1,11 @@
 export interface Agent {
-  id: number;
+  id?: number;
   name: string;
   email: string;
-  role: {
+  roleId?: {
     label: string;
-    value: string;
+    value: number;
   };
-  status: string;
-  permissions: string[];
+  status?: string;
+  permissions?: string[];
 }

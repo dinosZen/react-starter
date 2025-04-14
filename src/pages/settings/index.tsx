@@ -6,12 +6,27 @@ import { useTranslation } from "react-i18next";
 import { useAgentColumns } from "./table-columns/AgentColumns";
 import { AgentDialog } from "./components/AddNewAgentDialog";
 import { agentTableMockData } from "@/lib/constants";
+import { useEffect, useState } from "react";
+import { useAgents } from "./api/agent/getAgents";
 
 function Settings() {
   const getAgentsColumns = useAgentColumns();
   const agentsColumns = getAgentsColumns();
   const { t } = useTranslation();
 
+  const { data: agentsData, isLoading: isLoadingAgents } = useAgents();
+
+  //console.log("agentsData", agentsData, "isLoadingAgents", isLoadingAgents);
+  ///////
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  /////
   return (
     <>
       <section className="flex flex-row items-center justify-between border-b border-b-slate-200 p-6">
@@ -56,7 +71,11 @@ function Settings() {
             <AgentDialog />
           </div>
           <TabsContent value="agents">
-            <DataTable columns={agentsColumns} data={agentTableMockData} />
+            <DataTable
+              columns={agentsColumns}
+              data={agentTableMockData}
+              isLoading={isLoading}
+            />
           </TabsContent>
           <TabsContent value="roles">Change your roles here.</TabsContent>
           <TabsContent value="notifications">

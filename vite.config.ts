@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://cambix.koyeb.app",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

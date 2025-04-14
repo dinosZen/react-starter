@@ -6,7 +6,7 @@
     "wallets": "Wallets",
     "reports": "Reports",
     "settings": "Settings"
-  },  
+  },
   "dashboard": {
     "welcome": "Welcome to our app!"
   },
@@ -19,19 +19,23 @@
     "notifications": "Notifications",
     "supportHelp": "Support & Help",
     "manageRoleDialog": {
-        "title": "Edit agent permissions",
-        "description": "Create a custom role by setting a name and defining specific permissions. This role can then be assigned to users as needed.",
-        "predefinedRoles": "Predefined roles",
-        "updatePermissions": "Update permissions"
+      "title": "Edit agent permissions",
+      "description": "Create a custom role by setting a name and defining specific permissions. This role can then be assigned to users as needed.",
+      "predefinedRoles": "Predefined roles",
+      "updatePermissions": "Update permissions"
     }
   },
   "agent": {
     "name": "Name",
     "agentName": "Agent name",
-    "enterName": "Enter name",
+    "addNewAgent": "Add new agent",
+    "enterFirstName": "First name",
+    "firstNamePlaceholder": "Enter first name",
+    "enterLastName": "Last name",
+    "lastNamePlaceholder": "Enter last name",
     "email": "Email",
     "agentEmail": "Email address",
-    "enterEmail": "Enter email",
+    "placeholderEmail": "Enter email",
     "role": "Role",
     "selectRole": "Select role",
     "status": "Status",
@@ -45,8 +49,21 @@
     "expired": "Expired",
     "edit": "Edit",
     "delete": "Delete",
+    "requiredField": "This field is required",
+    "invalidEmail": "Invalid email address",
     "sendInvitation": "Send invitation",
-    "newPermission": "Add new Permission"
+    "sendingInvitation": "Sending",
+    "createdSuccessfully": "Agent created successfully",
+    "updatedSuccessfully": "Agent updated successfully",
+    "deletedSuccessfully": "Agent deleted successfully",
+    "deleteConfirmation": "Are you sure you want to delete this agent?",
+    "deleteConfirmationText": "This action cannot be undone.",
+    "newPermission": "Add new Permission",
+    "superAgent": "Super Agent",
+    "adminAgent": "Admin Agent",
+    "supportAgent": "Support Agent",
+    "readOnlyAgent": "Read-Only Agent",
+    "transactionAgent": "Transaction Agent"
   },
   "search": "Search",
   "searchPlaceholder": "Search...",

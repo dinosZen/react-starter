@@ -1,23 +1,23 @@
 export const agentRoleOptions = [
   {
     label: "Super Agent",
-    value: "super",
+    value: 1,
   },
   {
     label: "Admin Agent",
-    value: "admin",
+    value: 2,
   },
   {
     label: "Support Agent",
-    value: "support",
+    value: 3,
   },
   {
     label: "Read-Only Agent",
-    value: "read-only",
+    value: 4,
   },
   {
     label: "Transaction Agent",
-    value: "transaction",
+    value: 5,
   },
 ];
 
