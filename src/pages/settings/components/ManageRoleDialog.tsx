@@ -1,4 +1,4 @@
-import { MoreVertical, Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,14 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-const permissionsList = [
+const permissions = [
   { label: "View users", key: "view-users" },
   { label: "Manager users", key: "manage-users" },
   { label: "Assign roles", key: "assign-roles" },
@@ -36,11 +30,11 @@ const permissionsList = [
   { label: "Initiate transactions", key: "initiate-transactions" },
   { label: "Approve transactions", key: "approve-transactions" },
   { label: "View wallets", key: "view-wallets" },
-  { label: "Manage wallets", key: "manage-wallets" },
-  { label: "View KYC/ALM Data", key: "view-kyc-alm-data" },
+  { label: "Manage wallets", key: "manage-wallets", disabled: true },
+  { label: "View KYC/ALM Data", key: "view-kyc-alm-data", disabled: true },
 ];
 
-const permissions = [
+const roles = [
   { key: "super-admin", label: "Super Admin" },
   { key: "agent-adming", label: "Admin Agent" },
   { key: "compliance-agent", label: "Compliance Agent" },
@@ -54,6 +48,7 @@ export function ManageRoleDialog() {
   const [enabledPermissions, setEnabledPermissions] = useState<
     Record<string, boolean>
   >({});
+  const [selected, setSelected] = useState<string | null>(null);
 
   const handleToggle = (key: string) => {
     setEnabledPermissions((prev) => ({
@@ -61,8 +56,9 @@ export function ManageRoleDialog() {
       [key]: !prev[key],
     }));
   };
+
   return (
-    <Dialog open>
+    <Dialog>
       <DialogTrigger asChild>
         <span className="dark:hover:bg-input/50 flex w-full items-center justify-start gap-2 rounded-md bg-transparent px-3 py-1.5 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
           <Plus /> {t("addNew")}
@@ -71,7 +67,7 @@ export function ManageRoleDialog() {
       <DialogContent className="sm:max-w-4xl gap-8">
         <DialogHeader className="max-w-1/2">
           <DialogTitle>{t("settings.manageRoleDialog.title")}</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-secondary">
             {t("settings.manageRoleDialog.description")}
           </DialogDescription>
         </DialogHeader>
@@ -82,23 +78,21 @@ export function ManageRoleDialog() {
             </div>
 
             <div className="flex flex-col gap-2 max-h-96 overflow-scroll">
-              {permissions.map((perm) => (
+              {roles.map((role) => (
                 <div
-                  key={perm.key}
-                  className="flex justify-between items-center bg-muted px-4 rounded-md shadow-sm"
+                  key={role.key}
+                  onClick={() =>
+                    setSelected(selected === role.key ? null : role.key)
+                  }
+                  className={`flex items-center gap-4 px-4 py-1.5 rounded cursor-pointer select-none 
+                    ${
+                      selected === role.key ? "bg-neutral-600" : "bg-secondary"
+                    }`}
                 >
-                  <span className="text-sm font-medium">{perm.label}</span>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
-                      <DropdownMenuItem>Remove</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {selected === role.key && <Check height={24} width={24} />}
+                  <Label htmlFor={role.key} className="leading-6">
+                    {role.label}
+                  </Label>
                 </div>
               ))}
             </div>
@@ -107,7 +101,7 @@ export function ManageRoleDialog() {
           <div className="flex-1 flex  flex-col h-full gap-4">
             <div className="flex justify-between">
               <Select onValueChange={(value) => console.log(value)}>
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-[200px] text-primary">
                   <SelectValue placeholder="All permissions group" />
                 </SelectTrigger>
                 <SelectContent>
@@ -118,16 +112,31 @@ export function ManageRoleDialog() {
               </Select>
             </div>
             <div className="flex flex-col justify-evenly gap-2 max-h-96 overflow-scroll">
-              {permissionsList.map((permission) => (
+              {permissions.map((permission) => (
                 <div
                   key={permission.key}
-                  className="flex items-center justify-between bg-secondary p-2 rounded-md"
+                  className={`flex items-center justify-between bg-secondary px-4 py-1.5 rounded-md ${
+                    permission.disabled
+                      ? "opacity-50 cursor-not-allowed"
+                      : "opacity-100"
+                  }`}
                 >
-                  <Label htmlFor={permission.key}>{permission.label}</Label>
+                  <Label
+                    htmlFor={permission.key}
+                    className={`leading-5 ${
+                      permission.disabled
+                        ? "cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
+                  >
+                    {permission.label}
+                  </Label>
                   <Switch
                     id={permission.key}
                     checked={enabledPermissions[permission.key] || false}
                     onCheckedChange={() => handleToggle(permission.key)}
+                    className="cursor-pointer"
+                    disabled={permission.disabled}
                   />
                 </div>
               ))}
