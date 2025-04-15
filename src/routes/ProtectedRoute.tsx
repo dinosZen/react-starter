@@ -1,16 +1,18 @@
+import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
-  isAuth: boolean;
   children: React.ReactNode;
 }
 
 export default function ProtectedRoute({
-  isAuth,
   children,
-}: ProtectedRouteProps) {
-  if (!isAuth) {
+}: Readonly<ProtectedRouteProps>) {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated === null) return null; //Add loading spinner later
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
   return children;

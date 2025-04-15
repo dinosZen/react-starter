@@ -4,10 +4,9 @@ function Dashboard() {
   const { t, i18n } = useTranslation();
 
   return (
-    <div>
+    <div className="p-4">
       <h1>Dashboard Page</h1>
       <div>
-        <h1 className="font"></h1>
         <h1 className="my-4 text-xl font-extrabold leading-none tracking-tight text-gray-900">
           Translations
         </h1>

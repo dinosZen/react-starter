@@ -12,17 +12,15 @@ import {
 } from "@/components/ui/sidebar";
 import { SidebarItems } from "@/constants/sidebar";
 import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
-import { NavUser } from "./nav-user"
-
-const data = {
-    user: {
-      name: "Azer Maric",
-      email: "azer.maric@zendev.se",
-      avatar: "https://gravatar.com/avatar/86e0f728541fd7f95b35ab16dafef76b?s=400&d=robohash&r=x",
-    },
-};
+import { NavUser } from "./nav-user";
+import { useTranslation } from "react-i18next";
+import { getCookieValue } from "@/lib/cookies";
 
 export function AppSidebar() {
+  const { t } = useTranslation();
+  const userCookie = getCookieValue("user");
+  const user = userCookie ? JSON.parse(userCookie) : null;
+
   return (
     <Sidebar collapsible={"icon"}>
       <SidebarHeader>
@@ -31,7 +29,7 @@ export function AppSidebar() {
             <SidebarMenuButton size="lg" asChild>
               <a href={"/"}>
                 <img src={SidebarLogo} alt="Search" />
-                Cambix
+                <span>Cambix</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -46,7 +44,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span>{t(item.title)}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -56,7 +54,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

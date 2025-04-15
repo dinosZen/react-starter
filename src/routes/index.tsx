@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "@/components/Layout";
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Dashboard />
             </Suspense>
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Users />
             </Suspense>
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       {
         path: "users/:userId",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <UserDetails />
             </Suspense>
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
       {
         path: "transactions",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Transactions />
             </Suspense>
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
       {
         path: "wallets",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Wallets />
             </Suspense>
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "reports",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Reports />
             </Suspense>
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: (
-          <ProtectedRoute isAuth={true}>
+          <ProtectedRoute>
             <Suspense fallback={<div>Loading...</div>}>
               <Settings />
             </Suspense>
