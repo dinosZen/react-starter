@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import {
   FileBarChart2,
   Gauge,
@@ -10,32 +9,32 @@ import {
 
 export const SidebarItems = [
   {
-    title: i18next.t("sidebar.dashboard"),
+    title: "sidebar.dashboard",
     url: "/",
     icon: Gauge,
   },
   {
-    title: i18next.t("sidebar.users"),
+    title: "sidebar.users",
     url: "/users",
     icon: Users,
   },
   {
-    title: i18next.t("sidebar.transactions"),
+    title: "sidebar.transactions",
     url: "/transactions",
     icon: SwitchCamera,
   },
   {
-    title: i18next.t("sidebar.wallets"),
+    title: "sidebar.wallets",
     url: "/wallets",
     icon: Wallet,
   },
   {
-    title: i18next.t("sidebar.reports"),
+    title: "sidebar.reports",
     url: "/reports",
     icon: FileBarChart2,
   },
   {
-    title: i18next.t("sidebar.settings"),
+    title: "sidebar.settings",
     url: "/settings",
     icon: Settings,
   },
