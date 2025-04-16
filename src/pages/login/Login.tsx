@@ -5,8 +5,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { z } from "zod";
 import { useLogin } from "@/features/auth/hooks";
-import { useAuth } from "@/hooks/useAuth";
-import { Navigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required"),
@@ -15,7 +13,6 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
   const login = useLogin();
-  const { isAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,8 +22,6 @@ export default function LoginPage() {
     email?: string;
     password?: string;
   }>({});
-
-  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({

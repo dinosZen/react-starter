@@ -2,11 +2,14 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "@/components/Layout";
-import Login from "@/pages/Login";
+import Login from "@/pages/login/Login";
 import Transactions from "@/pages/Transactions";
 import Wallets from "@/pages/Wallets";
 import Reports from "@/pages/Reports";
 import Settings from "@/pages/settings";
+import ValidateTwoFactor from "@/pages/login/ValidateLogin";
+import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
+import { AuthRedirect } from "./AuthRedirect";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("../pages/Users"));
@@ -100,7 +103,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <AuthRedirect>
+        <Login />
+      </AuthRedirect>
+    ),
+  },
+  {
+    path: "/validate-login",
+    element: (
+      <AuthRedirect>
+        <ValidateTwoFactor />
+      </AuthRedirect>
+    ),
+  },
+  {
+    path: "/verify-login",
+    element: (
+      <AuthRedirect>
+        <SetupTwoFactor />
+      </AuthRedirect>
+    ),
   },
 ]);
 
