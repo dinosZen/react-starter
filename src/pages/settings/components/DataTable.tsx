@@ -21,17 +21,26 @@ import {
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface ApiPaginationData {
+  page: number; // zero-based page index from server
+  size: number; // rows per page
+  total: number; // total number of pages
+}
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  paginationData: ApiPaginationData;
   isLoading?: boolean;
+  onPaginationChange: (page: number, size: number) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  paginationData,
   isLoading = false,
-}: DataTableProps<TData, TValue>) {
+  onPaginationChange,
+}: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -43,13 +52,19 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
-    },
-    meta: {
-      updateData: (rowIndex, columnId, value) => {
-        const row = data[rowIndex];
-        if (!row) return;
+      pagination: {
+        pageIndex: paginationData.page, // zero-based from server
+        pageSize: paginationData.size,
       },
     },
+    pageCount: paginationData.total,
+    manualPagination: true,
+    // meta: {
+    //   updateData: (rowIndex, columnId, value) => {
+    //     const row = data[rowIndex];
+    //     if (!row) return;
+    //   },
+    // },
   });
 
   const renderSkeletonRows = (rowCount: number) => {
@@ -98,48 +113,65 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
             <TableBody>
-              {isLoading ? (
-                renderSkeletonRows(10)
-              ) : table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className="py-4"
-                        style={{
-                          minWidth: cell.column.columnDef.size,
-                          maxWidth: cell.column.columnDef.size,
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+              {(() => {
+                if (isLoading) {
+                  return renderSkeletonRows(10);
+                }
+                if (table.getRowModel().rows?.length) {
+                  return table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          className="py-4"
+                          style={{
+                            minWidth: cell.column.columnDef.size,
+                            maxWidth: cell.column.columnDef.size,
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ));
+                }
+                return (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
+                );
+              })()}
             </TableBody>
           </Table>
           <ScrollBar orientation="horizontal" />
           <ScrollBar className="!bg-transparent" orientation="vertical" />
         </ScrollArea>
       </div>
-      <DataTablePagination table={table} />
+      {(() => {
+        if (isLoading) {
+          return renderSkeletonRows(10);
+        }
+        return (
+          <DataTablePagination
+            table={table}
+            page={paginationData.page}
+            size={paginationData.size}
+            totalPages={paginationData.total}
+            onPaginationChange={onPaginationChange}
+          />
+        );
+      })()}
     </div>
   );
 }

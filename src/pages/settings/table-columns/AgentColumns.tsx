@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Agent } from "@/types/agent";
-import { Pencil, Trash2, ArrowUpDown, Check, X } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,17 +9,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import { agentRoleOptions } from "@/lib/constants";
 import { ManageRoleDialog } from "../components/ManageRoleDialog";
+import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
 
 export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
@@ -33,10 +25,12 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
       cell: ({ row }) => {
         const agent = row.original;
 
-        return agent.status === "pending" ? (
+        return agent.status?.toLowerCase() === "pending" ? (
           <span className="text-gray-500">-</span>
         ) : (
-          <span className="opacity-">{agent.name}</span>
+          <span className="opacity-">
+            {agent.firstName} {agent.lastName}
+          </span>
         );
       },
     },
@@ -69,31 +63,8 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
       },
       cell: ({ row }) => {
         const agent = row.original;
-        const isEditing = editRowId === agent.id;
-
-        if (!isEditing) {
-          // Not in edit mode: just show the current role text
-          return <span>{agent.role.label}</span>;
-        }
-        return (
-          <Select
-            defaultValue={agent.role.value}
-            // onValueChange={(newValue) => {}}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a role" />
-            </SelectTrigger>
-            <SelectContent>
-              {agentRoleOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-              <Separator className="my-2" />
-              <ManageRoleDialog />
-            </SelectContent>
-          </Select>
-        );
+        const agentRole = agent.role ? agent.role.title : "-";
+        return <span>{agentRole}</span>;
       },
     },
     {
@@ -104,8 +75,8 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         const agent = row.original;
         return (
           <span>
-            {agent.permissions.length > 0 ? (
-              agent.permissions.length
+            {(agent.permissions ?? []).length > 0 ? (
+              (agent.permissions ?? []).length
             ) : (
               <span className="text-gray-500">-</span>
             )}
@@ -171,95 +142,38 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
 
         return (
           <div className="flex justify-end space-x-3 mr-1">
-            {isEditing ? (
-              <div className="flex space-x-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // saveAction(agent.id, agent);
-                          setEditRowId(null);
-                        }}
-                      >
-                        <Check className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Save changes</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditRowId(null);
-                        }}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Discard changes</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            ) : (
-              <>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="!hover:bg-background transition duration-300 ease-in-out"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEditRowId((current) =>
-                            current === agent.id ? null : agent.id
-                          );
-                        }}
-                      >
-                        <Pencil className="h-7 w-10" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edit agent</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="!hover:bg-background transition duration-300 ease-in-out"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // deleteAction(agent.id);
-                        }}
-                      >
-                        <Trash2 className="h-7 w-10" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Delete agent</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </>
-            )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="!hover:bg-background transition duration-300 ease-in-out"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditRowId((current) =>
+                        current === agent.id ? null : agent.id
+                      );
+                    }}
+                  >
+                    <ManageRoleDialog open={isEditing} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit agent</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DeleteAgentDialog agent={agent} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete agent</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         );
       },

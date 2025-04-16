@@ -5,28 +5,29 @@ import { DataTable } from "./components/DataTable";
 import { useTranslation } from "react-i18next";
 import { useAgentColumns } from "./table-columns/AgentColumns";
 import { AgentDialog } from "./components/AddNewAgentDialog";
-import { agentTableMockData } from "@/lib/constants";
-import { useEffect, useState } from "react";
 import { useAgents } from "./api/agent/getAgents";
+import { queryClient } from "@/lib/react-query";
 
 function Settings() {
   const getAgentsColumns = useAgentColumns();
   const agentsColumns = getAgentsColumns();
   const { t } = useTranslation();
 
-  const { data: agentsData, isLoading: isLoadingAgents } = useAgents();
+  const {
+    data: listOfAgents,
+    isLoading: isLoadingAgents,
+    isFetching,
+  } = useAgents();
 
-  //console.log("agentsData", agentsData, "isLoadingAgents", isLoadingAgents);
-  ///////
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+  const isLoading = isLoadingAgents || isFetching;
 
-    return () => clearTimeout(timer);
-  }, []);
-  /////
+  const handlePaginationChange = (nextPage: number, nextSize: number) => {
+    // Re-fetch from your API with new page/size:
+    // e.g. set some state or use router push to query param
+    // or call your query function again
+    queryClient.invalidateQueries({ queryKey: ["agents"] });
+    // or use a function to update the page and size
+  };
   return (
     <>
       <section className="flex flex-row items-center justify-between border-b border-b-slate-200 p-6">
@@ -73,8 +74,14 @@ function Settings() {
           <TabsContent value="agents">
             <DataTable
               columns={agentsColumns}
-              data={agentTableMockData}
+              data={listOfAgents?.data?.data}
               isLoading={isLoading}
+              onPaginationChange={handlePaginationChange}
+              paginationData={{
+                page: listOfAgents?.data?.data.page ?? 0,
+                size: listOfAgents?.data?.data.size ?? 10,
+                total: listOfAgents?.data?.data.total ?? 1,
+              }}
             />
           </TabsContent>
           <TabsContent value="roles">Change your roles here.</TabsContent>

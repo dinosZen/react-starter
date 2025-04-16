@@ -19,8 +19,14 @@ import { getCookieValue } from "@/lib/cookies";
 export function AppSidebar() {
   const { t } = useTranslation();
   const userCookie = getCookieValue("user");
-  const user = userCookie ? JSON.parse(userCookie) : null;
+  //const user = userCookie ? JSON.parse(userCookie) : null;
 
+  //user mock data
+  const user = {
+    firstName: "John",
+    lastName: "Doe",
+    email: "mail@Mail.com",
+  };
   return (
     <Sidebar collapsible={"icon"}>
       <SidebarHeader>
