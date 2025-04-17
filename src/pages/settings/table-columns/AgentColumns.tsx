@@ -26,9 +26,9 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         const agent = row.original;
 
         return agent.status?.toLowerCase() === "pending" ? (
-          <span className="text-gray-500">-</span>
+          <span className="ml-2 text-gray-500">-</span>
         ) : (
-          <span className="opacity-">
+          <span className="ml-2">
             {agent.firstName} {agent.lastName}
           </span>
         );
@@ -141,7 +141,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         const isEditing = editRowId === agent.id;
 
         return (
-          <div className="flex justify-end space-x-3 mr-1">
+          <div className="flex justify-end space-x-3 mr-2">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

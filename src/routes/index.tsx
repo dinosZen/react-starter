@@ -9,7 +9,7 @@ import Reports from "@/pages/Reports";
 import Settings from "@/pages/settings";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Users = lazy(() => import("../pages/Users"));
+const Users = lazy(() => import("@/pages/users/index"));
 const UserDetails = lazy(() => import("../pages/UserDetails"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
