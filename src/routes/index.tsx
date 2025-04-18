@@ -13,7 +13,7 @@ import { LoginRedirect } from "./LoginRedirect";
 import { TwoFactorRedirect } from "./TwoFactorRedirect";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Users = lazy(() => import("../pages/Users"));
+const Users = lazy(() => import("@/pages/users/index"));
 const UserDetails = lazy(() => import("../pages/UserDetails"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 

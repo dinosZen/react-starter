@@ -1,4 +1,4 @@
-import api from "@/lib/axios";
+import axiosInstance from "@/api/axios";
 
 export async function createAgent(data: {
   firstName: string;
@@ -6,6 +6,6 @@ export async function createAgent(data: {
   email: string;
   role?: string;
 }) {
-  const response = await api.post("/agents/create", data);
+  const response = await axiosInstance.post("/agents/create", data);
   return response.data;
 }

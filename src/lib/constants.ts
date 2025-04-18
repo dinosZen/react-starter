@@ -1,23 +1,23 @@
 export const agentRoleOptions = [
   {
     label: "Super Agent",
-    value: 1,
+    value: 13,
   },
   {
     label: "Admin Agent",
-    value: 2,
+    value: 14,
   },
   {
     label: "Support Agent",
-    value: 3,
+    value: 15,
   },
   {
     label: "Read-Only Agent",
-    value: 4,
+    value: 16,
   },
   {
     label: "Transaction Agent",
-    value: 5,
+    value: 17,
   },
 ];
 
@@ -153,5 +153,91 @@ export const agentTableMockData = [
     },
     status: "pending",
     permissions: ["read", "create", "manage", "reject", "archive", "restore"],
+  },
+];
+export const usersTableMockData = [
+  {
+    id: 1,
+    name: "John Doe1",
+    email: "Sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "John Doe2",
+    email: "Sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "pending",
+  },
+  {
+    id: 3,
+    name: "John Doe3",
+    email: "Sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "suspended",
+  },
+  {
+    id: 4,
+    name: "John Doe4",
+    email: "Sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "revoked",
+  },
+  {
+    id: 5,
+    name: "John Doe5",
+    email: "Sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "expired",
+  },
+  {
+    id: 6,
+    name: "John Doe6",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "active",
+  },
+  {
+    id: 7,
+    name: "John Doe7",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "pending",
+  },
+  {
+    id: 8,
+    name: "John Doe8",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "suspended",
+  },
+  {
+    id: 9,
+    name: "John Doe9",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "revoked",
+  },
+  {
+    id: 10,
+    name: "John Doe10",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "expired",
+  },
+  {
+    id: 11,
+    name: "John Doe11",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "active",
+  },
+  {
+    id: 12,
+    name: "John Doe12",
+    email: "sample@mail.com",
+    createdAt: "2023-10-01",
+    status: "pending",
   },
 ];

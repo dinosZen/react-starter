@@ -1,12 +1,11 @@
-import api from "@/lib/axios";
+import axiosInstance from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 
 export function useAgents() {
   return useQuery({
     queryKey: ["agents"],
     queryFn: async () => {
-      console.log("Full URL:", api.getUri({ url: "/agents" }));
-      const response = await api.get("/agents");
+      const response = await axiosInstance.get("/agents");
       console.log("response", response);
       return response.data;
     },
