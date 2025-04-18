@@ -74,13 +74,13 @@ function Settings() {
           <TabsContent value="agents">
             <DataTable
               columns={agentsColumns}
-              data={listOfAgents?.data?.data}
+              data={listOfAgents?.data}
               isLoading={isLoading}
               onPaginationChange={handlePaginationChange}
               paginationData={{
-                page: listOfAgents?.data?.data.page ?? 0,
-                size: listOfAgents?.data?.data.size ?? 10,
-                total: listOfAgents?.data?.data.total ?? 1,
+                page: listOfAgents?.data.page ?? 0,
+                size: listOfAgents?.data.size ?? 10,
+                total: listOfAgents?.data.total ?? 1,
               }}
             />
           </TabsContent>
