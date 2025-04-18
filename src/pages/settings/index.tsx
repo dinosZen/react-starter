@@ -39,7 +39,7 @@ function Settings() {
   };
   return (
     <>
-      <section className="flex flex-row items-center justify-between border-b border-border-primary-default p-6">
+      <section className="flex flex-row items-center justify-between border-b-2 border-border-primary-default p-6">
         <header>
           <h1 className="text-3xl font-bold pb-3">Settings Page</h1>
           <p>Manage your account settings and set e-mail preferences.</p>
