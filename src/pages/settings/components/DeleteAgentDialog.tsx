@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { deleteAgent } from "../api/agent/deleteAgent";
 import { Agent } from "@/types/agent";
 import { Trash2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface DeleteAgentDialogProps {
   readonly agent: Agent;
@@ -23,6 +24,7 @@ interface DeleteAgentDialogProps {
 export function DeleteAgentDialog({ agent }: DeleteAgentDialogProps) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeletionConfirmed, setIsDeletionConfirmed] = useState(false);
 
   const handleDialogClose = () => {
     setIsOpen(false);
@@ -51,7 +53,6 @@ export function DeleteAgentDialog({ agent }: DeleteAgentDialogProps) {
 
   const handleConfirmDelete = async () => {
     if (agent.id !== undefined) {
-      console.log("Deleting agent with ID:", agent.id);
       await deleteAgentMutation.mutateAsync(agent.id.toString());
     } else {
       toast.error(t("agent.invalidId"));
@@ -63,26 +64,50 @@ export function DeleteAgentDialog({ agent }: DeleteAgentDialogProps) {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          size="icon"
-          className="!hover:bg-background-primary-default transition duration-300 ease-in-out"
+          className="px-4 !bg-background-primary-default !hover:bg-background-primary-default transition duration-300 ease-in-out"
         >
           <Trash2 className="h-7 w-10" />
         </Button>
       </DialogTrigger>
-
-      <DialogContent>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogTitle>Confirm delete</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete the agent{" "}
-            <strong>{agent.firstName}</strong>? This action cannot be undone.
+            <strong>{agent.firstName}</strong>?
+            <br />
+            This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
+        <div className="flex items-center space-x-2 py-4">
+          <Checkbox
+            id="terms"
+            onCheckedChange={(checked) => {
+              setIsDeletionConfirmed(!isDeletionConfirmed);
+              if (checked) {
+                toast.dismiss();
+              }
+              if (!checked) {
+                toast.error("Please confirm the deletion.");
+              }
+            }}
+          />
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-text-primary-default"
+          >
+            I confirm that I want to delete this agent.
+          </label>
+        </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleConfirmDelete}>
+          <Button
+            variant="destructive"
+            onClick={handleConfirmDelete}
+            disabled={!isDeletionConfirmed}
+          >
             Delete
           </Button>
         </DialogFooter>
