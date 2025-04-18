@@ -106,30 +106,28 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         // Determine the CSS class based on the status
         switch (status) {
           case "pending":
-            statusClass = "bg-background-brand-default";
+            statusClass = "bg-blue-700 text-blue-300";
             break;
           case "active":
-            statusClass = "bg-green";
+            statusClass = "bg-green-700 text-green-300";
             break;
           case "suspended":
-            statusClass = "bg-background-brand-default";
+            statusClass = "bg-orange-700 text-orange-300";
             break;
           case "revoked":
-            statusClass = "bg-red";
+            statusClass = "bg-red-700 text-red-300";
             break;
           case "expired":
-            statusClass = "bg-gray";
+            statusClass = "bg-gray-700 text-gray-300";
             break;
           default:
-            statusClass = "bg-yellow"; // Default color if none of the specified statuses match
+            statusClass = "bg-yellow-700 text-yellow-300"; // Default color if none of the specified statuses match
         }
 
         const statusText = t(`agent.${status}`);
 
         return (
-          <span
-            className={`px-2 py-1 rounded-md text:opacity:50 ${statusClass}`}
-          >
+          <span className={`px-3 py-1 font-semibold rounded-md ${statusClass}`}>
             {statusText}
           </span>
         );
@@ -149,8 +147,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    size="icon"
-                    className="!hover:bg-background-primary-default transition duration-300 ease-in-out"
+                    className="px-1 !bg-background-primary-default !hover:bg-background-secondary-default transition duration-300 ease-in-out"
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditRowId((current) =>

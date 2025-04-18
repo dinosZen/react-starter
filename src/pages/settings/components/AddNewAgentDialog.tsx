@@ -95,16 +95,24 @@ export function AgentDialog() {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) reset();
+      }}
+    >
       <DialogTrigger asChild>
-        <Button className="!px-6">
+        <Button className="!px-6 text-text-primary-inverse">
           <Plus /> {t("addNew")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("agent.addNewAgent")}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-text-primary-default">
+            {t("agent.addNewAgent")}
+          </DialogTitle>
+          <DialogDescription className="text-text-secondary-default">
             Invite a user by entering their email and assigning a role. They'll
             get an email to create an account and access the platform based on
             their role.
@@ -112,7 +120,10 @@ export function AgentDialog() {
         </DialogHeader>
         <div className="flex flex-col items-center justify-center gap-4">
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full pt-4">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="w-full pt-4 space-y-4"
+            >
               <FormField
                 control={control}
                 name="firstName"
@@ -135,7 +146,7 @@ export function AgentDialog() {
                 control={control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem className="py-3 pb-5">
+                  <FormItem className="">
                     <FormLabel>{t("agent.enterLastName")}</FormLabel>
                     <FormControl>
                       <Input
@@ -153,7 +164,7 @@ export function AgentDialog() {
                 control={control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="pb-5">
+                  <FormItem className="">
                     <FormLabel>{t("agent.agentEmail")}</FormLabel>
                     <FormControl>
                       <Input

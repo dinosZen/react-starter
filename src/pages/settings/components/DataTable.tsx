@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
           <TableRow key={i}>
             {columns.map((_, j) => (
               <TableCell key={j} className="py-4">
-                <Skeleton className="h-5 my-3 w-[70%]" />
+                <Skeleton className="h-5 my-3 w-[70%] bg-background-primary-default" />
               </TableCell>
             ))}
           </TableRow>
@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({
       <div className="rounded-md border">
         <ScrollArea className="lg:h-[49vh] 2xl:h-[60vh]">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-sidebar">
+            <TableHeader className="sticky top-0 z-10 bg-sidebar bg-background-secondary-default">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

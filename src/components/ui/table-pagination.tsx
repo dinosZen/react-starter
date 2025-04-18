@@ -50,7 +50,10 @@ export function DataTablePagination<TData>({
               <SelectValue placeholder={String(size)} />
             </SelectTrigger>
             {/* Example sizes – adapt to your needs */}
-            <SelectContent side="top">
+            <SelectContent
+              side="top"
+              className="bg-background-secondary-default"
+            >
               {[10, 20, 30, 40, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={String(pageSize)}>
                   {pageSize}
