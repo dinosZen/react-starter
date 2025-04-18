@@ -47,7 +47,7 @@ function Settings() {
               id="search"
               type="search"
               placeholder={t("searchPlaceholder")}
-              className="w-full rounded-lg bg-background pl-8"
+              className="w-full rounded-lg bg-background-primary-default pl-8"
             />
           </div>
         </div>
