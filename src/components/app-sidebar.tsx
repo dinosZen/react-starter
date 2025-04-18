@@ -15,18 +15,16 @@ import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
 import { NavUser } from "./nav-user";
 import { useTranslation } from "react-i18next";
 import { getCookieValue } from "@/lib/cookies";
+import { JwtlUser } from "@/features/auth/types";
+import { jwtDecode } from "jwt-decode";
 
 export function AppSidebar() {
   const { t } = useTranslation();
-  const userCookie = getCookieValue("user");
-  //const user = userCookie ? JSON.parse(userCookie) : null;
+  const userCookie = getCookieValue("access_token");
+  const user = userCookie
+    ? jwtDecode<JwtlUser>(userCookie)
+    : { email: "", firstName: "", lastName: "", avatar: "" };
 
-  //user mock data
-  const user = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "mail@Mail.com",
-  };
   return (
     <Sidebar collapsible={"icon"}>
       <SidebarHeader>
