@@ -64,7 +64,7 @@ export function DeleteAgentDialog({ agent }: DeleteAgentDialogProps) {
         <Button
           variant="outline"
           size="icon"
-          className="!hover:bg-background transition duration-300 ease-in-out"
+          className="!hover:bg-background-primary-default transition duration-300 ease-in-out"
         >
           <Trash2 className="h-7 w-10" />
         </Button>

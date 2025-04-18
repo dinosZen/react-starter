@@ -106,13 +106,13 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         // Determine the CSS class based on the status
         switch (status) {
           case "pending":
-            statusClass = "bg-blue";
+            statusClass = "bg-background-brand-default";
             break;
           case "active":
             statusClass = "bg-green";
             break;
           case "suspended":
-            statusClass = "bg-orange";
+            statusClass = "bg-background-brand-default";
             break;
           case "revoked":
             statusClass = "bg-red";
@@ -127,7 +127,9 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
         const statusText = t(`agent.${status}`);
 
         return (
-          <span className={`px-2 py-1 text:opacity:50 ${statusClass}`}>
+          <span
+            className={`px-2 py-1 rounded-md text:opacity:50 ${statusClass}`}
+          >
             {statusText}
           </span>
         );
@@ -148,7 +150,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="!hover:bg-background transition duration-300 ease-in-out"
+                    className="!hover:bg-background-primary-default transition duration-300 ease-in-out"
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditRowId((current) =>
