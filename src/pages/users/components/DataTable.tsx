@@ -2,12 +2,15 @@ import * as React from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  SortingState,
-  getSortedRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -18,6 +21,17 @@ import {
   TableHeader,
   TableRow,
 } from "./Table";
+import { Button } from "@/components/ui/button";
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -29,9 +43,9 @@ interface ApiPaginationData {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  paginationData: ApiPaginationData;
+  paginationData?: ApiPaginationData;
   isLoading?: boolean;
-  onPaginationChange: (page: number, size: number) => void;
+  onPaginationChange?: (page: number, size: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -52,12 +66,12 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
-      pagination: {
-        pageIndex: paginationData.page, // zero-based from server
-        pageSize: paginationData.size,
-      },
+      // pagination: {
+      //   pageIndex: paginationData.page, // zero-based from server
+      //   pageSize: paginationData.size,
+      // },
     },
-    pageCount: paginationData.total,
+    //pageCount: paginationData.total,
     manualPagination: true,
     // meta: {
     //   updateData: (rowIndex, columnId, value) => {
@@ -162,15 +176,15 @@ export function DataTable<TData, TValue>({
         if (isLoading) {
           return renderSkeletonRows(10);
         }
-        return (
-          <DataTablePagination
-            table={table}
-            page={paginationData.page}
-            size={paginationData.size}
-            totalPages={paginationData.total}
-            onPaginationChange={onPaginationChange}
-          />
-        );
+        // return (
+        //   <DataTablePagination
+        //     table={table}
+        //     page={paginationData.page}
+        //     size={paginationData.size}
+        //     totalPages={paginationData.total}
+        //     onPaginationChange={onPaginationChange}
+        //   />
+        // );
       })()}
     </div>
   );

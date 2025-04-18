@@ -31,12 +31,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTranslation } from "react-i18next";
 import { agentRoleOptions } from "@/lib/constants";
 import { createAgent } from "@/pages/settings/api/agent/createAgent";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 export function AgentDialog() {
@@ -60,7 +59,7 @@ export function AgentDialog() {
       firstName: "",
       lastName: "",
       email: "",
-      roleId: 3,
+      roleId: 13,
     },
   });
 

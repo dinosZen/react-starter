@@ -11,7 +11,7 @@ function Layout() {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <div className="layout grid grid-cols-[1fr] grid-rows-[auto_1fr] h-screen w-full">
+      <div className="layout grid grid-cols-[1fr] grid-rows-[auto_1fr] h-screen w-full bg-background-secondary-default">
         <Header />
         <div className="layout-content grid grid-cols-[auto_1fr] grid-rows-[1fr]">
           <main className="col-span-full">

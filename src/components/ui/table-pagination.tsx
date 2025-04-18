@@ -17,75 +17,95 @@ import {
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  page: number; // current page (zero-based) from server
+  size: number; // rows per page from server
+  totalPages: number; // total # of pages from server
+  onPaginationChange: (page: number, size: number) => void;
 }
 
 export function DataTablePagination<TData>({
-  table,
-}: DataTablePaginationProps<TData>) {
+  page,
+  size,
+  totalPages,
+  onPaginationChange,
+}: Readonly<DataTablePaginationProps<TData>>) {
+  // Safely determine if we can go next/previous
+  const canGoPrevious = page > 0;
+  const canGoNext = page + 1 < totalPages;
+
   return (
-    <div className="flex items-center justify-end px-2 py-4">
-      {/* <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div> */}
-      <div className="flex items-center space-x-6 lg:space-x-8">
+    <div className="flex items-center justify-end px-0 py-4">
+      <div className="w-full flex items-center justify-between space-x-6 lg:space-x-8">
+        {/* Rows per page */}
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={String(size)}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              // whenever we change page size, reset page to 0 or keep the same page.
+              onPaginationChange(0, Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue placeholder={String(size)} />
             </SelectTrigger>
+            {/* Example sizes – adapt to your needs */}
             <SelectContent side="top">
               {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem key={pageSize} value={String(pageSize)}>
                   {pageSize}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
+
+        {/* "Page X of Y" display */}
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          Page {page + 1} of {totalPages}
         </div>
+
+        {/* Pagination buttons */}
         <div className="flex items-center space-x-2">
+          {/* First page */}
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => onPaginationChange(0, size)}
+            disabled={!canGoPrevious}
           >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
           </Button>
+
+          {/* Previous page */}
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => onPaginationChange(page - 1, size)}
+            disabled={!canGoPrevious}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
           </Button>
+
+          {/* Next page */}
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => onPaginationChange(page + 1, size)}
+            disabled={!canGoNext}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
           </Button>
+
+          {/* Last page */}
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            onClick={() => onPaginationChange(totalPages - 1, size)}
+            disabled={!canGoNext}
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />
