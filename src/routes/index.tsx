@@ -9,7 +9,8 @@ import Reports from "@/pages/Reports";
 import Settings from "@/pages/settings";
 import ValidateTwoFactor from "@/pages/login/ValidateLogin";
 import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
-import { AuthRedirect } from "./AuthRedirect";
+import { LoginRedirect } from "./LoginRedirect";
+import { TwoFactorRedirect } from "./TwoFactorRedirect";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("../pages/Users"));
@@ -104,25 +105,25 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <AuthRedirect>
+      <LoginRedirect>
         <Login />
-      </AuthRedirect>
+      </LoginRedirect>
     ),
   },
   {
     path: "/validate-login",
     element: (
-      <AuthRedirect>
+      <TwoFactorRedirect>
         <ValidateTwoFactor />
-      </AuthRedirect>
+      </TwoFactorRedirect>
     ),
   },
   {
     path: "/verify-login",
     element: (
-      <AuthRedirect>
+      <TwoFactorRedirect>
         <SetupTwoFactor />
-      </AuthRedirect>
+      </TwoFactorRedirect>
     ),
   },
 ]);

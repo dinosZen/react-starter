@@ -65,6 +65,24 @@
     "readOnlyAgent": "Read-Only Agent",
     "transactionAgent": "Transaction Agent"
   },
+  "login": {
+    "toast": {
+      "incorrectCredentials": "Incorrect email or password. Please try again.",
+      "somethinWentWrong": "Something went wrong. Please try again."
+    }
+  },
+  "validateLogin": {
+    "toast": {
+      "incorrectCode": "The code you entered is incorrect.",
+      "somethinWentWrong": "Something went wrong. Please try again."
+    }
+  },
+  "verifyLogin": {
+    "toast": {
+      "incorrectCode": "The code you entered is incorrect.",
+      "somethinWentWrong": "Something went wrong. Please try again."
+    }
+  },
   "search": "Search",
   "searchPlaceholder": "Search...",
   "addNew": "Add New"

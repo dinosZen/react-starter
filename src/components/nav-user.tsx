@@ -25,7 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { clearCookie } from "@/lib/cookies";
+import { useLogout } from "@/features/auth/hooks";
 
 export function NavUser({
   user,
@@ -38,11 +38,10 @@ export function NavUser({
   };
 }>) {
   const { isMobile } = useSidebar();
+  const logout = useLogout();
 
   const handleLogout = () => {
-    clearCookie("access_token");
-    clearCookie("user");
-    window.location.href = "/login";
+    logout.mutate();
   };
 
   return (
@@ -59,7 +58,7 @@ export function NavUser({
                   src={user?.avatar}
                   alt={`${user?.firstName} ${user?.lastName}`}
                 />
-                <AvatarFallback className="rounded-lg">{`${user?.firstName[0].toUpperCase()}${user?.lastName[0].toUpperCase()}`}</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{`${user?.firstName[0]?.toUpperCase()}${user?.lastName[0]?.toUpperCase()}`}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{`${user?.firstName} ${user?.lastName}`}</span>

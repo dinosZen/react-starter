@@ -1,13 +1,12 @@
-import { getCookieValue } from "@/lib/cookies";
-import { useEffect, useState } from "react";
+import { useAuthStore } from "@/store/authStore";
+import { useEffect } from "react";
 
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { isAuthenticated, checkAuth } = useAuthStore();
 
   useEffect(() => {
-    const token = getCookieValue("access_token");
-    setIsAuthenticated(!!token);
-  }, []);
+    checkAuth();
+  }, [checkAuth]);
 
   return { isAuthenticated };
 }

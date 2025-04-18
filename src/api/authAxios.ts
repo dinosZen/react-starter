@@ -37,7 +37,7 @@ api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      window.location.href = "/login";
+      //window.location.href = "/login";
     }
     const normalizedError =
       error instanceof Error

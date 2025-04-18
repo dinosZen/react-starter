@@ -9,13 +9,17 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { clearCookie, getCookieValue } from "@/lib/cookies";
 import { useVerify } from "@/features/auth/hooks";
+import { jwtDecode } from "jwt-decode";
+import { JwtPartialUser } from "@/features/auth/types";
 
 export default function SetupTwoFactor() {
   const navigate = useNavigate();
   const verify = useVerify();
   const { secret } = useTwoFactorStore();
-  const userCookie = getCookieValue("user");
-  const user = userCookie ? JSON.parse(userCookie) : "test@zendev.se";
+  const userCookie = getCookieValue("partial_token");
+  const user = userCookie
+    ? jwtDecode<JwtPartialUser>(userCookie)
+    : { email: "cambix@cambix.com" };
 
   useEffect(() => {
     if (!secret) {
@@ -49,12 +53,12 @@ export default function SetupTwoFactor() {
           </p>
           <div className="flex justify-center">
             <QRCodeSVG
-              value={`otpauth://totp/cambix:${user.email}?secret=${secret}&issuer=cambix`}
+              value={`otpauth://totp/cambix:${user.email}?secret=${secret}&issuer=Cambix`}
               size={256}
             />
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+            <div className="mb-4 flex flex-col gap-4">
               <Label className="text-white">Enter Code</Label>
               <Input
                 name="code"
@@ -65,7 +69,7 @@ export default function SetupTwoFactor() {
             </div>
             <Button
               type="submit"
-              disabled={verify.isPending} 
+              disabled={verify.isPending}
               className="bg-neutral-600 hover:bg-neutral-500 w-full"
             >
               {verify.isPending ? "Verifying..." : "Confirm Setup"}

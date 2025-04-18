@@ -52,3 +52,17 @@ export interface ValidateResponse {
     };
   };
 }
+
+export interface JwtPartialUser {
+  id: number;
+  email: string;
+  type: string;
+}
+
+export interface JwtlUser {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+}
