@@ -16,6 +16,12 @@ import { deleteAgent } from "../api/agent/deleteAgent";
 import { Agent } from "@/types/agent";
 import { Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DeleteAgentDialogProps {
   readonly agent: Agent;
@@ -61,17 +67,27 @@ export function DeleteAgentDialog({ agent }: DeleteAgentDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="px-4 !bg-background-primary-default !hover:bg-background-primary-default transition duration-300 ease-in-out"
-        >
-          <Trash2 className="h-7 w-10" />
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="px-4 hover:bg-background-primary-default transition duration-300 ease-in-out"
+              >
+                <Trash2 className="h-7 w-10" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent className="bg-background-primary-default text-text-primary-default">
+            <p>Delete agent</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Confirm delete</DialogTitle>
+          <DialogTitle className="pb-4">Confirm delete</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete the agent{" "}
             <strong>{agent.firstName}</strong>?

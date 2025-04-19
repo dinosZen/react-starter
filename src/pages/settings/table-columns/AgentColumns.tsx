@@ -147,7 +147,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="px-1 !bg-background-primary-default !hover:bg-background-secondary-default transition duration-300 ease-in-out"
+                    className="p-0 hover:bg-background-secondary-default transition duration-300 ease-in-out"
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditRowId((current) =>
@@ -158,21 +158,12 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
                     <ManageRoleDialog open={isEditing} />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent className="bg-background-primary-default text-text-primary-default">
                   <p>Edit agent</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DeleteAgentDialog agent={agent} />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete agent</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DeleteAgentDialog agent={agent} />
           </div>
         );
       },

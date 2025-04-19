@@ -60,10 +60,9 @@ export function ManageRoleDialog({ open }: { open: boolean }) {
   return (
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogTrigger asChild>
-        <span className="dark:hover:bg-input/50 flex w-full items-center justify-start gap-2 rounded-md bg-transparent px-3 py-1.5 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-          {/* <Plus /> {t("addNew")} */}
-          <Pencil className="h-7 w-10" />
-        </span>
+        {/* <span className="flex w-full items-center justify-start gap-2 rounded-md bg-transparent px-3 py-1.5 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"> */}
+        <Pencil className="h-7 w-10" />
+        {/* </span> */}
       </DialogTrigger>
       <DialogContent className="sm:max-w-4xl gap-8">
         <DialogHeader className="max-w-1/2">
