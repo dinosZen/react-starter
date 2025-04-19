@@ -34,7 +34,7 @@ export function DataTablePagination<TData>({
   const canGoNext = page + 1 < totalPages;
 
   return (
-    <div className="flex items-center justify-end px-0 py-4">
+    <div className="flex items-center justify-end px-0">
       <div className="w-full flex items-center justify-between space-x-6 lg:space-x-8">
         {/* Rows per page */}
         <div className="flex items-center space-x-2">
@@ -46,14 +46,11 @@ export function DataTablePagination<TData>({
               onPaginationChange(0, Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[70px] bg-background-primary-default">
               <SelectValue placeholder={String(size)} />
             </SelectTrigger>
             {/* Example sizes – adapt to your needs */}
-            <SelectContent
-              side="top"
-              className="bg-background-secondary-default"
-            >
+            <SelectContent side="top" className="bg-background-primary-default">
               {[10, 20, 30, 40, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={String(pageSize)}>
                   {pageSize}

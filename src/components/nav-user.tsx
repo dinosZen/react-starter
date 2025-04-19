@@ -51,7 +51,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-background-primary-default data-[state=open]:text-sidebar-accent-foreground"
+              className="data-[state=open]:bg-background-primary-default data-[state=open]:text-text-primary-default"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
@@ -68,7 +68,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg bg-background-primary-default"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}

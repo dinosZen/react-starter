@@ -86,9 +86,9 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
-        <ScrollArea className="lg:h-[49vh] 2xl:h-[60vh]">
+        <ScrollArea className="lg:h-[47vh] 2xl:h-[58vh] rounded-md">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-sidebar bg-background-secondary-default">
+            <TableHeader className="sticky top-0 z-10 bg-background-secondary-default">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
