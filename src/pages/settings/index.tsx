@@ -5,8 +5,7 @@ import { DataTable } from "./components/DataTable";
 import { useTranslation } from "react-i18next";
 import { useAgentColumns } from "./table-columns/AgentColumns";
 import { AgentDialog } from "./components/AddNewAgentDialog";
-import { useAgents } from "./api/agent/getAgents";
-import { queryClient } from "@/lib/react-query";
+import { useAgents, AgentsQueryParams } from "./api/agent/getAgents";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,27 +15,60 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSearchParams } from "react-router-dom";
 
 function Settings() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const getAgentsColumns = useAgentColumns();
   const agentsColumns = getAgentsColumns();
   const { t } = useTranslation();
+
+  const getNum = (key: string, fallback: number) =>
+    Number(searchParams.get(key) ?? fallback);
+
+  const params: AgentsQueryParams = {
+    page: getNum("page", 1),
+    size: getNum("size", 10),
+    search: searchParams.get("search") ?? "",
+    orderBy: searchParams.get("orderBy") ?? "role",
+    order: (searchParams.get("order") as "ASC" | "DESC") ?? "DESC",
+  };
 
   const {
     data: listOfAgents,
     isLoading: isLoadingAgents,
     isFetching,
-  } = useAgents();
+  } = useAgents(params);
+
+  const updateParams = (updates: Partial<AgentsQueryParams>) => {
+    const next = new URLSearchParams(searchParams);
+    Object.entries(updates).forEach(([k, v]) => {
+      if (v == null || v === "" || (typeof v === "number" && isNaN(v))) {
+        next.delete(k);
+      } else {
+        next.set(k, String(v));
+      }
+    });
+
+    if (
+      updates.search != null ||
+      updates.orderBy != null ||
+      updates.order != null
+    ) {
+      next.set("page", "1");
+    }
+    setSearchParams(next, { replace: true });
+  };
+
+  const handlePaginationChange = (newPage: number, newSize: number) => {
+    updateParams({ page: newPage, size: newSize });
+  };
+  const handleSearch = (q: string) => {
+    updateParams({ search: q });
+  };
 
   const isLoading = isLoadingAgents || isFetching;
 
-  const handlePaginationChange = (nextPage: number, nextSize: number) => {
-    // Re-fetch from your API with new page/size:
-    // e.g. set some state or use router push to query param
-    // or call your query function again
-    queryClient.invalidateQueries({ queryKey: ["agents"] });
-    // or use a function to update the page and size
-  };
   return (
     <>
       <section className="flex flex-row items-center justify-between border-b-2 border-border-primary-default p-6">
@@ -77,6 +109,8 @@ function Settings() {
                   type="search"
                   placeholder={t("searchPlaceholder")}
                   className="w-full rounded-lg bg-background-primary-default pl-8 border-transparent"
+                  value={params.search}
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
               </div>
               <DropdownMenu>
@@ -85,9 +119,7 @@ function Settings() {
                   <Button
                     variant="outline"
                     className="!bg-background-primary-default !hover:bg-background-secondary-default transition duration-300 ease-in-out"
-                    onClick={() => {
-                      // Handle search action
-                    }}
+                    onClick={() => {}}
                   >
                     <Funnel className="h-4 w-4" /> Filters
                   </Button>
@@ -107,13 +139,14 @@ function Settings() {
           <TabsContent value="agents">
             <DataTable
               columns={agentsColumns}
-              data={listOfAgents?.data}
+              data={listOfAgents?.data ?? []}
               isLoading={isLoading}
+              //onSortChange={handleSort}
               onPaginationChange={handlePaginationChange}
               paginationData={{
-                page: listOfAgents?.data.page ?? 0,
-                size: listOfAgents?.data.size ?? 10,
-                total: listOfAgents?.data.total ?? 1,
+                page: params.page,
+                size: params.size,
+                total: listOfAgents?.totalPages ?? 1,
               }}
             />
           </TabsContent>

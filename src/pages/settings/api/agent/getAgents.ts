@@ -1,13 +1,28 @@
 import axiosInstance from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
+export interface AgentsQueryParams {
+  page: number;
+  size: number;
+  search?: string;
+  orderBy?: string;
+  order?: "ASC" | "DESC";
+}
 
-export function useAgents() {
+export function useAgents({
+  page,
+  size,
+  search = "",
+  orderBy = "role",
+  order = "DESC",
+}: AgentsQueryParams) {
   return useQuery({
-    queryKey: ["agents"],
+    queryKey: ["agents", { page, size, search, orderBy, order }],
     queryFn: async () => {
-      const response = await axiosInstance.get("/agents");
-      console.log("response", response);
-      return response.data;
+      const { data } = await axiosInstance.get("/agents", {
+        params: { page, size, search, orderBy, order },
+      });
+      return data;
     },
+    //keepPreviousData: true,
   });
 }

@@ -20,11 +20,12 @@ import {
 } from "./Table";
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PaginationSkeleton } from "@/components/ui/pagination-skeleton";
 
 interface ApiPaginationData {
-  page: number; // zero-based page index from server
-  size: number; // rows per page
-  total: number; // total number of pages
+  page: number;
+  size: number;
+  total: number;
 }
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -59,12 +60,6 @@ export function DataTable<TData, TValue>({
     },
     pageCount: paginationData.total,
     manualPagination: true,
-    // meta: {
-    //   updateData: (rowIndex, columnId, value) => {
-    //     const row = data[rowIndex];
-    //     if (!row) return;
-    //   },
-    // },
   });
 
   const renderSkeletonRows = (rowCount: number) => {
@@ -160,7 +155,7 @@ export function DataTable<TData, TValue>({
       </div>
       {(() => {
         if (isLoading) {
-          return renderSkeletonRows(10);
+          return <PaginationSkeleton />;
         }
         return (
           <DataTablePagination

@@ -17,9 +17,9 @@ import {
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
-  page: number; // current page (zero-based) from server
-  size: number; // rows per page from server
-  totalPages: number; // total # of pages from server
+  page: number;
+  size: number;
+  totalPages: number;
   onPaginationChange: (page: number, size: number) => void;
 }
 
@@ -29,9 +29,8 @@ export function DataTablePagination<TData>({
   totalPages,
   onPaginationChange,
 }: Readonly<DataTablePaginationProps<TData>>) {
-  // Safely determine if we can go next/previous
-  const canGoPrevious = page > 0;
-  const canGoNext = page + 1 < totalPages;
+  const canGoPrevious = page > 1;
+  const canGoNext = page < totalPages;
 
   return (
     <div className="flex items-center justify-end px-0">
@@ -42,14 +41,12 @@ export function DataTablePagination<TData>({
           <Select
             value={String(size)}
             onValueChange={(value) => {
-              // whenever we change page size, reset page to 0 or keep the same page.
-              onPaginationChange(0, Number(value));
+              onPaginationChange(1, Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px] bg-background-primary-default">
               <SelectValue placeholder={String(size)} />
             </SelectTrigger>
-            {/* Example sizes – adapt to your needs */}
             <SelectContent side="top" className="bg-background-primary-default">
               {[10, 20, 30, 40, 50].map((pageSize) => (
                 <SelectItem key={pageSize} value={String(pageSize)}>
@@ -60,9 +57,8 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
 
-        {/* "Page X of Y" display */}
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {page + 1} of {totalPages}
+          Page {page} of {totalPages}
         </div>
 
         {/* Pagination buttons */}
@@ -71,7 +67,7 @@ export function DataTablePagination<TData>({
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => onPaginationChange(0, size)}
+            onClick={() => onPaginationChange(1, size)}
             disabled={!canGoPrevious}
           >
             <span className="sr-only">Go to first page</span>
@@ -104,7 +100,7 @@ export function DataTablePagination<TData>({
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => onPaginationChange(totalPages - 1, size)}
+            onClick={() => onPaginationChange(totalPages, size)}
             disabled={!canGoNext}
           >
             <span className="sr-only">Go to last page</span>
