@@ -21,12 +21,12 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
-          className="ml-2"
+          className="ml-2 border-1 border-background-brand-default"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="ml-2"
+          className="ml-2 border-1 border-background-brand-default"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -44,7 +44,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
         return (
           <span className="flex flex-col">
             <span className="">{user.name}</span>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-text-secondary-default text-sm">
               User ID: {user.id}
             </span>
           </span>
@@ -102,28 +102,28 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
         // Determine the CSS class based on the status
         switch (status) {
           case "pending":
-            statusClass = "bg-blue";
+            statusClass = "bg-blue-700 text-blue-300";
             break;
           case "active":
-            statusClass = "bg-green";
+            statusClass = "bg-green-700 text-green-300";
             break;
           case "suspended":
-            statusClass = "bg-orange";
+            statusClass = "bg-orange-700 text-orange-300";
             break;
           case "revoked":
-            statusClass = "bg-red";
+            statusClass = "bg-red-700 text-red-300";
             break;
           case "expired":
-            statusClass = "bg-gray";
+            statusClass = "bg-gray-700 text-gray-300";
             break;
           default:
-            statusClass = "bg-yellow"; // Default color if none of the specified statuses match
+            statusClass = "bg-yellow-700 text-yellow-300"; // Default color if none of the specified statuses match
         }
 
         const statusText = t(`agent.${status}`);
 
         return (
-          <span className={`px-2 py-1 text:opacity:50 ${statusClass}`}>
+          <span className={`px-3 py-1 font-semibold rounded-md ${statusClass}`}>
             {statusText}
           </span>
         );

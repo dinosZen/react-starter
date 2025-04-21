@@ -21,31 +21,21 @@ import {
   TableHeader,
   TableRow,
 } from "./Table";
-import { Button } from "@/components/ui/button";
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PaginationSkeleton } from "@/components/ui/pagination-skeleton";
 
 interface ApiPaginationData {
-  page: number; // zero-based page index from server
-  size: number; // rows per page
-  total: number; // total number of pages
+  page: number;
+  size: number;
+  total: number;
 }
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  paginationData?: ApiPaginationData;
+  paginationData: ApiPaginationData;
   isLoading?: boolean;
-  onPaginationChange?: (page: number, size: number) => void;
+  onPaginationChange: (page: number, size: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -66,19 +56,13 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
-      // pagination: {
-      //   pageIndex: paginationData.page, // zero-based from server
-      //   pageSize: paginationData.size,
-      // },
+      pagination: {
+        pageIndex: paginationData.page,
+        pageSize: paginationData.size,
+      },
     },
-    //pageCount: paginationData.total,
+    pageCount: paginationData.total,
     manualPagination: true,
-    // meta: {
-    //   updateData: (rowIndex, columnId, value) => {
-    //     const row = data[rowIndex];
-    //     if (!row) return;
-    //   },
-    // },
   });
 
   const renderSkeletonRows = (rowCount: number) => {
@@ -100,9 +84,9 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
-        <ScrollArea className="lg:h-[49vh] 2xl:h-[60vh]">
+        <ScrollArea className="lg:h-[49vh] 2xl:h-[60vh] rounded-md">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-sidebar">
+            <TableHeader className="sticky top-0 z-10 bg-background-secondary-default">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -140,7 +124,7 @@ export function DataTable<TData, TValue>({
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="py-4"
+                          className=""
                           style={{
                             minWidth: cell.column.columnDef.size,
                             maxWidth: cell.column.columnDef.size,
@@ -174,17 +158,17 @@ export function DataTable<TData, TValue>({
       </div>
       {(() => {
         if (isLoading) {
-          return renderSkeletonRows(10);
+          return <PaginationSkeleton />;
         }
-        // return (
-        //   <DataTablePagination
-        //     table={table}
-        //     page={paginationData.page}
-        //     size={paginationData.size}
-        //     totalPages={paginationData.total}
-        //     onPaginationChange={onPaginationChange}
-        //   />
-        // );
+        return (
+          <DataTablePagination
+            table={table}
+            page={paginationData.page}
+            size={paginationData.size}
+            totalPages={paginationData.total}
+            onPaginationChange={onPaginationChange}
+          />
+        );
       })()}
     </div>
   );

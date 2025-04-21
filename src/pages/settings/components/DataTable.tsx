@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="py-4"
+                          className=""
                           style={{
                             minWidth: cell.column.columnDef.size,
                             maxWidth: cell.column.columnDef.size,
