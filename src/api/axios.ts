@@ -1,9 +1,5 @@
-import { getCookieValue } from "@/lib/cookies";
-import axios, {
-  AxiosInstance,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from "axios";
+import { clearCookie, getCookieValue, setCookieValue } from "@/lib/cookies";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
@@ -13,38 +9,65 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = getCookieValue("access_token");
-    if (token) {
-      if (config.headers) {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => {
-    const normalizedError =
-      error instanceof Error
-        ? error
-        : new Error(error?.response?.data?.message ?? "Request failed");
-
-    return Promise.reject(normalizedError);
+api.interceptors.request.use((config) => {
+  const token =
+    getCookieValue("access_token") ?? getCookieValue("partial_token");
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 api.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      window.location.href = "/login";
-    }
-    const normalizedError =
-      error instanceof Error
-        ? error
-        : new Error(error?.response?.data?.message ?? "Request failed");
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      __isRetry?: boolean;
+    };
 
-    return Promise.reject(normalizedError);
+    if (originalRequest.url?.includes("/auth")) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && !originalRequest.__isRetry) {
+      originalRequest.__isRetry = true;
+
+      try {
+        const refreshResponse = await api.post(
+          "/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
+
+        const newToken = refreshResponse.data.access_token;
+
+        setCookieValue("access_token", newToken);
+
+        if (originalRequest.headers) {
+          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        }
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        clearCookie("access_token");
+        window.location.href = "/login";
+
+        let errorToReject: Error;
+
+        if (refreshError instanceof Error) {
+          errorToReject = refreshError;
+        } else {
+          const errorMessage =
+            refreshError instanceof Error
+              ? refreshError.message
+              : "Unknown error during token refresh";
+          errorToReject = new Error(errorMessage);
+        }
+        return Promise.reject(errorToReject);
+      }
+    }
+
+    return Promise.reject(error);
   }
 );
 

@@ -1,5 +1,5 @@
-import axiosLoginInstance from "@/api/authAxios";
-import axiosLogoutInstance from "@/api/axios";
+
+import api from "@/api/axios";
 import {
   LoginRequest,
   LoginResponse,
@@ -10,12 +10,12 @@ import {
 } from "./types";
 
 export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
-  const response = await axiosLoginInstance.post("/auth/login", data);
+  const response = await api.post("/auth/login", data);
   return response.data;
 }
 
 export async function verifyUser(data: VerifyRequest): Promise<VerifyResponse> {
-  const response = await axiosLoginInstance.post(
+  const response = await api.post(
     "/auth/2fa/verify-setup",
     data
   );
@@ -25,7 +25,7 @@ export async function verifyUser(data: VerifyRequest): Promise<VerifyResponse> {
 export async function validateUser(
   data: ValidateRequest
 ): Promise<ValidateResponse> {
-  const response = await axiosLoginInstance.post(
+  const response = await api.post(
     "/auth/2fa/validate-login",
     data
   );
@@ -33,6 +33,11 @@ export async function validateUser(
 }
 
 export async function logoutUser(): Promise<ValidateResponse> {
-  const response = await axiosLogoutInstance.post("/auth/logout");
+  const response = await api.post("/auth/logout");
+  return response.data;
+}
+
+export async function refreshToken(): Promise<ValidateResponse> {
+  const response = await api.post("/auth/refresh");
   return response.data;
 }

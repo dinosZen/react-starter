@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginUser, logoutUser, validateUser, verifyUser } from "./api";
+import { loginUser, logoutUser, refreshToken, validateUser, verifyUser } from "./api";
 import { LoginRequest, VerifyRequest } from "./types";
 import { clearCookie, setCookieValue } from "@/lib/cookies";
 import { AxiosError } from "axios";
@@ -103,6 +103,20 @@ export function useLogout() {
       clearCookie("access_token");
       navigate("/login");
     },
+    onError: (error: AxiosError) => {
+      if (error.response) {
+        if (error) console.error("Error:", error.response.data);
+      } else {
+        console.error("Error:", error.message);
+      }
+    },
+  });
+}
+
+export function useRefresh() {
+  return useMutation({
+    mutationFn: () => refreshToken(),
+    onSuccess: () => {},
     onError: (error: AxiosError) => {
       if (error.response) {
         if (error) console.error("Error:", error.response.data);
