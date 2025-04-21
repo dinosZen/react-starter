@@ -1,4 +1,4 @@
-import axiosInstance from "@/api/axios";
+import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 export interface AgentsQueryParams {
   page: number;
@@ -18,7 +18,7 @@ export function useAgents({
   return useQuery({
     queryKey: ["agents", { page, size, search, orderBy, order }],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("/agents", {
+      const { data } = await api.get("/agents", {
         params: { page, size, search, orderBy, order },
       });
       return data;
