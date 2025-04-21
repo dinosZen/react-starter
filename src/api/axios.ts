@@ -1,25 +1,21 @@
-import { getCookieValue } from "@/lib/cookies";
-import axios, {
-  AxiosInstance,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import { clearCookie, getCookieValue, setCookieValue } from "@/lib/cookies";
 
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    withCredentials: true,
   },
 });
 
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = getCookieValue("access_token");
+  (config) => {
+    const token =
+      getCookieValue("access_token") ?? getCookieValue("partial_token");
     if (token) {
-      if (config.headers) {
-        config.headers["Authorization"] = `Bearer ${token}`;
-      }
+      config.headers = config.headers || {};
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -27,24 +23,61 @@ api.interceptors.request.use(
     const normalizedError =
       error instanceof Error
         ? error
-        : new Error(error?.response?.data?.message ?? "Request failed");
+        : new Error(
+            error?.response?.data?.message ||
+              error?.message ||
+              "An unknown request error occurred."
+          );
 
     return Promise.reject(normalizedError);
   }
 );
 
 api.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      window.location.href = "/login";
-    }
-    const normalizedError =
-      error instanceof Error
-        ? error
-        : new Error(error?.response?.data?.message ?? "Request failed");
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & {
+      __isRetry?: boolean;
+    };
 
-    return Promise.reject(normalizedError);
+    const isAuthRoute = originalRequest?.url?.includes("/auth");
+    const isUnauthorized = error.response?.status === 401;
+
+    if (isAuthRoute) return Promise.reject(error);
+
+    if (isUnauthorized && !originalRequest.__isRetry) {
+      originalRequest.__isRetry = true;
+
+      try {
+        const { data } = await api.post(
+          "/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
+        const newToken = data.access_token;
+
+        setCookieValue("access_token", newToken);
+
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newToken}`,
+        };
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        clearCookie("access_token");
+        window.location.href = "/login";
+
+        const message =
+          refreshError instanceof Error
+            ? refreshError.message
+            : "Unknown error during token refresh";
+
+        return Promise.reject(new Error(message));
+      }
+    }
+
+    return Promise.reject(error);
   }
 );
 
