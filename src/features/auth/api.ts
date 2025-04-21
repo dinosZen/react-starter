@@ -1,4 +1,3 @@
-
 import api from "@/api/axios";
 import {
   LoginRequest,
@@ -15,29 +14,18 @@ export async function loginUser(data: LoginRequest): Promise<LoginResponse> {
 }
 
 export async function verifyUser(data: VerifyRequest): Promise<VerifyResponse> {
-  const response = await api.post(
-    "/auth/2fa/verify-setup",
-    data
-  );
+  const response = await api.post("/auth/2fa/verify-setup", data);
   return response.data;
 }
 
 export async function validateUser(
   data: ValidateRequest
 ): Promise<ValidateResponse> {
-  const response = await api.post(
-    "/auth/2fa/validate-login",
-    data
-  );
+  const response = await api.post("/auth/2fa/validate-login", data);
   return response.data;
 }
 
 export async function logoutUser(): Promise<ValidateResponse> {
   const response = await api.post("/auth/logout");
-  return response.data;
-}
-
-export async function refreshToken(): Promise<ValidateResponse> {
-  const response = await api.post("/auth/refresh");
   return response.data;
 }
