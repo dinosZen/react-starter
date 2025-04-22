@@ -14,7 +14,7 @@ import { TwoFactorRedirect } from "./TwoFactorRedirect";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("@/pages/users/index"));
-const UserDetails = lazy(() => import("../pages/UserDetails"));
+const UserDetails = lazy(() => import("../pages/user/index"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const router = createBrowserRouter([

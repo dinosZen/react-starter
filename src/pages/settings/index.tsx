@@ -124,7 +124,12 @@ function Settings() {
                     <Funnel className="h-4 w-4" /> Filters
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-background-primary-default">
+                <DropdownMenuContent
+                  align="start"
+                  side="bottom"
+                  sideOffset={5}
+                  className="bg-background-primary-default"
+                >
                   <DropdownMenuLabel>Status</DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-border-primary-default" />
                   <DropdownMenuItem>Pending</DropdownMenuItem>

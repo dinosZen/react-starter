@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { Funnel, Search } from "lucide-react";
+import { FileDown, Funnel, Search } from "lucide-react";
 import { DataTable } from "./components/DataTable";
 import { useTranslation } from "react-i18next";
 import { useUsersColumns } from "./table-columns/UsersColumns";
@@ -99,13 +99,9 @@ function Settings() {
         </div>
       </section>
       <section className="w-full p-6 pb-0">
-        <div
-          className="flex flex-row w-full max-w-sm items-center gap-6 relative"
-          role="search"
-        >
+        <div className="flex flex-row w-full items-center justify-between gap-6 relative">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              {" "}
+            <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 className="!bg-background-primary-default !hover:bg-background-secondary-default transition duration-300 ease-in-out"
@@ -114,7 +110,12 @@ function Settings() {
                 <Funnel className="h-4 w-4" /> Filters
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-background-primary-default">
+            <DropdownMenuContent
+              align="start"
+              side="bottom"
+              sideOffset={5}
+              className="bg-background-primary-default"
+            >
               <DropdownMenuLabel>Status</DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-border-primary-default" />
               <DropdownMenuItem>Pending</DropdownMenuItem>
@@ -123,6 +124,13 @@ function Settings() {
               <DropdownMenuItem>Suspended</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Button
+            variant="outline"
+            className="!bg-background-primary-default !hover:bg-background-secondary-default transition duration-300 ease-in-out"
+            onClick={() => {}}
+          >
+            <FileDown className="h-4 w-4" /> Export CSV
+          </Button>
         </div>
       </section>
       <section className="w-full p-6">

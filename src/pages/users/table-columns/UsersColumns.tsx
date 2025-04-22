@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/types/user";
-import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -21,12 +20,12 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
-          className="ml-2 border-1 border-background-brand-default"
+          className="ml-2 border-1"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="ml-2 border-1 border-background-brand-default"
+          className="ml-2 border-1"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -37,7 +36,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "name",
-      header: t("agent.name"),
+      header: t("user.name"),
       cell: ({ row }) => {
         const user = row.original;
 
@@ -53,7 +52,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "email",
-      header: t("agent.email"),
+      header: t("user.email"),
       cell: ({ row }) => {
         const user = row.original;
         //cut the email if it's longer than 20 characters and add "..."
@@ -66,7 +65,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "createdAt",
-      header: t("agent.createdAt"),
+      header: t("user.createdAt"),
       cell: ({ row }) => {
         const user = row.original;
         const date = new Date(user.createdAt);
@@ -82,18 +81,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "status",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="cursor-pointer text-left !p-0"
-          >
-            {t("agent.status")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: t("user.status"),
       cell: ({ row }) => {
         const agent = row.original;
         const status = agent?.status?.toLowerCase();
@@ -120,7 +108,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
             statusClass = "bg-yellow-700 text-yellow-300"; // Default color if none of the specified statuses match
         }
 
-        const statusText = t(`agent.${status}`);
+        const statusText = t(`user.${status}`);
 
         return (
           <span className={`px-3 py-1 font-semibold rounded-md ${statusClass}`}>
