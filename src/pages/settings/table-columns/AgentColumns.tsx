@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Agent } from "@/types/agent";
-import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,18 +48,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "role",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="cursor-pointer text-left !p-0"
-          >
-            {t("agent.role")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: t("agent.role"),
       cell: ({ row }) => {
         const agent = row.original;
         const agentRole = agent.role ? agent.role.title : "-";
@@ -86,18 +74,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "status",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="cursor-pointer text-left !p-0"
-          >
-            {t("agent.status")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: t("agent.status"),
       cell: ({ row }) => {
         const agent = row.original;
         const status = agent?.status?.toLowerCase();

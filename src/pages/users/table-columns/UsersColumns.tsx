@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/types/user";
-import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -21,12 +20,12 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
-          className="ml-2"
+          className="ml-2 border-1"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="ml-2"
+          className="ml-2 border-1"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
@@ -37,14 +36,14 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "name",
-      header: t("agent.name"),
+      header: t("user.name"),
       cell: ({ row }) => {
         const user = row.original;
 
         return (
           <span className="flex flex-col">
             <span className="">{user.name}</span>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-text-secondary-default text-sm">
               User ID: {user.id}
             </span>
           </span>
@@ -53,7 +52,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "email",
-      header: t("agent.email"),
+      header: t("user.email"),
       cell: ({ row }) => {
         const user = row.original;
         //cut the email if it's longer than 20 characters and add "..."
@@ -66,7 +65,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "createdAt",
-      header: t("agent.createdAt"),
+      header: t("user.createdAt"),
       cell: ({ row }) => {
         const user = row.original;
         const date = new Date(user.createdAt);
@@ -82,18 +81,7 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
     },
     {
       accessorKey: "status",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="cursor-pointer text-left !p-0"
-          >
-            {t("agent.status")}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        );
-      },
+      header: t("user.status"),
       cell: ({ row }) => {
         const agent = row.original;
         const status = agent?.status?.toLowerCase();
@@ -102,28 +90,28 @@ export const useUsersColumns = (): (() => ColumnDef<User>[]) => {
         // Determine the CSS class based on the status
         switch (status) {
           case "pending":
-            statusClass = "bg-blue";
+            statusClass = "bg-blue-700 text-blue-300";
             break;
           case "active":
-            statusClass = "bg-green";
+            statusClass = "bg-green-700 text-green-300";
             break;
           case "suspended":
-            statusClass = "bg-orange";
+            statusClass = "bg-orange-700 text-orange-300";
             break;
           case "revoked":
-            statusClass = "bg-red";
+            statusClass = "bg-red-700 text-red-300";
             break;
           case "expired":
-            statusClass = "bg-gray";
+            statusClass = "bg-gray-700 text-gray-300";
             break;
           default:
-            statusClass = "bg-yellow"; // Default color if none of the specified statuses match
+            statusClass = "bg-yellow-700 text-yellow-300"; // Default color if none of the specified statuses match
         }
 
-        const statusText = t(`agent.${status}`);
+        const statusText = t(`user.${status}`);
 
         return (
-          <span className={`px-2 py-1 text:opacity:50 ${statusClass}`}>
+          <span className={`px-3 py-1 font-semibold rounded-md ${statusClass}`}>
             {statusText}
           </span>
         );

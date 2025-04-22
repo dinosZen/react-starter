@@ -1,4 +1,4 @@
-import api from "@/api/axios";
+import axiosInstance from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
 export interface AgentsQueryParams {
   page: number;
@@ -16,14 +16,13 @@ export function useAgents({
   order = "DESC",
 }: AgentsQueryParams) {
   return useQuery({
-    queryKey: ["agents", page, size, search, orderBy, order],
-
-    queryFn: () =>
-      api
-        .get("/agents", { params: { page, size, search, orderBy, order } })
-        .then((r) => r.data),
-    staleTime: Infinity,
-    gcTime: 10 * 60 * 1000,
-    refetchOnMount: false,
+    queryKey: ["agents", { page, size, search, orderBy, order }],
+    queryFn: async () => {
+      const { data } = await axiosInstance.get("/agents", {
+        params: { page, size, search, orderBy, order },
+      });
+      return data;
+    },
+    //keepPreviousData: true,
   });
 }
