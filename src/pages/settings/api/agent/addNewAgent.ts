@@ -1,6 +1,6 @@
 import axiosInstance from "@/api/axios";
 
-export async function createAgent(data: {
+export async function addNewAgent(data: {
   firstName: string;
   lastName: string;
   email: string;

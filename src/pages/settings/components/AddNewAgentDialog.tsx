@@ -35,8 +35,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTranslation } from "react-i18next";
 import { agentRoleOptions } from "@/lib/constants";
-import { createAgent } from "@/pages/settings/api/agent/createAgent";
+import { addNewAgent } from "@/pages/settings/api/agent/addNewAgent";
 import { useState } from "react";
+import axios from "axios";
 
 export function AgentDialog() {
   const { t } = useTranslation();
@@ -44,11 +45,11 @@ export function AgentDialog() {
   const [isOpen, setIsOpen] = useState(false);
 
   const formSchema = z.object({
-    firstName: z.string().min(1, t("agent.requiredField")),
-    lastName: z.string().min(1, t("agent.requiredField")),
+    firstName: z.string().min(1, t("agent.firstNameRequiredField")),
+    lastName: z.string().min(1, t("agent.lastNameRequiredField")),
     email: z
       .string()
-      .min(1, t("agent.requiredField"))
+      .min(1, t("agent.emailRequiredField"))
       .email(t("agent.invalidEmail")),
     roleId: z.number().optional(),
   });
@@ -59,18 +60,39 @@ export function AgentDialog() {
       firstName: "",
       lastName: "",
       email: "",
-      roleId: 13,
+      roleId: 14,
     },
   });
 
-  const { handleSubmit, control, reset } = form;
+  const { handleSubmit, control, reset, setError } = form;
 
   const handleDialogClose = () => {
     setIsOpen(false);
   };
 
+  //Translate error messages
+  const translateServerMessage = (
+    field: string,
+    raw: string,
+    t: (key: string) => string
+  ) => {
+    if (raw.includes("should not be empty")) {
+      return t(`agent.${field}RequiredField`);
+    }
+    const map: Record<string, string> = {
+      "must be an email": `agent.invalidEmail`,
+    };
+    for (const [pattern, key] of Object.entries(map)) {
+      if (raw.includes(pattern)) {
+        return t(key);
+      }
+    }
+    // Fallback error message
+    return t("agent.unknownError");
+  };
+
   const { mutate, status } = useMutation({
-    mutationFn: createAgent,
+    mutationFn: addNewAgent,
     onSuccess: () => {
       toast.success(t("agent.createdSuccessfully"));
       // reset form fields
@@ -80,10 +102,35 @@ export function AgentDialog() {
       //close dialog
       handleDialogClose();
     },
-    onError: (err: unknown) => {
-      console.error("Form submission error", err);
-      if (err instanceof Error) {
-        toast.error(err.message);
+    onError: (error: unknown) => {
+      if (axios.isAxiosError(error)) {
+        const resp = error.response;
+        // case the “email already exists” conflict
+        if (resp?.status === 409 && resp.data?.message === "email") {
+          setError("email", {
+            type: "server",
+            message: t("agent.emailAlreadyExists") || "Email already exists",
+          });
+          return;
+        }
+        if (Array.isArray(resp?.data?.errors)) {
+          (resp.data.errors as { field: string; messages: string[] }[]).forEach(
+            ({ field, messages }) => {
+              const rawMsg = messages[0];
+              const translated = translateServerMessage(field, rawMsg, t);
+              setError(field as keyof z.infer<typeof formSchema>, {
+                type: "server",
+                message: translated,
+              });
+            }
+          );
+          return;
+        }
+      }
+
+      // fallback
+      if (error instanceof Error) {
+        toast.error(error.message);
       } else {
         toast.error(t("agent.unknownError"));
       }
