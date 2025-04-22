@@ -11,6 +11,8 @@ import ValidateTwoFactor from "@/pages/login/ValidateLogin";
 import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
 import { LoginRedirect } from "./LoginRedirect";
 import { TwoFactorRedirect } from "./TwoFactorRedirect";
+import LoadingFallback from "@/components/LoadingFallback";
+import ErrorPage from "@/pages/ErrorPage";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("@/pages/users/index"));
@@ -21,12 +23,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Dashboard />
             </Suspense>
           </ProtectedRoute>
@@ -36,7 +39,7 @@ const router = createBrowserRouter([
         path: "users",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Users />
             </Suspense>
           </ProtectedRoute>
@@ -46,7 +49,7 @@ const router = createBrowserRouter([
         path: "users/:userId",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <UserDetails />
             </Suspense>
           </ProtectedRoute>
@@ -56,7 +59,7 @@ const router = createBrowserRouter([
         path: "transactions",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Transactions />
             </Suspense>
           </ProtectedRoute>
@@ -66,7 +69,7 @@ const router = createBrowserRouter([
         path: "wallets",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Wallets />
             </Suspense>
           </ProtectedRoute>
@@ -76,7 +79,7 @@ const router = createBrowserRouter([
         path: "reports",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Reports />
             </Suspense>
           </ProtectedRoute>
@@ -86,7 +89,7 @@ const router = createBrowserRouter([
         path: "settings",
         element: (
           <ProtectedRoute>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingFallback />}>
               <Settings />
             </Suspense>
           </ProtectedRoute>
@@ -95,9 +98,11 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <NotFound />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<LoadingFallback />}>
+              <NotFound />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
     ],
