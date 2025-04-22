@@ -49,10 +49,13 @@
     "expired": "Expired",
     "edit": "Edit",
     "delete": "Delete",
-    "requiredField": "This field is required",
+    "firstNameRequiredField": "This field is required",
+    "lastNameRequiredField": "This field is required",
+    "emailRequiredField": "This field is required",
     "invalidEmail": "Invalid email address",
     "sendInvitation": "Send invitation",
     "sendingInvitation": "Sending",
+    "emailAlreadyExists": "Email already exists",
     "createdSuccessfully": "Agent created successfully",
     "updatedSuccessfully": "Agent updated successfully",
     "deletedSuccessfully": "Agent deleted successfully",
@@ -63,7 +66,8 @@
     "adminAgent": "Admin Agent",
     "supportAgent": "Support Agent",
     "readOnlyAgent": "Read-Only Agent",
-    "transactionAgent": "Transaction Agent"
+    "transactionAgent": "Transaction Agent",
+    "unknownError": "An unknown error occurred. Please try again."
   },
   "user": {
     "name": "Name",
