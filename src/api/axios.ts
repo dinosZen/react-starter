@@ -24,8 +24,8 @@ api.interceptors.request.use(
       error instanceof Error
         ? error
         : new Error(
-            error?.response?.data?.message ||
-              error?.message ||
+            error?.response?.data?.message ??
+              error?.message ??
               "An unknown request error occurred."
           );
 
@@ -49,15 +49,17 @@ api.interceptors.response.use(
       originalRequest.__isRetry = true;
 
       try {
-        const { data } = await api.post(
-          "/auth/refresh",
-          {},
-          { withCredentials: true }
-        );
-        const newToken = data.access_token;
+        const {
+          data: {
+            data: { access_token },
+          },
+        } = await api.post("/auth/refresh", {}, { withCredentials: true });
 
-        setCookieValue("access_token", newToken);
+        const newToken = access_token;
 
+        if (newToken) {
+          setCookieValue("access_token", newToken);
+        }
         originalRequest.headers = {
           ...originalRequest.headers,
           Authorization: `Bearer ${newToken}`,

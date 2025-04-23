@@ -1,21 +1,11 @@
-import { ColumnDef } from "@tanstack/react-table";
 import { Agent } from "@/types/agent";
+import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useState } from "react";
-import { ManageRoleDialog } from "../components/ManageRoleDialog";
 import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
+import { ManageRoleDialog } from "../components/ManageRoleDialog";
 
 export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
-
-  const [editRowId, setEditRowId] = useState<string | number | null>(null);
 
   return () => [
     {
@@ -115,31 +105,10 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
       header: "",
       cell: ({ row }) => {
         const agent = row.original;
-        const isEditing = editRowId === agent.id;
 
         return (
           <div className="flex justify-end space-x-3 mr-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="p-0 hover:bg-background-secondary-default transition duration-300 ease-in-out"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditRowId((current) =>
-                        current === agent.id ? null : agent.id
-                      );
-                    }}
-                  >
-                    <ManageRoleDialog open={isEditing} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-background-primary-default text-text-primary-default">
-                  <p>Edit agent</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ManageRoleDialog agent={agent} />
             <DeleteAgentDialog agent={agent} />
           </div>
         );
