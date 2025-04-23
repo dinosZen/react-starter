@@ -241,3 +241,61 @@ export const usersTableMockData = [
     status: "pending",
   },
 ];
+
+// User details mock data
+export const userProfileTabs = [
+  { id: "personal", label: "Personal details" },
+  { id: "financial", label: "Financial details" },
+  { id: "compliance", label: "Compliance" },
+  { id: "documents", label: "Documents" },
+  { id: "wallets", label: "Wallets" },
+  { id: "legal", label: "Legal agreements" },
+  { id: "identification", label: "Identification results" },
+  { id: "activity", label: "Activity" },
+];
+
+export const userProfileMockData = {
+  id: 1,
+  name: "Bob Johnson",
+  email: "mail@mail.com",
+  createdAt: "2024-02-02",
+  contactsData: [
+    {
+      label: "Primary email",
+      values: ["bob@example.com"],
+    },
+    {
+      label: "Emails",
+      values: ["bob1@example.com", "bob2@example.com"],
+    },
+    {
+      label: "Primary phone",
+      values: ["+46 70 123 45 67"],
+    },
+    {
+      label: "Phone numbers",
+      values: ["+46 73 234 56 78", "+46 76 345 67 89"],
+    },
+    {
+      label: "Full legal address",
+      values: ["123 Elm Street", "Stockholm", "Sweden"],
+    },
+  ],
+  personalInfoData: [
+    { label: "Unique Public ID", value: "AA87 N84G VYTI 72WI" },
+    { label: "Name", value: "Bob Johnson" },
+    { label: "Birthdate", value: "17/04/1987" },
+    { label: "Nationality", value: "Bosnia and Herzegovina" },
+    { label: "Language", value: "English" },
+    { label: "Created by", value: "Robby Keane" },
+    { label: "Created at", value: "02 Feb 2024" },
+    { label: "Last updated at", value: "17 Apr 2025 - 13:26 CET" },
+  ],
+  settingsData: [
+    { label: "Two-factor authentication", value: "Enabled" },
+    { label: "Email notifications", value: "Enabled" },
+    { label: "SMS notifications", value: "Disabled" },
+    { label: "Push notifications", value: "Enabled" },
+    { label: "Dark mode", value: "Enabled" },
+  ],
+};

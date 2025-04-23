@@ -20,7 +20,7 @@ export const ProfileHeader = ({
 }: ProfileHeaderProps) => {
   return (
     <div className="relative w-full">
-      <div className="flex items-center justify-between py-6">
+      <div className="flex items-center justify-between pt-6">
         <div className="flex items-center gap-4">
           {/* Profile image */}
           <div className="relative">
