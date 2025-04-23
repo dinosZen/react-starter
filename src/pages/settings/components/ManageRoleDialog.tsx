@@ -1,4 +1,4 @@
-import { Check, Pencil, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -21,34 +16,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { usePermissionsGrouped, useRoles } from "@/features/settings/hooks";
+import { EditAgentDialogProps, Role } from "@/features/settings/types";
+import { Check, Pencil } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const permissions = [
-  { label: "View users", key: "view-users" },
-  { label: "Manager users", key: "manage-users" },
-  { label: "Assign roles", key: "assign-roles" },
-  { label: "View transactions", key: "view-transactions" },
-  { label: "Initiate transactions", key: "initiate-transactions" },
-  { label: "Approve transactions", key: "approve-transactions" },
-  { label: "View wallets", key: "view-wallets" },
-  { label: "Manage wallets", key: "manage-wallets", disabled: true },
-  { label: "View KYC/ALM Data", key: "view-kyc-alm-data", disabled: true },
-];
-
-const roles = [
-  { key: "super-admin", label: "Super Admin" },
-  { key: "agent-adming", label: "Admin Agent" },
-  { key: "compliance-agent", label: "Compliance Agent" },
-  { key: "support-agent", label: "Support Agent" },
-  { key: "read-only-agent", label: "Read-only Agent" },
-  { key: "transaction-agent", label: "Transaction Agent" },
-];
-
-export function ManageRoleDialog({ open }: { open: boolean }) {
+export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
   const { t } = useTranslation();
   const [enabledPermissions, setEnabledPermissions] = useState<
     Record<string, boolean>
   >({});
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedGroupCode, setSelectedGroupCode] = useState<string | null>(
+    null
+  );
+  const [selected, setSelected] = useState<Role | null>(null);
+  const { roles, isLoading: isLoadingRoles } = useRoles();
+  const { permissions } = usePermissionsGrouped();
 
   const handleToggle = (key: string) => {
     setEnabledPermissions((prev) => ({
@@ -57,89 +49,160 @@ export function ManageRoleDialog({ open }: { open: boolean }) {
     }));
   };
 
+  console.log("selected", selected);
+
+  console.log("Selected agent", agent);
+
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
-      <DialogTrigger asChild>
-        {/* <span className="flex w-full items-center justify-start gap-2 rounded-md bg-transparent px-3 py-1.5 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"> */}
-        <Pencil className="h-7 w-10" />
-        {/* </span> */}
-      </DialogTrigger>
+    <Dialog>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="px-4 hover:bg-background-primary-default transition duration-300 ease-in-out"
+              >
+                <Pencil className="h-7 w-10" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent className="bg-background-primary-default text-text-primary-default">
+            <p>Edit agent</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent className="sm:max-w-4xl gap-8">
         <DialogHeader className="max-w-1/2">
           <DialogTitle>{t("settings.manageRoleDialog.title")}</DialogTitle>
-          <DialogDescription className="text-secondary">
+          <DialogDescription>
             {t("settings.manageRoleDialog.description")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-center gap-4">
           <div className="flex-1 flex  flex-col h-full gap-4">
             <div className="flex justify-between">
-              <span className="text-base">Predefined roles</span>
+              <span className="text-base text-text-primary-default">
+                Predefined roles
+              </span>
             </div>
-
-            <div className="flex flex-col gap-2 max-h-96 overflow-scroll">
-              {roles.map((role) => (
-                <div
-                  key={role.key}
-                  onClick={() =>
-                    setSelected(selected === role.key ? null : role.key)
-                  }
-                  className={`flex items-center gap-4 px-4 py-1.5 rounded cursor-pointer select-none 
+            {isLoadingRoles ? (
+              "Loading..."
+            ) : (
+              <div className="flex flex-col gap-2 max-h-96 overflow-scroll">
+                {roles?.map((role: Role) => (
+                  <button
+                    key={role.id}
+                    onClick={() =>
+                      setSelected(selected?.id === role.id ? null : role)
+                    }
+                    className={`flex items-center gap-4 px-4 py-1.5 rounded cursor-pointer select-none 
                     ${
-                      selected === role.key ? "bg-neutral-600" : "bg-secondary"
+                      selected?.id === role.id
+                        ? "bg-background-secondary-focus"
+                        : "bg-background-secondary-default"
                     }`}
-                >
-                  {selected === role.key && <Check height={24} width={24} />}
-                  <Label htmlFor={role.key} className="leading-6">
-                    {role.label}
-                  </Label>
-                </div>
-              ))}
-            </div>
+                  >
+                    {selected?.id === role.id && (
+                      <Check height={24} width={24} />
+                    )}
+                    <Label htmlFor={role.code} className="leading-6">
+                      {role.title}
+                    </Label>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <Separator orientation="vertical" />
           <div className="flex-1 flex  flex-col h-full gap-4">
             <div className="flex justify-between">
-              <Select onValueChange={(value) => console.log(value)}>
+              <Select
+                onValueChange={(value) =>
+                  setSelectedGroupCode(value === "all" ? null : value)
+                }
+                defaultValue="all"
+              >
                 <SelectTrigger className="w-[200px] text-primary">
                   <SelectValue placeholder="All permissions group" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="editor">Editor</SelectItem>
-                  <SelectItem value="viewer">Viewer</SelectItem>
+                  <SelectItem value="all">All permissions group</SelectItem>
+                  {permissions?.map((permissionGroup) => (
+                    <SelectItem
+                      value={permissionGroup.code}
+                      key={permissionGroup.id}
+                    >
+                      {permissionGroup.title}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="flex flex-col justify-evenly gap-2 max-h-96 overflow-scroll">
-              {permissions.map((permission) => (
+              {selected?.permissions?.map((permission) => (
                 <div
-                  key={permission.key}
+                  key={permission?.id}
                   className={`flex items-center justify-between bg-secondary px-4 py-1.5 rounded-md ${
-                    permission.disabled
-                      ? "opacity-50 cursor-not-allowed"
-                      : "opacity-100"
+                    permission?.isActive
+                      ? "bg-background-secondary-hover opacity-50 cursor-not-allowed"
+                      : "bg-background-secondary-default"
                   }`}
                 >
                   <Label
-                    htmlFor={permission.key}
+                    htmlFor={permission?.code}
                     className={`leading-5 ${
-                      permission.disabled
+                      permission?.isActive
                         ? "cursor-not-allowed"
                         : "cursor-pointer"
                     }`}
                   >
-                    {permission.label}
+                    {permission?.title}
                   </Label>
                   <Switch
-                    id={permission.key}
-                    checked={enabledPermissions[permission.key] || false}
-                    onCheckedChange={() => handleToggle(permission.key)}
+                    id={permission?.code}
+                    checked={enabledPermissions[permission?.id] || false}
+                    onCheckedChange={() => handleToggle(permission?.code)}
                     className="cursor-pointer"
-                    disabled={permission.disabled}
+                    disabled={permission?.isActive}
                   />
                 </div>
               ))}
+              {permissions
+                ?.filter(
+                  (group) =>
+                    !selectedGroupCode || group.code === selectedGroupCode
+                )
+                .flatMap((group) => group.permissions)
+                .filter((permission) => permission?.title)
+                .map((permission) => (
+                  <div
+                    key={permission?.id}
+                    className={`flex items-center justify-between bg-secondary px-4 py-1.5 rounded-md ${
+                      permission?.isActive
+                        ? "bg-background-secondary-hover opacity-50 cursor-not-allowed"
+                        : "bg-background-secondary-default"
+                    }`}
+                  >
+                    <Label
+                      htmlFor={permission?.code}
+                      className={`leading-5 ${
+                        permission?.isActive
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                    >
+                      {permission?.title}
+                    </Label>
+                    <Switch
+                      id={permission?.code}
+                      checked={enabledPermissions[permission?.id] || false}
+                      onCheckedChange={() => handleToggle(permission?.code)}
+                      className="cursor-pointer"
+                      disabled={permission?.isActive}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
         </div>
