@@ -1,0 +1,72 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { User } from "@/types/user";
+import { PersonalDetailsTab } from "./tabs/personal-details/PersonalDetailsTab";
+
+export type TabItem = {
+  id: string;
+  label: string;
+};
+
+interface ProfileTabsProps {
+  tabs: TabItem[];
+  activeTab: string;
+  userData: User;
+  onTabChange: (tabId: string) => void;
+}
+
+export const ProfileTabs = ({
+  tabs,
+  activeTab,
+  onTabChange,
+  userData,
+}: ProfileTabsProps) => {
+  return (
+    <Tabs
+      value={activeTab}
+      onValueChange={onTabChange}
+      className="w-full gap-0"
+    >
+      <TabsList className="my-6">
+        {tabs.map((tab) => (
+          <TabsTrigger key={tab.id} value={tab.id} className="cursor-pointer">
+            {tab.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {!userData ? (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-text-secondary-default text-lg">
+            No user data available!
+          </p>
+        </div>
+      ) : (
+        <div>
+          <TabsContent value="personal">
+            {userData?.contactsData?.length === 0 &&
+            userData?.personalInfoData?.length === 0 &&
+            userData?.settingsData?.length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-text-secondary-default text-lg">
+                  No personal details available!
+                </p>
+              </div>
+            ) : (
+              <PersonalDetailsTab
+                personalInfoData={userData?.personalInfoData || []}
+                contactsData={userData?.contactsData || []}
+                settingsData={userData?.settingsData || []}
+              />
+            )}
+          </TabsContent>
+          <TabsContent value="financial">Contacts...</TabsContent>
+          <TabsContent value="compliance">Compliance...</TabsContent>
+          <TabsContent value="documents">Documents...</TabsContent>
+          <TabsContent value="wallets">Wallets...</TabsContent>
+          <TabsContent value="legal">Legal...</TabsContent>
+          <TabsContent value="identification">Identification...</TabsContent>
+          <TabsContent value="activity">Activity...</TabsContent>
+        </div>
+      )}
+    </Tabs>
+  );
+};

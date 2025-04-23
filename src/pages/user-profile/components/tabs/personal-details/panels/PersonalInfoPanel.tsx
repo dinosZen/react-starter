@@ -20,12 +20,12 @@ export const PersonalInfoPanel = ({
   };
 
   return (
-    <div className="bg-background-primary-default text-text-primary-default p-8 rounded-md h-full">
+    <div className="bg-background-primary-default text-text-primary-default border-1 border-border-primary-default p-8 rounded-md h-full">
       <h2 className="text-xl font-bold mb-6">Personal info</h2>
 
       <div className="space-y-5">
         {items.map((item, index) => (
-          <div key={item.label} className="grid grid-cols-[1fr_1fr] gap-4">
+          <div key={item.label} className="grid grid-cols-[4fr_8fr] gap-4">
             <div className="text-text-secondary-default text-sm">
               {item.label}
             </div>

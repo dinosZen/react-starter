@@ -16,7 +16,7 @@ import ErrorPage from "@/pages/ErrorPage";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("@/pages/users/index"));
-const UserDetails = lazy(() => import("../pages/user/index"));
+const UserDetails = lazy(() => import("../pages/user-profile/index"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 const router = createBrowserRouter([

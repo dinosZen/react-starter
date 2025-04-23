@@ -74,9 +74,6 @@ function Settings() {
       <section className="flex flex-row items-center justify-between border-b-2 border-border-primary-default p-6">
         <header>
           <h1 className="text-3xl font-bold pb-3">Settings</h1>
-          <p className="text-text-secondary-default">
-            Manage your account settings and set e-mail preferences.
-          </p>
         </header>
       </section>
       <section className="w-full p-6">
