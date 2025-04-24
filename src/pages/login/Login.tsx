@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useLogin } from "@/features/auth/hooks";
+import { useState } from "react";
+import { z } from "zod";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required"),

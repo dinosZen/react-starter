@@ -1,17 +1,20 @@
-import { useAuthStore } from "@/store/authStore";
+import { useIsLoggingIn } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const TwoFactorRedirect = ({ children }: { children: React.ReactNode }) => {
+export const TwoFactorRedirect = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const navigate = useNavigate();
-  const { checkLoggingIn, isLoggingIn } = useAuthStore();
+  const { isLoggingIn } = useIsLoggingIn();
 
   useEffect(() => {
-    checkLoggingIn();
     if (!isLoggingIn) {
       navigate("/login");
     }
-  }, [navigate, checkLoggingIn, isLoggingIn]);
+  }, [navigate, isLoggingIn]);
 
   return <>{children}</>;
 };

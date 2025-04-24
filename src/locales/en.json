@@ -22,7 +22,9 @@
       "title": "Edit agent permissions",
       "description": "Create a custom role by setting a name and defining specific permissions. This role can then be assigned to users as needed.",
       "predefinedRoles": "Predefined roles",
-      "updatePermissions": "Update permissions"
+      "updatePermissions": "Update permissions",
+      "editAgent": "Edit agent",
+      "allPermissionsGroup": "All permissions group"
     }
   },
   "agent": {
