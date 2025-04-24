@@ -1,11 +1,3 @@
-import { Input } from "@/components/ui/input";
-import { Funnel, Search } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "./components/DataTable";
-import { useTranslation } from "react-i18next";
-import { useAgentColumns } from "./table-columns/AgentColumns";
-import { AgentDialog } from "./components/AddNewAgentDialog";
-import { useAgents, AgentsQueryParams } from "./api/agent/getAgents";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Funnel, Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
+import { AgentsQueryParams, useAgents } from "./api/agent/getAgents";
+import { AgentDialog } from "./components/AddNewAgentDialog";
+import { DataTable } from "./components/DataTable";
+import { useAgentColumns } from "./table-columns/AgentColumns";
 
 function Settings() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +37,7 @@ function Settings() {
   const {
     data: listOfAgents,
     isLoading: isLoadingAgents,
-    isFetching,
+    isFetching: isFetchingAgents,
   } = useAgents(params);
 
   const updateParams = (updates: Partial<AgentsQueryParams>) => {
@@ -67,11 +67,11 @@ function Settings() {
     updateParams({ search: q });
   };
 
-  const isLoading = isLoadingAgents || isFetching;
+  const isLoading = isLoadingAgents || isFetchingAgents;
 
   return (
     <>
-      <section className="flex flex-row items-center justify-between border-b-2 border-border-primary-default p-6">
+      <section className="flex flex-row items-center justify-between p-6">
         <header>
           <h1 className="text-3xl font-bold pb-3">Settings</h1>
         </header>
@@ -152,7 +152,20 @@ function Settings() {
               }}
             />
           </TabsContent>
-          <TabsContent value="roles">Change your roles here.</TabsContent>
+          <TabsContent value="roles">
+            <DataTable
+              columns={agentsColumns}
+              data={listOfAgents?.data ?? []}
+              isLoading={isLoading}
+              //onSortChange={handleSort}
+              onPaginationChange={handlePaginationChange}
+              paginationData={{
+                page: params.page,
+                size: params.size,
+                total: listOfAgents?.totalPages ?? 1,
+              }}
+            />
+          </TabsContent>
           <TabsContent value="notifications">
             Change your notifications here.
           </TabsContent>
