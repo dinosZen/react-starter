@@ -1,3 +1,4 @@
+import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
 import {
   Sidebar,
   SidebarContent,
@@ -9,14 +10,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { SidebarItems } from "@/constants/sidebar";
-import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
-import { NavUser } from "./nav-user";
-import { useTranslation } from "react-i18next";
-import { getCookieValue } from "@/lib/cookies";
 import { JwtlUser } from "@/features/auth/types";
+import { getCookieValue } from "@/lib/cookies";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
+import { NavUser } from "./nav-user";
 
 export function AppSidebar() {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href={"/"}>
-                <img src={SidebarLogo} alt="Search" />
+                <img src={SidebarLogo} alt="Cambix" />
                 <span>Cambix</span>
               </a>
             </SidebarMenuButton>
@@ -59,6 +60,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
+        <SidebarTrigger />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
