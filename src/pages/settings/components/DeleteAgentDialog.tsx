@@ -1,27 +1,27 @@
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
-import { deleteAgent } from "../api/agent/deleteAgent";
-import { Agent } from "@/types/agent";
-import { Trash2 } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Agent } from "@/types/agent";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { deleteAgent } from "../api/agent/deleteAgent";
 
 interface DeleteAgentDialogProps {
   readonly agent: Agent;
