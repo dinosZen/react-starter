@@ -50,7 +50,6 @@ export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
   };
 
   console.log("selected", selected);
-
   console.log("Selected agent", agent);
 
   return (
@@ -68,7 +67,7 @@ export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent className="bg-background-primary-default text-text-primary-default">
-            <p>Edit agent</p>
+            <p>{t("settings.manageRoleDialog.editAgent")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -83,7 +82,7 @@ export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
           <div className="flex-1 flex  flex-col h-full gap-4">
             <div className="flex justify-between">
               <span className="text-base text-text-primary-default">
-                Predefined roles
+                {t("settings.manageRoleDialog.predefinedRoles")}
               </span>
             </div>
             {isLoadingRoles ? (
@@ -124,10 +123,16 @@ export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
                 defaultValue="all"
               >
                 <SelectTrigger className="w-[200px] text-primary">
-                  <SelectValue placeholder="All permissions group" />
+                  <SelectValue
+                    placeholder={t(
+                      "settings.manageRoleDialog.allPermissionsGroup"
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All permissions group</SelectItem>
+                  <SelectItem value="all">
+                    {t("settings.manageRoleDialog.allPermissionsGroup")}
+                  </SelectItem>
                   {permissions?.map((permissionGroup) => (
                     <SelectItem
                       value={permissionGroup.code}

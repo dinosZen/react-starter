@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { loginUser, logoutUser, validateUser, verifyUser } from "./api";
-import { LoginRequest, VerifyRequest } from "./types";
 import { clearCookie, setCookieValue } from "@/lib/cookies";
-import { AxiosError } from "axios";
 import { useTwoFactorStore } from "@/store/authStore";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useTranslation } from "react-i18next";
+import { loginUser, logoutUser, validateUser, verifyUser } from "./api";
+import { LoginRequest, VerifyRequest } from "./types";
 
 export function useLogin() {
   const { setSecret } = useTwoFactorStore();
@@ -67,7 +67,6 @@ export function useVerify() {
 }
 
 export function useValidate() {
-  const { clearSecret } = useTwoFactorStore();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -76,7 +75,6 @@ export function useValidate() {
     onSuccess: (response) => {
       setCookieValue("access_token", response.data.access_token);
       clearCookie("partial_token");
-      clearSecret();
       navigate("/");
     },
     onError: (error: AxiosError) => {
