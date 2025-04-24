@@ -1,26 +1,33 @@
 export const agentRoleOptions = [
   {
-    label: "Super Agent",
-    value: 13,
+    label: "AML officer",
+    value: 20,
   },
   {
-    label: "Admin Agent",
-    value: 14,
+    label: "Compliance officer",
+    value: 21,
   },
   {
-    label: "Support Agent",
-    value: 15,
+    label: "Support team leader",
+    value: 22,
   },
   {
-    label: "Read-Only Agent",
-    value: 16,
+    label: "Support staff member",
+    value: 23,
   },
   {
-    label: "Transaction Agent",
-    value: 17,
+    label: "Limited support staff",
+    value: 24,
   },
 ];
 
+// User details mock data
+export const settingsTabs = [
+  { id: "agents", label: "Agents" },
+  { id: "roles", label: "Roles" },
+  { id: "notifications", label: "Notifications" },
+  { id: "support", label: "Support & Help" },
+];
 export const agentTableMockData = [
   {
     id: 1,

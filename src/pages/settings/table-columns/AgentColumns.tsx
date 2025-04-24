@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { Agent } from "@/types/agent";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
 import { ManageRoleDialog } from "../components/ManageRoleDialog";
@@ -10,7 +12,24 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
   return () => [
     {
       accessorKey: "name",
-      header: t("agent.name"),
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting()}
+            className="cursor-pointer text-left !p-0"
+          >
+            {t("agent.name")}
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        );
+      },
       cell: ({ row }) => {
         const agent = row.original;
 
@@ -25,7 +44,24 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "email",
-      header: t("agent.email"),
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting()}
+            className="cursor-pointer text-left !p-0"
+          >
+            {t("agent.email")}
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        );
+      },
       cell: ({ row }) => {
         const agent = row.original;
         //cut the email if it's longer than 20 characters and add "..."
@@ -38,7 +74,24 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
     },
     {
       accessorKey: "role",
-      header: t("agent.role"),
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting()}
+            className="cursor-pointer text-left !p-0"
+          >
+            {t("agent.role")}
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="ml-2 h-4 w-4" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="ml-2 h-4 w-4" />
+            ) : (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </Button>
+        );
+      },
       cell: ({ row }) => {
         const agent = row.original;
         const agentRole = agent.role ? agent.role.title : "-";

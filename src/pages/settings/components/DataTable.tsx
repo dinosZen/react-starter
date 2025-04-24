@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   ColumnDef,
@@ -8,6 +7,7 @@ import {
   SortingState,
   getSortedRowModel,
   getPaginationRowModel,
+  Updater,
 } from "@tanstack/react-table";
 
 import {
@@ -30,6 +30,8 @@ interface ApiPaginationData {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  sorting: SortingState;
+  onSortChange: (updater: Updater<SortingState>) => void;
   paginationData: ApiPaginationData;
   isLoading?: boolean;
   onPaginationChange: (page: number, size: number) => void;
@@ -38,17 +40,18 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  sorting,
+  onSortChange,
   paginationData,
   isLoading = false,
   onPaginationChange,
 }: Readonly<DataTableProps<TData, TValue>>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-
   const table = useReactTable({
     data,
     columns,
+    manualSorting: true,
+    onSortingChange: onSortChange,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: {
