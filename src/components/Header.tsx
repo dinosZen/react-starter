@@ -1,11 +1,5 @@
-import { SidebarTrigger } from "./ui/sidebar";
-
 function Header() {
-  return (
-    <div className="p-4">
-      <SidebarTrigger />
-    </div>
-  );
+  return <></>;
 }
 
 export default Header;

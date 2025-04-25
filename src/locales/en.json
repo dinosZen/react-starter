@@ -19,12 +19,17 @@
     "notifications": "Notifications",
     "supportHelp": "Support & Help",
     "manageRoleDialog": {
-      "title": "Edit agent permissions",
-      "description": "Create a custom role by setting a name and defining specific permissions. This role can then be assigned to users as needed.",
+      "title": "Manage role for",
+      "description": "Edit role for a single agent",
       "predefinedRoles": "Predefined roles",
-      "updatePermissions": "Update permissions",
+      "save": "Save",
+      "cancel": "Cancel",
+      "resendTheOtp": "Resend the OTP",
       "editAgent": "Edit agent",
-      "allPermissionsGroup": "All permissions group"
+      "allPermissionsGroup": "All permissions group",
+      "show": "Show",
+      "default": "Default",
+      "loading": "Loading"
     }
   },
   "agent": {
