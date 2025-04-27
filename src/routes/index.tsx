@@ -1,18 +1,19 @@
-import { lazy, Suspense } from "react";
-import { createBrowserRouter } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
 import Layout from "@/components/Layout";
-import Login from "@/pages/login/Login";
-import Transactions from "@/pages/Transactions";
-import Wallets from "@/pages/Wallets";
-import Reports from "@/pages/Reports";
-import Settings from "@/pages/settings";
-import ValidateTwoFactor from "@/pages/login/ValidateLogin";
-import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
-import { LoginRedirect } from "./LoginRedirect";
-import { TwoFactorRedirect } from "./TwoFactorRedirect";
 import LoadingFallback from "@/components/LoadingFallback";
 import ErrorPage from "@/pages/ErrorPage";
+import Login from "@/pages/login/Login";
+import SetPasswordPage from "@/pages/login/SetPassword";
+import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
+import ValidateTwoFactor from "@/pages/login/ValidateLogin";
+import Reports from "@/pages/Reports";
+import Settings from "@/pages/settings";
+import Transactions from "@/pages/Transactions";
+import Wallets from "@/pages/Wallets";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import { LoginRedirect } from "./LoginRedirect";
+import ProtectedRoute from "./ProtectedRoute";
+import { TwoFactorRedirect } from "./TwoFactorRedirect";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Users = lazy(() => import("@/pages/users/index"));
@@ -130,6 +131,10 @@ const router = createBrowserRouter([
         <SetupTwoFactor />
       </TwoFactorRedirect>
     ),
+  },
+  {
+    path: "/set-password",
+    element: <SetPasswordPage />,
   },
 ]);
 

@@ -4,24 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLogin } from "@/features/auth/hooks";
+import { loginSchema } from "@/features/auth/schemas";
 import { useState } from "react";
-import { z } from "zod";
 
-const loginSchema = z.object({
-  email: z.string().min(1, "Email is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-export default function LoginPage() {
+export default function SetPasswordPage() {
   const login = useLogin();
   const [formData, setFormData] = useState({
-    email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<{
-    email?: string;
     password?: string;
+    confirmPassword?: string;
   }>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,14 +33,10 @@ export default function LoginPage() {
     if (!parsed.success) {
       const fieldErrors = parsed.error.formErrors.fieldErrors;
       setErrors({
-        email: fieldErrors.email?.[0],
-        password: fieldErrors.password?.[0],
+        password: fieldErrors.email?.[0],
+        confirmPassword: fieldErrors.password?.[0],
       });
-      return;
     }
-
-    setErrors({});
-    login.mutate(parsed.data);
   };
 
   return (
@@ -60,31 +51,15 @@ export default function LoginPage() {
         <div className="flex justify-center flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
-              Login
+              Set password
             </span>
             <span className="text-base text-text-primary-default">
-              Please enter your email and password to access your account!
+              To access your account, please create a password.
             </span>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-white">
-                Email
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="text"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password" className="text-white">
                 Password
               </Label>
               <Input
@@ -98,8 +73,25 @@ export default function LoginPage() {
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
             </div>
-            <div className="flex justify-between">
-              <Button variant="link">Forgot yout password?</Button>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password" className="text-white">
+                Repeat password
+              </Label>
+              <Input
+                id="confirm-password"
+                name="confirm-password"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+            <div className="flex">
               <Button
                 variant="default"
                 disabled={login.isPending}

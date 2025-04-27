@@ -1,4 +1,4 @@
-import SidebarLogo from "@/assets/icons/sidebarLogo.svg";
+import SidebarLogo from "@/assets/images/logos/sidebarLogo.svg";
 import {
   Sidebar,
   SidebarContent,
