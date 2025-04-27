@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import { clearCookie, getCookieValue, setCookieValue } from "@/lib/cookies";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
@@ -40,10 +40,14 @@ api.interceptors.response.use(
       __isRetry?: boolean;
     };
 
-    const isAuthRoute = originalRequest?.url?.includes("/auth");
+    const isAuthRoute =
+      originalRequest?.url?.includes("/auth") &&
+      !originalRequest?.url?.includes("/auth/logout");
     const isUnauthorized = error.response?.status === 401;
 
-    if (isAuthRoute) return Promise.reject(error);
+    if (isAuthRoute) {
+      return Promise.reject(error);
+    }
 
     if (isUnauthorized && !originalRequest.__isRetry) {
       originalRequest.__isRetry = true;

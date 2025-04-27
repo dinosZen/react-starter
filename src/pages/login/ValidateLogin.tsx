@@ -1,50 +1,92 @@
-import { Input } from "@/components/ui/input";
+import cambixBackgorund from "@/assets/images/backgrounds/cambixLogin.svg";
+import cambixLogo from "@/assets/images/logos/loginLogo.svg";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from "@/components/ui/form";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { useValidate } from "@/features/auth/hooks";
+import { twoFacotorCodeSchema } from "@/features/auth/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 export default function ValidateTwoFactor() {
   const validate = useValidate();
+  const form = useForm<z.infer<typeof twoFacotorCodeSchema>>({
+    resolver: zodResolver(twoFacotorCodeSchema),
+    defaultValues: {
+      code: "",
+    },
+  });
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  function onSubmit(data: z.infer<typeof twoFacotorCodeSchema>) {
+    validate.mutate(data)
+  }
 
-    const form = new FormData(event.target as HTMLFormElement);
-    const code = form.get("code") as string;
-
-    validate.mutate({ code });
-  };
   return (
-    <div className="flex items-center justify-center min-h-screen bg-neutral-900 p-4">
-      <Card className="w-full max-w-md bg-neutral-800 text-white">
-        <CardHeader>
-          <CardTitle className="text-xl">Two-Factor Authentication</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <p className="text-neutral-400 text-sm">
-            Enter the verification code from your authenticator app.
-          </p>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4">
-              <Label className="text-white">Enter Code</Label>
-              <Input
+    <div className="flex min-h-full justify-center bg-background-secondary-default py-20 px-10 gap-10">
+      <div className="flex flex-col justify-between min-w-[450px]">
+        <div className="flex items-center gap-2">
+          <img src={cambixLogo} alt="Cambix" />
+          <span className="text-lg font-semibold text-text-primary-default">
+            Cambix
+          </span>
+        </div>
+        <div className="flex justify-center flex-col gap-10 flex-1">
+          <div className="flex flex-col gap-4">
+            <span className="text-3xl font-bold text-text-primary-default">
+              Two-Factor Authentication
+            </span>
+            <span className="text-base text-text-primary-default">
+              Enter the code provided by your app:
+            </span>
+          </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-2/3 space-y-6"
+            >
+              <FormField
+                control={form.control}
                 name="code"
-                placeholder="Enter 2FA code"
-                className="bg-neutral-700 border-none text-white"
-                required
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputOTP maxLength={6} {...field}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <Button
-                type="submit"
-                disabled={validate.isPending}
-                className="bg-neutral-600 hover:bg-neutral-500"
-              >
-                {validate.isPending ? "Verifying..." : "Verify"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+
+              <Button type="submit">Verify</Button>
+            </form>
+          </Form>
+        </div>
+      </div>
+      <img
+        src={cambixBackgorund}
+        alt="Cambix"
+        className="object-contain max-w-full"
+      />
     </div>
   );
 }
