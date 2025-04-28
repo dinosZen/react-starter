@@ -8,6 +8,12 @@ import {
 } from "@/components/ui/select";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 export function PaginationSkeleton() {
   return (
@@ -38,23 +44,35 @@ export function PaginationSkeleton() {
         {/* Pagination buttons */}
         <div className="flex items-center space-x-2">
           {/* First page */}
-          <Button variant="outline" className="hidden h-8 w-8 p-0 lg:flex">
-            <Skeleton className="h-full w-full bg-background-primary-default" />
+          <Button
+            variant="outline"
+            className="hidden h-8 w-8 p-0 lg:flex"
+            disabled
+          >
+            <span className="sr-only">Go to first page</span>
+            <ChevronsLeft />
           </Button>
 
           {/* Previous page */}
-          <Button variant="outline" className="h-8 w-8 p-0">
-            <Skeleton className="h-full w-full bg-background-primary-default" />
+          <Button variant="outline" className="h-8 w-8 p-0" disabled>
+            <span className="sr-only">Go to previous page</span>
+            <ChevronLeft />
           </Button>
 
           {/* Next page */}
-          <Button variant="outline" className="h-8 w-8 p-0">
-            <Skeleton className="h-full w-full bg-background-primary-default" />
+          <Button variant="outline" className="h-8 w-8 p-0" disabled>
+            <span className="sr-only">Go to next page</span>
+            <ChevronRight />
           </Button>
 
           {/* Last page */}
-          <Button variant="outline" className="hidden h-8 w-8 p-0 lg:flex">
-            <Skeleton className="h-full w-full bg-background-primary-default" />
+          <Button
+            variant="outline"
+            className="hidden h-8 w-8 p-0 lg:flex"
+            disabled
+          >
+            <span className="sr-only">Go to last page</span>
+            <ChevronsRight />
           </Button>
         </div>
       </div>

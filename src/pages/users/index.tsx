@@ -3,9 +3,8 @@ import { FileDown, Funnel, Search } from "lucide-react";
 import { DataTable } from "./components/DataTable";
 import { useTranslation } from "react-i18next";
 import { useUsersColumns } from "./table-columns/UsersColumns";
-import { queryClient } from "@/lib/react-query";
 import { useSearchParams } from "react-router-dom";
-import { useAgents, AgentsQueryParams } from "./api/getUsers";
+import { AgentsQueryParams } from "./api/getUsers";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,14 +34,6 @@ function Settings() {
     order: (searchParams.get("order") as "ASC" | "DESC") ?? "DESC",
   };
 
-  //   const {
-  //     data: listOfAgents,
-  //     isLoading: isLoadingAgents,
-  //     isFetching,
-  //   } = useAgents();
-
-  // const isLoading = isLoadingAgents || isFetching;
-
   const updateParams = (updates: Partial<AgentsQueryParams>) => {
     const next = new URLSearchParams(searchParams);
     Object.entries(updates).forEach(([k, v]) => {
@@ -65,9 +56,6 @@ function Settings() {
 
   const handlePaginationChange = (newPage: number, newSize: number) => {
     updateParams({ page: newPage, size: newSize });
-  };
-  const handleSearch = (q: string) => {
-    updateParams({ search: q });
   };
 
   const totalPages = 1;
