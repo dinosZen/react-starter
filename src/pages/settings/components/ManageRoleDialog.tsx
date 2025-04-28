@@ -19,19 +19,17 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { usePermissionsGrouped, useRoles } from "@/features/settings/hooks";
 import { EditAgentDialogProps, Role } from "@/features/settings/types";
-import { Check, Pencil } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
+export function ManageRoleDialog({
+  agent,
+  isOpen,
+  onClose,
+}: Readonly<EditAgentDialogProps>) {
   const { t } = useTranslation();
   const [enabledPermissions, setEnabledPermissions] = useState<
     Record<string, boolean>
@@ -54,24 +52,13 @@ export function ManageRoleDialog({ agent }: Readonly<EditAgentDialogProps>) {
   console.log("Selected agent", agent);
 
   return (
-    <Dialog>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="px-4 hover:bg-background-primary-default transition duration-300 ease-in-out"
-              >
-                <Pencil className="h-7 w-10" />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent className="bg-background-primary-default text-text-primary-default">
-            <p>{t("settings.manageRoleDialog.editAgent")}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
+      <DialogTrigger asChild></DialogTrigger>
       <DialogContent className="sm:max-w-4xl gap-8">
         <DialogHeader className="max-w-1/2">
           <DialogTitle>{`${t("settings.manageRoleDialog.title")} ${

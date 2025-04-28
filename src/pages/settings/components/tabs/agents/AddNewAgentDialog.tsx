@@ -34,7 +34,7 @@ import * as z from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { agentRoleOptions } from "@/lib/constants";
-import { addNewAgent } from "@/pages/settings/api/agent/addNewAgent";
+import { addNewAgent } from "@/features/settings/api";
 import axios from "axios";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

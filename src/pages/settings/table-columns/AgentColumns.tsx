@@ -1,12 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Agent } from "@/types/agent";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  MoreVertical,
+  Pencil,
+  PowerOff,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
-import { ManageRoleDialog } from "../components/ManageRoleDialog";
+import { Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
+type GetAgentsColumnsProps = {
+  onDeleteClick: (agent: Agent) => void;
+  onManageRoleClick: (agent: Agent) => void;
+};
+
+export const useAgentColumns = ({
+  onDeleteClick,
+  onManageRoleClick,
+}: GetAgentsColumnsProps): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
 
   return () => [
@@ -131,13 +151,7 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
           case "active":
             statusClass = "bg-green-700 text-green-300";
             break;
-          case "suspended":
-            statusClass = "bg-orange-700 text-orange-300";
-            break;
-          case "revoked":
-            statusClass = "bg-red-700 text-red-300";
-            break;
-          case "expired":
+          case "inactive":
             statusClass = "bg-gray-700 text-gray-300";
             break;
           default:
@@ -154,16 +168,46 @@ export const useAgentColumns = (): (() => ColumnDef<Agent>[]) => {
       },
     },
     {
-      accessorKey: "actions",
+      id: "actions",
       header: "",
+      size: 50,
       cell: ({ row }) => {
         const agent = row.original;
-
         return (
-          <div className="flex justify-end space-x-3 mr-2">
-            <ManageRoleDialog agent={agent} />
-            <DeleteAgentDialog agent={agent} />
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex ml-auto !p-[1rem] data-[state=open]:!bg-background-secondary-default"
+              >
+                <span className="sr-only">Open menu</span>
+                <MoreVertical className="h-8 w-8" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-background-primary-default w-[200px] border border-border-secondary-default rounded-md shadow-lg"
+            >
+              <DropdownMenuItem
+                onClick={() => onManageRoleClick(agent)}
+                className="cursor-pointer hover:bg-background-secondary-default"
+              >
+                <Pencil className="h-7 w-10" /> Edit agent role
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onDeleteClick(agent)}
+                className="cursor-pointer hover:bg-background-secondary-default"
+              >
+                <Trash2 /> Delete agent
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                //onClick={() => onDeleteClick(agent)}
+                className="cursor-pointer hover:bg-background-secondary-default"
+              >
+                <PowerOff /> Deactivate
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         );
       },
     },

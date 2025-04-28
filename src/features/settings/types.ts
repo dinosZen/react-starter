@@ -20,8 +20,16 @@ export interface Agent {
   page?: number;
 }
 
+export interface DeleteAgentDialogProps {
+  readonly agent: Agent;
+  readonly isOpen: boolean;
+  onClose: () => void;
+}
+
 export interface EditAgentDialogProps {
   readonly agent: Agent;
+  readonly isOpen: boolean;
+  onClose: () => void;
 }
 
 export interface AgentsQueryParams {
