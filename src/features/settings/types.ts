@@ -24,6 +24,14 @@ export interface EditAgentDialogProps {
   readonly agent: Agent;
 }
 
+export interface AgentsQueryParams {
+  page: number;
+  size: number;
+  search?: string;
+  orderBy?: string;
+  order?: "ASC" | "DESC";
+}
+
 export interface Role {
   code: string;
   createdAt: string;
