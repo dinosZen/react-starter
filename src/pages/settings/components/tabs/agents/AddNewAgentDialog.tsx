@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import * as z from "zod";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -94,7 +94,9 @@ export function AgentDialog() {
   const { mutate, status } = useMutation({
     mutationFn: addNewAgent,
     onSuccess: () => {
-      toast.success(t("agent.createdSuccessfully"));
+      toast.success(t("success"), {
+        description: t("agent.createdSuccessfully"),
+      });
       // reset form fields
       reset();
       // refetch agents
