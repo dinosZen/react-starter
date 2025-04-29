@@ -3,18 +3,7 @@ export interface Agent {
   firstName: string;
   lastName: string;
   email: string;
-  role?: {
-    label: string;
-    value: number;
-    code: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    id: number;
-    isActive: boolean;
-    permissions: string[];
-    title: string;
-  };
+  role?: Role;
   status?: string;
   permissions?: string[];
   page?: number;
@@ -57,7 +46,7 @@ export interface GroupPermissions {
   deletedAt: string | null;
   id: number;
   isActive: boolean;
-  permissions: Permission[];
+  permissions: PermissionPerAgent[];
   title: string;
   updatedAt: string;
 }
@@ -70,4 +59,16 @@ export interface Permission {
   isActive: boolean;
   title: string;
   updatedAt: string;
+}
+
+export interface PermissionPerAgent {
+  code: string;
+  createdAt: string;
+  deletedAt: string | null;
+  id: number;
+  isActive: boolean;
+  title: string;
+  updatedAt: string;
+  default: boolean;
+  selected: boolean;
 }

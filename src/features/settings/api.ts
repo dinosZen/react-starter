@@ -7,8 +7,28 @@ export async function fetchRoles(): Promise<Role[]> {
   return response.data.data;
 }
 
-export async function fetchPermissionsGrouped(): Promise<GroupPermissions[]> {
-  const response = await api.get("/permissions/grouped");
+export async function fetchPermissionsGrouped(
+  agentId: number,
+  roleId: number | undefined
+): Promise<GroupPermissions[]> {
+  const response = await api.get(
+    `/permissions/grouped/${agentId}?roleId=${roleId}`
+  );
+  return response.data.data;
+}
+
+export async function assignRoleAndPermissions(params: {
+  agentId: number;
+  roleId: number;
+  permissionsIds: number[];
+}) {
+  const response = await api.patch(
+    `/agents/assignRoleAndPermissions/${params.agentId}`,
+    {
+      roleId: params.roleId,
+      permissionsIds: params.permissionsIds,
+    }
+  );
   return response.data.data;
 }
 //Get all agents
