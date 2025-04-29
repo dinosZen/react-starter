@@ -63,7 +63,7 @@ export function ManageRoleDialog({
     usePermissionsGrouped(
       agent.id,
       selectedRole?.id,
-      isOpen && agent.role?.id ? true : false
+      isOpen && selectedRole?.id ? true : false
     );
   const assignRoleAndPermissions = useAssignRoleAndPermissions();
 
@@ -139,6 +139,7 @@ export function ManageRoleDialog({
     queryClient.invalidateQueries({
       queryKey: ['permissionsGrouped', agent.id, selectedRole!.id],
     });
+    onClose();
   };
 
   return (
