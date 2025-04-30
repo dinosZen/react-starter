@@ -336,3 +336,12 @@ input:-webkit-autofill:focus {
     @apply bg-background-primary-default text-text-primary-default;
   }
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}

@@ -1,3 +1,5 @@
+import { Permission } from "@/features/settings/types";
+
 export interface Agent {
   id: number;
   firstName: string;
@@ -12,7 +14,7 @@ export interface Agent {
     deletedAt: string | null;
     id: number;
     isActive: boolean;
-    permissions: string[];
+    permissions: Permission[];
     title: string;
   };
   status?: string;
