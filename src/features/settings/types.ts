@@ -26,6 +26,12 @@ export interface DeleteAgentDialogProps {
   onClose: () => void;
 }
 
+export interface AgentStatusDialogProps {
+  readonly agent: Agent;
+  readonly isOpen: boolean;
+  onClose: () => void;
+}
+
 export interface EditAgentDialogProps {
   readonly agent: Agent;
   readonly isOpen: boolean;
@@ -38,6 +44,10 @@ export interface AgentsQueryParams {
   search?: string;
   orderBy?: string;
   order?: "ASC" | "DESC";
+  /** NEW */
+  roles?: string[]; // e.g. ["ADMIN","EDITOR"]
+  perms?: string[]; // e.g. ["0-4","10+"]
+  statuses?: string[]; // e.g. ["active"]
 }
 
 export interface Role {

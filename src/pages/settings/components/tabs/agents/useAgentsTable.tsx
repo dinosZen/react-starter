@@ -9,12 +9,18 @@ export function useAgentsTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const getNum = (k: string, f: number) => Number(searchParams.get(k) ?? f);
 
+  const parseCsv = (k: string) =>
+    searchParams.getAll(k)?.filter(Boolean) as string[];
+
   const params: AgentsQueryParams = {
     page: getNum("page", 1),
     size: getNum("size", 10),
     search: searchParams.get("search") ?? "",
     orderBy: searchParams.get("orderBy") ?? "",
     order: (searchParams.get("order") as "ASC" | "DESC") ?? "DESC",
+    roles: parseCsv("roles"),
+    //perms: parseCsv("perms"),
+    statuses: parseCsv("statuses"),
   };
 
   const [rawSearch, setRawSearch] = useState(params.search);
@@ -40,6 +46,35 @@ export function useAgentsTable() {
   const { data, isLoading, isFetching } = useAgents(params);
   const isLoadingAgents = isLoading || isFetching;
 
+  function updateFilters(
+    updates: Partial<Pick<AgentsQueryParams, "roles" | "perms" | "statuses">>
+  ) {
+    const next = new URLSearchParams(searchParams);
+    (["roles", "perms", "statuses"] as const).forEach((k) => {
+      if (updates[k]) {
+        // delete old values first
+        next.delete(k);
+        // add every array element as ?roles=foo&roles=bar
+        updates[k]!.forEach((v) => next.append(k, v));
+      }
+    });
+    // moving filters resets pagination
+    next.set("page", "1");
+    setSearchParams(next, { replace: true });
+  }
+  const resetAll = () => {
+    setRawSearch("");
+    setSorting([]);
+
+    updateFilters({ roles: [], perms: [], statuses: [] });
+    updateParams({
+      search: undefined,
+      orderBy: undefined,
+      order: undefined,
+      page: 1,
+    });
+  };
+
   function updateParams(updates: Partial<AgentsQueryParams>) {
     const next = new URLSearchParams(searchParams);
     Object.entries(updates).forEach(([k, v]) => {
@@ -61,6 +96,7 @@ export function useAgentsTable() {
     const { id, desc } = next[0];
     updateParams({ orderBy: id, order: desc ? "DESC" : "ASC" });
   };
+
   const onPageChange = (newPage: number, newSize: number) =>
     updateParams({ page: newPage, size: newSize });
 
@@ -73,5 +109,12 @@ export function useAgentsTable() {
     setRawSearch,
     onSortChange,
     onPageChange,
+    updateFilters,
+    currentFilters: {
+      roles: params.roles,
+      //perms: params.perms,
+      statuses: params.statuses,
+    },
+    resetAll,
   };
 }

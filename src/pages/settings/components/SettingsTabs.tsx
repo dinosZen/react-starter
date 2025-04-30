@@ -34,7 +34,7 @@ export const SettingsTabs = ({
         <TabsContent value="agents">
           <AgentsTab />
         </TabsContent>
-        <TabsContent value="roles">Roles...</TabsContent>
+        <TabsContent value="roles">Rolesssss</TabsContent>
         <TabsContent value="notifications">Notifications...</TabsContent>
         <TabsContent value="support & Help">Support & Help...</TabsContent>
       </div>

@@ -1,23 +1,23 @@
 export const agentRoleOptions = [
   {
     label: "AML officer",
-    value: 20,
+    value: "20",
   },
   {
     label: "Compliance officer",
-    value: 21,
+    value: "21",
   },
   {
     label: "Support team leader",
-    value: 22,
+    value: "22",
   },
   {
     label: "Support staff member",
-    value: 23,
+    value: "23",
   },
   {
     label: "Limited support staff",
-    value: 24,
+    value: "24",
   },
 ];
 

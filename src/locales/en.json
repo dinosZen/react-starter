@@ -56,6 +56,8 @@
     "expired": "Expired",
     "edit": "Edit",
     "delete": "Delete",
+    "filters": "Filters",
+    "clearFilters": "Clear all",
     "confirmDelete": "Please confirm the deletion.",
     "firstNameRequiredField": "This field is required",
     "lastNameRequiredField": "This field is required",
