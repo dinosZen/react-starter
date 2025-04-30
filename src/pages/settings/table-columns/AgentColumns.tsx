@@ -21,11 +21,13 @@ import {
 type GetAgentsColumnsProps = {
   onDeleteClick: (agent: Agent) => void;
   onManageRoleClick: (agent: Agent) => void;
+  onStatusClick: (agent: Agent) => void;
 };
 
 export const useAgentColumns = ({
   onDeleteClick,
   onManageRoleClick,
+  onStatusClick,
 }: GetAgentsColumnsProps): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
 
@@ -175,13 +177,13 @@ export const useAgentColumns = ({
         const agent = row.original;
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="py-0 px-[1rem] h-7.5">
               <Button
                 variant="outline"
-                className="flex ml-auto !p-[1rem] data-[state=open]:!bg-background-secondary-default"
+                className="flex ml-auto data-[state=open]:!bg-background-secondary-default data-[state=open]:border-border-primary-hover hover:border-border-primary-hover"
               >
                 <span className="sr-only">Open menu</span>
-                <MoreVertical className="h-8 w-8" />
+                <MoreVertical className="h-7 w-7" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -201,7 +203,7 @@ export const useAgentColumns = ({
                 <Trash2 /> Delete agent
               </DropdownMenuItem>
               <DropdownMenuItem
-                //onClick={() => onDeleteClick(agent)}
+                onClick={() => onStatusClick(agent)}
                 className="cursor-pointer hover:bg-background-secondary-default"
               >
                 <PowerOff /> Deactivate

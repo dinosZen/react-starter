@@ -1,4 +1,3 @@
-// components/ui/toast.tsx
 import { toast as sonnerToast } from "sonner";
 import React from "react";
 
@@ -48,7 +47,7 @@ function ToastCard({ id, variant, title, description, icon }: ToastCardProps) {
 
   return (
     <div
-      className={`flex w-full max-w-[364px] items-start gap-3 rounded-md p-4 shadow-lg ring-1 ring-black/5 border-1 ${v.border} ${v.bg}`}
+      className={`flex min-w-[350px] items-start gap-3 rounded-md p-4 shadow-lg ring-1 ring-black/5 border-1 ${v.border} ${v.bg}`}
     >
       {icon === null ? null : icon ?? v.icon}
       <div className="flex-1">
