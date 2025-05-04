@@ -1,16 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { DataTable } from "../../shared/DataTable";
-import { AgentDialog } from "./AddNewAgentDialog";
+import { AgentDialog } from "./components/AddNewAgentDialog";
 import SearchBar from "../../shared/SearchBar";
-import FiltersDropdown from "./FiltersDropdown";
+import FiltersDropdown from "./components/FiltersDropdown";
 import { useAgentsTable } from "./useAgentsTable";
 import { useAgentColumns } from "../../../table-columns/AgentColumns";
 import { useMemo, useState } from "react";
-import { DeleteAgentDialog } from "./DeleteAgentDialog";
+import { DeleteAgentDialog } from "./components/DeleteAgentDialog";
 import { ManageRoleDialog } from "../../ManageRoleDialog";
 import { Agent } from "@/features/settings/types";
 import { Button } from "@/components/ui/button";
-import { AgentStatusDialog } from "./AgentStatusDialog";
+import { AgentStatusDialog } from "./components/AgentStatusDialog";
 
 export function AgentsTab() {
   const {

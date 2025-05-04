@@ -7,7 +7,7 @@ import {
   PopoverClose,
 } from "@/components/ui/popover";
 import { Funnel } from "lucide-react";
-import { FilterSection } from "../../shared/FilterSection";
+import { FilterSection } from "../../../shared/FilterSection";
 import { agentRoleOptions } from "@/lib/constants.ts";
 import { useTranslation } from "react-i18next";
 
