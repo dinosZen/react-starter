@@ -45,12 +45,12 @@ export function AgentDialog() {
   const [isOpen, setIsOpen] = useState(false);
 
   const formSchema = z.object({
-    firstName: z.string().min(1, t("agent.firstNameRequiredField")),
-    lastName: z.string().min(1, t("agent.lastNameRequiredField")),
+    firstName: z.string().min(1, t("agent.first-name-required-field")),
+    lastName: z.string().min(1, t("agent.last-name-required-field")),
     email: z
       .string()
-      .min(1, t("agent.emailRequiredField"))
-      .email(t("agent.invalidEmail")),
+      .min(1, t("agent.email-required-field"))
+      .email(t("agent.invalid-email")),
     roleId: z.number().optional(),
   });
 
@@ -80,7 +80,7 @@ export function AgentDialog() {
       return t(`agent.${field}RequiredField`);
     }
     const map: Record<string, string> = {
-      "must be an email": `agent.invalidEmail`,
+      "must be an email": `agent.invalid-email`,
     };
     for (const [pattern, key] of Object.entries(map)) {
       if (raw.includes(pattern)) {
@@ -88,14 +88,14 @@ export function AgentDialog() {
       }
     }
     // Fallback error message
-    return t("agent.unknownError");
+    return t("unknown-error");
   };
 
   const { mutate, status } = useMutation({
     mutationFn: addNewAgent,
     onSuccess: () => {
       toast.success(t("success"), {
-        description: t("agent.createdSuccessfully"),
+        description: t("agent.created-successfully"),
       });
       // reset form fields
       reset();
@@ -111,7 +111,7 @@ export function AgentDialog() {
         if (resp?.status === 409 && resp.data?.message === "email") {
           setError("email", {
             type: "server",
-            message: t("agent.emailAlreadyExists") || "Email already exists",
+            message: t("agent.email-already-exists") || "Email already exists",
           });
           return;
         }
@@ -134,7 +134,7 @@ export function AgentDialog() {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error(t("agent.unknownError"));
+        toast.error(t("unknown-error"));
       }
     },
   });
@@ -159,7 +159,7 @@ export function AgentDialog() {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-text-primary-default">
-            {t("agent.addNewAgent")}
+            {t("agent.add-new-agent")}
           </DialogTitle>
           <DialogDescription className="text-text-secondary-default">
             Invite a user by entering their email and assigning a role. They'll
@@ -178,10 +178,10 @@ export function AgentDialog() {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>{t("agent.enterFirstName")}</FormLabel>
+                    <FormLabel>{t("agent.enter-first-name")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("agent.firstNamePlaceholder")}
+                        placeholder={t("agent.first-name-placeholder")}
                         type=""
                         {...field}
                       />
@@ -190,16 +190,15 @@ export function AgentDialog() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={control}
                 name="lastName"
                 render={({ field }) => (
                   <FormItem className="">
-                    <FormLabel>{t("agent.enterLastName")}</FormLabel>
+                    <FormLabel>{t("agent.enter-last-name")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("agent.lastNamePlaceholder")}
+                        placeholder={t("agent.last-name-placeholder")}
                         type=""
                         {...field}
                       />
@@ -214,10 +213,10 @@ export function AgentDialog() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="">
-                    <FormLabel>{t("agent.agentEmail")}</FormLabel>
+                    <FormLabel>{t("agent.email-label")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("agent.placeholderEmail")}
+                        placeholder={t("agent.email-placeholder")}
                         type="email"
                         {...field}
                       />
@@ -238,7 +237,7 @@ export function AgentDialog() {
                     >
                       <FormControl>
                         <SelectTrigger className="w-full data-[placeholder]:text-foreground">
-                          <SelectValue placeholder={t("agent.selectRole")} />
+                          <SelectValue placeholder={t("agent.select-role")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -264,11 +263,11 @@ export function AgentDialog() {
                 >
                   {status === "pending" ? (
                     <span>
-                      {t("agent.sendingInvitation")}{" "}
+                      {t("agent.sending-invitation")}{" "}
                       <Loader className="inline animate-spin" />
                     </span>
                   ) : (
-                    t("agent.sendInvitation")
+                    t("agent.send-invitation")
                   )}
                 </Button>
               </DialogFooter>

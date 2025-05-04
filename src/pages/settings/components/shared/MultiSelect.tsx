@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-
+import { useTranslation } from "react-i18next";
 import {
   Popover,
   PopoverContent,
@@ -56,6 +56,7 @@ export const MultiSelect = React.forwardRef<
     },
     ref
   ) => {
+    const { t } = useTranslation();
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [internal, setInternal] = React.useState<string[]>(defaultValue);
     const selected = value ?? internal;
@@ -116,7 +117,7 @@ export const MultiSelect = React.forwardRef<
               </span>
             ) : (
               <span className="text-sm text-text-primary-default">
-                {selected.length} selected
+                {selected.length} {t("selected")}
               </span>
             )}
             <ChevronDown
@@ -134,13 +135,12 @@ export const MultiSelect = React.forwardRef<
         >
           <Command className="w-full">
             <CommandList className="w-full">
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty>{t("no-results")}</CommandEmpty>
               <CommandGroup className="w-full">
                 <CommandItem
                   key="all"
                   onMouseDown={(e) => {
                     e.preventDefault();
-                    console.log("toggle all");
                     toggleAll();
                   }}
                   className="cursor-pointer w-full"
@@ -152,7 +152,7 @@ export const MultiSelect = React.forwardRef<
                   >
                     <Checkbox checked={selected.length === options.length} />
                   </div>
-                  <span>Select All</span>
+                  <span>{t("select-all")}</span>
                 </CommandItem>
                 {options.map((option) => {
                   const isSelected = selected.includes(option.value);
@@ -186,7 +186,7 @@ export const MultiSelect = React.forwardRef<
                         onSelect={handleClear}
                         className="flex-1 justify-center cursor-pointer max-w-fit hover:bg-background-secondary-default"
                       >
-                        Clear
+                        {t("clear")}
                       </CommandItem>
                       <Separator
                         orientation="vertical"
@@ -198,7 +198,7 @@ export const MultiSelect = React.forwardRef<
                     onSelect={() => setIsPopoverOpen(false)}
                     className="flex-1 justify-center cursor-pointer max-w-fit hover:bg-background-secondary-default"
                   >
-                    Close
+                    {t("close")}
                   </CommandItem>
                 </div>
               </CommandGroup>

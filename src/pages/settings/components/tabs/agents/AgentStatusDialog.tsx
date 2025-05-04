@@ -27,7 +27,7 @@ export function AgentStatusDialog({
     mutationFn: deleteAgent,
     onSuccess: () => {
       toast.success(t("success"), {
-        description: t("agent.deletedSuccessfully"),
+        description: t("agent.status-successfully-updated"),
       });
       // refetch agents
       queryClient.invalidateQueries({ queryKey: ["agents"] });
@@ -40,7 +40,7 @@ export function AgentStatusDialog({
         toast.error(err.message);
       } else {
         toast.error(t("error"), {
-          description: t("agent.unknownError"),
+          description: t("unknown-error"),
         });
       }
     },
@@ -51,7 +51,7 @@ export function AgentStatusDialog({
       await deleteAgentMutation.mutateAsync(agent.id.toString());
     } else {
       toast.error(t("error"), {
-        description: t("agent.deleteError"),
+        description: t("agent.delete-error"),
       });
     }
   };
@@ -65,13 +65,14 @@ export function AgentStatusDialog({
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="pb-4">Deactivate agent</DialogTitle>
+          <DialogTitle className="pb-4">
+            {t("agent.agent-deactivate")}
+          </DialogTitle>
           <DialogDescription className="text-text-primary-default">
-            If you deactivate this agent, they will no longer have any
-            permissions nor they would be able to approach the system.
+            {t("agent.agent-deactivate-message-part1")}
             <br />
             <br />
-            Are you sure you want to deactivate the agent{" "}
+            {t("agent.agent-deactivate-message-part2")}{" "}
             <strong>
               {agent.firstName} {agent.lastName}
             </strong>
@@ -81,10 +82,10 @@ export function AgentStatusDialog({
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onClose()}>
-            Cancel
+            {t("cancel")}
           </Button>
           <Button variant="default" onClick={handleConfirmDelete}>
-            Deactivate
+            {t("agent.deactivate")}
           </Button>
         </DialogFooter>
       </DialogContent>
