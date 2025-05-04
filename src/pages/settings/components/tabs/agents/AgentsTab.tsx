@@ -83,7 +83,7 @@ export function AgentsTab() {
         <div className="flex items-center gap-4">
           <SearchBar
             value={rawSearch ?? ""}
-            placeholder={t("searchPlaceholder")}
+            placeholder={t("search-placeholder")}
             onChange={setRawSearch}
           />
           <FiltersDropdown
@@ -97,7 +97,7 @@ export function AgentsTab() {
             onClick={resetAll}
             disabled={!hasActiveFilters}
           >
-            {t("agent.clearFilters")}
+            {t("clear-filters")}
           </Button>
         </div>
         <AgentDialog />
@@ -122,7 +122,6 @@ export function AgentsTab() {
           onClose={handleCloseDialogs}
         />
       )}
-
       {agentToDelete && (
         <DeleteAgentDialog
           agent={agentToDelete}

@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="rounded-md border">
-        <ScrollArea className="lg:h-[60vh] 2xl:min-h-[67vh] rounded-md">
+        <ScrollArea className="lg:h-[60vh] 2xl:min-h-[65vh] rounded-md">
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-background-secondary-default text-text-secondary-default">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -120,10 +120,11 @@ export function DataTable<TData, TValue>({
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
+                      className="h-[6.05vh]"
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
-                          className="p-3"
+                          className="p-2.5"
                           key={cell.id}
                           style={{
                             minWidth: cell.column.columnDef.size,

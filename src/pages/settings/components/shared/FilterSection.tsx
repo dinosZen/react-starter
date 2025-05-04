@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { MultiSelect } from "./MultiSelect";
+import { useTranslation } from "react-i18next";
 
 type Option = { value: string; label: string };
 
@@ -17,15 +18,21 @@ export const FilterSection = ({
   values,
   onChange,
 }: FilterSectionProps) => {
+  const { t } = useTranslation();
+  const translatedLabel = t(label);
+  //   const translatedOptions = options.map((option) => ({
+  //     ...option,
+  //     label: t(option.label),
+  //   }));
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-sm font-medium">{translatedLabel}</span>
 
       <MultiSelect
         options={options}
         value={values}
         onValueChange={onChange}
-        placeholder={`Select ${label.toLowerCase()}`}
+        placeholder={`${t("select")} ${label.toLowerCase()}`}
         insideBadges={false}
       />
 

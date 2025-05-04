@@ -80,7 +80,7 @@ function Settings() {
             <Input
               id="search"
               type="search"
-              placeholder={t("searchPlaceholder")}
+              placeholder={t("search-placeholder")}
               className="w-full rounded-lg bg-background pl-8"
             />
           </div>

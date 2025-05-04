@@ -73,7 +73,7 @@ export const useAgentColumns = ({
             onClick={() => column.toggleSorting()}
             className="cursor-pointer text-left !p-0"
           >
-            {t("agent.email")}
+            {t("email")}
             {column.getIsSorted() === "asc" ? (
               <ArrowUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "desc" ? (
@@ -103,7 +103,7 @@ export const useAgentColumns = ({
             onClick={() => column.toggleSorting()}
             className="cursor-pointer text-left !p-0"
           >
-            {t("agent.role")}
+            {t("role")}
             {column.getIsSorted() === "asc" ? (
               <ArrowUp className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "desc" ? (

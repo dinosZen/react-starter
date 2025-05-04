@@ -9,7 +9,7 @@ import { Agent } from "@/types/agent";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
+//import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
 
 export const useRoleColumns = (): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export const useRoleColumns = (): (() => ColumnDef<Agent>[]) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             className="cursor-pointer text-left !p-0"
           >
-            {t("agent.role")}
+            {t("role")}
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
@@ -62,7 +62,7 @@ export const useRoleColumns = (): (() => ColumnDef<Agent>[]) => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <DeleteAgentDialog agent={agent} />
+            {/* <DeleteAgentDialog agent={agent} /> */}
           </div>
         );
       },

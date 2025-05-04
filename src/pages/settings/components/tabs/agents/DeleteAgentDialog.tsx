@@ -31,7 +31,7 @@ export function DeleteAgentDialog({
     mutationFn: deleteAgent,
     onSuccess: () => {
       toast.success(t("success"), {
-        description: t("agent.deletedSuccessfully"),
+        description: t("agent.deleted-successfully"),
       });
       // refetch agents
       queryClient.invalidateQueries({ queryKey: ["agents"] });
@@ -44,7 +44,7 @@ export function DeleteAgentDialog({
         toast.error(err.message);
       } else {
         toast.error(t("error"), {
-          description: t("agent.unknownError"),
+          description: t("unknown-error"),
         });
       }
     },
@@ -55,7 +55,7 @@ export function DeleteAgentDialog({
       await deleteAgentMutation.mutateAsync(agent.id.toString());
     } else {
       toast.error(t("error"), {
-        description: t("agent.deleteError"),
+        description: t("agent.delete-error"),
       });
     }
   };
@@ -69,12 +69,11 @@ export function DeleteAgentDialog({
     >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="pb-4">Delete agent</DialogTitle>
+          <DialogTitle className="pb-4">{t("agent.delete-agent")}</DialogTitle>
           <DialogDescription className="text-text-primary-default">
-            If you delete this agent, they will no longer have any permissions
-            nor they would be able to approach the system.
+            {t("agent.delete-agent-message-part1")}
             <br />
-            Are you sure you want to delete the agent{" "}
+            {t("agent.delete-agent-message-part2")}{" "}
             <strong>
               {agent.firstName} {agent.lastName}
             </strong>
@@ -92,7 +91,7 @@ export function DeleteAgentDialog({
               }
               if (!checked) {
                 toast.warning(t("warning"), {
-                  description: t("agent.confirmDelete"),
+                  description: t("agent.confirm-delete"),
                   icon: null,
                 });
               }
@@ -102,7 +101,8 @@ export function DeleteAgentDialog({
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-text-primary-default"
           >
-            I am sure I want to delete this agent
+            {t("agent.delete-agent-confirmation")}
+            <span className="text-red-500">*</span>
           </label>
         </div>
         <DialogFooter>

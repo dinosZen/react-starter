@@ -25,7 +25,7 @@ export default function FiltersDropdown({
   onApply,
   onReset,
 }: {
-  currentFilters: { roles?: string[]; perms?: string[]; statuses?: string[] };
+  currentFilters: { roles: string[]; perms?: string[]; statuses: string[] };
   onApply: (f: {
     roles: string[];
     //perms: string[];
@@ -66,14 +66,14 @@ export default function FiltersDropdown({
         className="data-[state=open]:!bg-background-secondary-default data-[state=open]:!border-border-primary-hover"
       >
         <Button variant="outline" className="gap-2">
-          <Funnel className="h-4 w-4" /> {t("agent.filters")} {filtersText}
+          <Funnel className="h-4 w-4" /> {t("filters")} {filtersText}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 space-y-6 p-4">
-        <p className="text-md mb-4">Filter by:</p>
+        <p className="text-md mb-4">{t("filter-by")}:</p>
 
         <FilterSection
-          label="Role"
+          label="role"
           options={agentRoleOptions}
           values={roles}
           onChange={setRoles}
@@ -87,7 +87,7 @@ export default function FiltersDropdown({
         /> */}
 
         <FilterSection
-          label="Status"
+          label="status"
           options={statusOptions}
           values={statuses}
           onChange={setStatuses}
@@ -95,10 +95,10 @@ export default function FiltersDropdown({
 
         <div className="flex items-center justify-end gap-2 pt-2">
           <Button variant="outline" onClick={reset}>
-            Reset
+            {t("reset")}
           </Button>
           <PopoverClose asChild>
-            <Button onClick={apply}>Apply</Button>
+            <Button onClick={apply}>{t("apply")}</Button>
           </PopoverClose>
         </div>
       </PopoverContent>
