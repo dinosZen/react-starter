@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SettingsTabs } from "./components/SettingsTabs";
-import { settingsTabs } from "@/lib/constants";
+import { settingsTabs } from "@/constants/settings";
 
 function Settings() {
   const [activeTab, setActiveTab] = useState("agents");

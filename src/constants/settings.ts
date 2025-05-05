@@ -1,26 +1,30 @@
 export const agentRoleOptions = [
   {
     label: "AML officer",
-    value: "20",
+    value: "2",
   },
   {
     label: "Compliance officer",
-    value: "21",
+    value: "3",
   },
   {
     label: "Support team leader",
-    value: "22",
+    value: "4",
   },
   {
     label: "Support staff member",
-    value: "23",
+    value: "5",
   },
   {
     label: "Limited support staff",
-    value: "24",
+    value: "6",
   },
 ];
-
+export const statusOptions = [
+  { value: "PENDING", label: "Pending" },
+  { value: "ACTIVE", label: "Active" },
+  { value: "INACTIVE", label: "Inactive" },
+];
 // User details mock data
 export const settingsTabs = [
   { id: "agents", label: "Agents" },
@@ -28,6 +32,7 @@ export const settingsTabs = [
   { id: "notifications", label: "Notifications" },
   { id: "support", label: "Support & Help" },
 ];
+
 export const agentTableMockData = [
   {
     id: 1,
@@ -162,6 +167,7 @@ export const agentTableMockData = [
     permissions: ["read", "create", "manage", "reject", "archive", "restore"],
   },
 ];
+
 export const usersTableMockData = [
   {
     id: 1,
