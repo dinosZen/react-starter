@@ -24,10 +24,11 @@ export function DeleteAgentDialog({
   const { t } = useTranslation();
 
   const [isDeletionConfirmed, setIsDeletionConfirmed] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const deleteAgentMutation = useMutation({
+    //how to get loading state when in progress
     mutationFn: deleteAgent,
     onSuccess: () => {
       toast.success(t("success"), {
@@ -40,6 +41,7 @@ export function DeleteAgentDialog({
     },
     onError: (err: unknown) => {
       console.error("Delete error", err);
+      setIsLoading(false);
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
@@ -52,10 +54,25 @@ export function DeleteAgentDialog({
 
   const handleConfirmDelete = async () => {
     if (agent.id !== undefined) {
+      setIsLoading(true);
       await deleteAgentMutation.mutateAsync(agent.id.toString());
     } else {
       toast.error(t("error"), {
         description: t("agent.delete-error"),
+      });
+    }
+  };
+
+  const handleCheckedChange = (checked: boolean | "indeterminate") => {
+    const confirmed = checked === true;
+    setIsDeletionConfirmed(confirmed);
+
+    if (confirmed) {
+      toast.dismiss();
+    } else {
+      toast.warning(t("warning"), {
+        description: t("agent.confirm-delete"),
+        icon: null,
       });
     }
   };
@@ -82,21 +99,7 @@ export function DeleteAgentDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2 py-4">
-          <Checkbox
-            id="terms"
-            onCheckedChange={(checked) => {
-              setIsDeletionConfirmed(!isDeletionConfirmed);
-              if (checked) {
-                toast.dismiss();
-              }
-              if (!checked) {
-                toast.warning(t("warning"), {
-                  description: t("agent.confirm-delete"),
-                  icon: null,
-                });
-              }
-            }}
-          />
+          <Checkbox id="terms" onCheckedChange={handleCheckedChange} />
           <label
             htmlFor="terms"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-text-primary-default"
@@ -112,7 +115,7 @@ export function DeleteAgentDialog({
           <Button
             variant="destructive"
             onClick={handleConfirmDelete}
-            disabled={!isDeletionConfirmed}
+            disabled={!isDeletionConfirmed || isLoading}
           >
             Delete
           </Button>
