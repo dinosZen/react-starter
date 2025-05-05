@@ -2,19 +2,10 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { DeleteAgentDialog } from "../components/DeleteAgentDialog";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { expect, test, vi } from "vitest";
-
-// Mock toast
-vi.mock("sonner", () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn(),
-    warning: vi.fn(),
-    dismiss: vi.fn(),
-  },
-}));
+import userEvent from "@testing-library/user-event";
 
 // Mock deleteAgent API
-vi.mock("@/lib/api/agent", () => ({
+vi.mock("@/features/settings/api", () => ({
   deleteAgent: vi.fn(() => Promise.resolve({})),
 }));
 
@@ -40,6 +31,8 @@ const renderDialog = (
   );
 };
 
+const user = userEvent.setup();
+
 test("renders agent name and disables delete by default", () => {
   renderDialog();
   expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
@@ -57,8 +50,10 @@ test("calls delete and closes on success", async () => {
   const onClose = vi.fn();
   renderDialog({ onClose });
 
-  fireEvent.click(screen.getByRole("checkbox")); // confirm delete
-  fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+  // Check the box
+  await user.click(screen.getByRole("checkbox"));
+  // Click the delete button
+  await user.click(screen.getByRole("button", { name: /delete/i }));
 
   await waitFor(() => {
     expect(onClose).toHaveBeenCalled();
@@ -66,18 +61,28 @@ test("calls delete and closes on success", async () => {
 });
 
 test("shows error toast when agent id is missing", async () => {
-  const { toast } = await import("sonner");
-  renderDialog({ agent: { firstName: "No", lastName: "ID" } });
+  const { toast: uiToast } = await import("@/components/ui/toast");
 
-  fireEvent.click(screen.getByRole("checkbox"));
-  fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+  renderDialog({
+    agent: {
+      // Simulate an agent with no ID
+      // This is a deliberate error to test the error handling
+      id: undefined,
+      email: "",
+      firstName: "No",
+      lastName: "ID",
+    },
+  });
 
-  await waitFor(() => {
-    expect(toast.error).toHaveBeenCalledWith(
+  await user.click(screen.getByRole("checkbox")); // confirm terms
+  await user.click(screen.getByRole("button", { name: /delete/i }));
+
+  await waitFor(() =>
+    expect(uiToast.error).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
         description: expect.stringMatching(/delete-error/i),
       })
-    );
-  });
+    )
+  );
 });
