@@ -24,6 +24,10 @@ export const statusOptions = [
   { value: "PENDING", label: "Pending" },
   { value: "ACTIVE", label: "Active" },
   { value: "INACTIVE", label: "Inactive" },
+  { value: "SUSPENDED", label: "Suspended" },
+  { value: "EXPIRED", label: "Expired" },
+  { value: "REVOKED", label: "Revoked" },
+  { value: "DELETED", label: "Deleted" },
 ];
 // User details mock data
 export const settingsTabs = [

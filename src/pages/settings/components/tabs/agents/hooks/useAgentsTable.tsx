@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { functionalUpdate } from "@tanstack/react-table";
 import { useAgents } from "@/features/settings/api";
 import { AgentsQueryParams } from "@/features/settings/types";
+import { SortingState, Updater } from "@tanstack/react-table";
 import useDebounce from "@/hooks/use-debounce";
 
 export function useAgentsTable() {
@@ -19,7 +20,6 @@ export function useAgentsTable() {
     orderBy: searchParams.get("orderBy") ?? "",
     order: (searchParams.get("order") as "ASC" | "DESC") ?? "DESC",
     roles: parseCsv("roles"),
-    //perms: parseCsv("perms"),
     statuses: parseCsv("statuses"),
   };
 
@@ -47,10 +47,10 @@ export function useAgentsTable() {
   const isLoadingAgents = isLoading || isFetching;
 
   function updateFilters(
-    updates: Partial<Pick<AgentsQueryParams, "roles" | "perms" | "statuses">>
+    updates: Partial<Pick<AgentsQueryParams, "roles" | "statuses">>
   ) {
     const next = new URLSearchParams(searchParams);
-    (["roles", "perms", "statuses"] as const).forEach((k) => {
+    (["roles", "statuses"] as const).forEach((k) => {
       if (updates[k]) {
         // delete old values first
         next.delete(k);
@@ -66,13 +66,13 @@ export function useAgentsTable() {
     setRawSearch("");
     setSorting([]);
 
-    updateFilters({ roles: [], perms: [], statuses: [] });
-    updateParams({
-      search: undefined,
-      orderBy: undefined,
-      order: undefined,
-      page: 1,
-    });
+    const next = new URLSearchParams();
+    // preserve size if it was explicitly in the URL:
+    const sizeParam = searchParams.get("size");
+    if (sizeParam) next.set("size", sizeParam);
+
+    next.set("page", "1");
+    setSearchParams(next, { replace: true });
   };
 
   function updateParams(updates: Partial<AgentsQueryParams>) {
@@ -88,7 +88,7 @@ export function useAgentsTable() {
     setSearchParams(next, { replace: true });
   }
 
-  const onSortChange = (updater) => {
+  const onSortChange = (updater: Updater<SortingState>): void => {
     const next = functionalUpdate(updater, sorting);
     setSorting(next);
     if (!next.length)
@@ -112,7 +112,6 @@ export function useAgentsTable() {
     updateFilters,
     currentFilters: {
       roles: params.roles,
-      //perms: params.perms,
       statuses: params.statuses,
     },
     resetAll,

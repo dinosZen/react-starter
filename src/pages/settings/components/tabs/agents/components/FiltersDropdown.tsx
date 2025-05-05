@@ -16,7 +16,7 @@ export default function FiltersDropdown({
   onApply,
   onReset,
 }: {
-  currentFilters: { roles: string[]; statuses: string[] };
+  currentFilters: { roles?: string[]; statuses?: string[] };
   onApply: (f: { roles: string[]; statuses: string[] }) => void;
   onReset: () => void;
 }) {
@@ -30,8 +30,8 @@ export default function FiltersDropdown({
     onReset();
   };
   useEffect(() => {
-    setRoles(currentFilters.roles);
-    setStatuses(currentFilters.statuses);
+    setRoles(currentFilters.roles || []);
+    setStatuses(currentFilters.statuses || []);
   }, [currentFilters]);
 
   const apply = () => {
