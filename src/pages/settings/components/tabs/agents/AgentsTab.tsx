@@ -8,7 +8,7 @@ import { useAgentColumns } from "../../../table-columns/AgentColumns";
 import { useMemo, useState } from "react";
 import { DeleteAgentDialog } from "./components/DeleteAgentDialog";
 import { ManageRoleDialog } from "../../ManageRoleDialog";
-import { Agent } from "@/features/settings/types";
+import { Agent, AgentsQueryParams } from "@/features/settings/types";
 import { Button } from "@/components/ui/button";
 import { AgentStatusDialog } from "./components/AgentStatusDialog";
 
@@ -36,11 +36,13 @@ export function AgentsTab() {
     null
   );
 
-  const handleApplyFilters = (f) => updateFilters(f);
+  const handleApplyFilters = (
+    f: Partial<Pick<AgentsQueryParams, "roles" | "statuses">>
+  ) => updateFilters(f);
+
   const handleResetFilters = () =>
     updateFilters({
       roles: [],
-      //perms: [],
       statuses: [],
     });
 

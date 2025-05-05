@@ -20,10 +20,7 @@ export const FilterSection = ({
 }: FilterSectionProps) => {
   const { t } = useTranslation();
   const translatedLabel = t(label);
-  //   const translatedOptions = options.map((option) => ({
-  //     ...option,
-  //     label: t(option.label),
-  //   }));
+
   return (
     <div className="flex flex-col gap-1">
       <span className="text-sm font-medium">{translatedLabel}</span>
