@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ProfileHeader } from "./components/ProfileHeader";
 import { ProfileTabs } from "./components/ProfileTabs";
 
-import { userProfileTabs, userProfileMockData } from "@/lib/constants";
+import { userProfileTabs, userProfileMockData } from "@/constants/settings";
 
 const UserDetails = () => {
   const [activeTab, setActiveTab] = useState("personal");

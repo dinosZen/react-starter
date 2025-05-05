@@ -8,45 +8,29 @@ import {
 } from "@/components/ui/popover";
 import { Funnel } from "lucide-react";
 import { FilterSection } from "../../../shared/FilterSection";
-import { agentRoleOptions } from "@/lib/constants.ts";
+import { agentRoleOptions, statusOptions } from "@/constants/settings";
 import { useTranslation } from "react-i18next";
-
-// const permOptions = [
-//   { value: "0-4", label: "0 – 4" },
-//   { value: "10+", label: "10+" },
-// ];
-const statusOptions = [
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
 
 export default function FiltersDropdown({
   currentFilters,
   onApply,
   onReset,
 }: {
-  currentFilters: { roles: string[]; perms?: string[]; statuses: string[] };
-  onApply: (f: {
-    roles: string[];
-    //perms: string[];
-    statuses: string[];
-  }) => void;
+  currentFilters: { roles: string[]; statuses: string[] };
+  onApply: (f: { roles: string[]; statuses: string[] }) => void;
   onReset: () => void;
 }) {
   const [roles, setRoles] = useState<string[]>([]);
-  //const [perms, setPerms] = useState<string[]>([]);
   const [statuses, setStatuses] = useState<string[]>([]);
   const { t } = useTranslation();
 
   const reset = () => {
     setRoles([]);
-    //setPerms([]);
     setStatuses([]);
     onReset();
   };
   useEffect(() => {
     setRoles(currentFilters.roles);
-    //setPerms(currentFilters.perms);
     setStatuses(currentFilters.statuses);
   }, [currentFilters]);
 
@@ -55,7 +39,6 @@ export default function FiltersDropdown({
     onApply({ roles, statuses });
   };
 
-  // const filtersLength = roles.length + perms.length + statuses.length;
   const filtersLength = roles.length + statuses.length;
   const filtersText = filtersLength ? `(${filtersLength})` : "";
 
@@ -78,13 +61,6 @@ export default function FiltersDropdown({
           values={roles}
           onChange={setRoles}
         />
-
-        {/* <FilterSection
-          label="Custom permissions"
-          options={permOptions}
-          values={perms}
-          onChange={setPerms}
-        /> */}
 
         <FilterSection
           label="status"

@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { usersTableMockData } from "@/lib/constants";
+import { usersTableMockData } from "@/constants/settings";
 
 function Settings() {
   const [searchParams, setSearchParams] = useSearchParams();
