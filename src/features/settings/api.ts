@@ -25,7 +25,7 @@ function buildFilters({
 }
 
 export async function fetchRoles(): Promise<Role[]> {
-  const response = await api.get("/roles");
+  const response = await api.post("/roles");
   return response.data.data;
 }
 
@@ -93,7 +93,7 @@ export function useAgents({
   });
 }
 
-//delete an agent
+//Delete an agent
 export const deleteAgent = async (agentId: string) => {
   const response = await api.delete(`/agents/${agentId}`);
   return response.data;

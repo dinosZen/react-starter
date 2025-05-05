@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -8,38 +8,68 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 import {
   useAssignRoleAndPermissions,
   usePermissionsGrouped,
   useRoles,
-} from '@/features/settings/hooks';
+} from "@/features/settings/hooks";
 import {
   EditAgentDialogProps,
   GroupPermissions,
+  Permission,
   PermissionPerAgent,
   Role,
-} from '@/features/settings/types';
-import { useQueryClient } from '@tanstack/react-query';
-import { Check, Pencil } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+} from "@/features/settings/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { Check, Pencil } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+const renderSkeletonRoleRows = (rowCount: number) => {
+  return (
+    <div className="flex flex-col gap-2">
+      {Array.from({ length: rowCount }).map((_, i) => (
+        <Skeleton
+          key={`skeleton-role-${i}-${crypto.randomUUID()}`}
+          className="w-full py-4.5 bg-background-secondary-hover"
+        />
+      ))}
+    </div>
+  );
+};
+
+const renderSkeletonPermissionRows = (rowCount: number) => {
+  return (
+    <div className="flex flex-col gap-2">
+      {Array.from({ length: rowCount }).map((_, i) => (
+        <Skeleton
+          key={`skeleton-permission-${i}-${crypto.randomUUID()}`}
+          className={`${
+            i % 7 === 0 ? "w-1/3 py-3" : "w-full py-4"
+          } bg-background-secondary-hover`}
+        />
+      ))}
+    </div>
+  );
+};
 
 export function ManageRoleDialog({
   agent,
@@ -63,7 +93,7 @@ export function ManageRoleDialog({
     usePermissionsGrouped(
       agent.id,
       selectedRole?.id,
-      isOpen && selectedRole?.id ? true : false
+      !!(isOpen && selectedRole?.id)
     );
   const assignRoleAndPermissions = useAssignRoleAndPermissions();
 
@@ -81,24 +111,24 @@ export function ManageRoleDialog({
 
   const defaultPermissionsGroups: Partial<GroupPermissions>[] = [
     {
-      code: 'all',
-      title: t('settings.manageRoleDialog.allPermissionsGroup'),
+      code: "all",
+      title: t("settings.manageRoleDialog.allPermissionsGroup"),
     },
     {
-      code: 'default',
-      title: t('settings.manageRoleDialog.default'),
+      code: "default",
+      title: t("settings.manageRoleDialog.default"),
       permissions: agent.role?.permissions.map((p) => ({
         ...p,
         default: true,
         selected: true,
-      }))!,
+      })),
     },
   ];
 
   const changePermissionsGroups = (value: string) => {
-    if (value === 'all' && permissionsGroups)
+    if (value === "all" && permissionsGroups)
       setPermissionsGroupsToShow([...permissionsGroups]);
-    else if (value === 'default') {
+    else if (value === "default") {
       setPermissionsGroupsToShow([
         defaultPermissionsGroups[1] as GroupPermissions,
       ]);
@@ -108,7 +138,7 @@ export function ManageRoleDialog({
       ]);
   };
 
-  const selectPermission = (permission: any) => {
+  const selectPermission = (permission: Permission) => {
     const isSelected = selectedPermissions.some(
       (p: PermissionPerAgent) => p.id === permission.id
     );
@@ -135,9 +165,9 @@ export function ManageRoleDialog({
         .filter((p: PermissionPerAgent) => p.selected && !p.default)
         .map((p: PermissionPerAgent) => p.id),
     });
-    queryClient.invalidateQueries({ queryKey: ['agents'] });
+    queryClient.invalidateQueries({ queryKey: ["agents"] });
     queryClient.invalidateQueries({
-      queryKey: ['permissionsGrouped', agent.id, selectedRole!.id],
+      queryKey: ["permissionsGrouped", agent.id, selectedRole!.id],
     });
     onClose();
   };
@@ -156,38 +186,38 @@ export function ManageRoleDialog({
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
               <Button
-                variant='outline'
-                className='px-4 hover:bg-background-primary-default transition duration-300 ease-in-out'
+                variant="outline"
+                className="px-4 hover:bg-background-primary-default transition duration-300 ease-in-out"
               >
-                <Pencil className='h-7 w-10' />
+                <Pencil className="h-7 w-10" />
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
-          <TooltipContent className='bg-background-primary-default text-text-primary-default'>
-            <p>{t('settings.manageRoleDialog.editAgent')}</p>
+          <TooltipContent className="bg-background-primary-default text-text-primary-default">
+            <p>{t("settings.manageRoleDialog.editAgent")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DialogContent className='sm:max-w-4xl gap-8'>
-        <DialogHeader className='max-w-1/2'>
-          <DialogTitle>{`${t('settings.manageRoleDialog.title')} ${
+      <DialogContent className="sm:max-w-4xl gap-8">
+        <DialogHeader className="max-w-1/2">
+          <DialogTitle>{`${t("settings.manageRoleDialog.title")} ${
             agent.firstName
           } ${agent.lastName}`}</DialogTitle>
           <DialogDescription>
-            {t('settings.manageRoleDialog.description')}
+            {t("settings.manageRoleDialog.description")}
           </DialogDescription>
         </DialogHeader>
-        <div className='flex justify-center gap-4'>
-          <div className='flex-1 flex  flex-col h-full gap-4'>
-            <div className='flex justify-between'>
-              <span className='text-base text-text-primary-default'>
-                {t('settings.manageRoleDialog.predefinedRoles')}
+        <div className="flex justify-center gap-4">
+          <div className="flex-1 flex  flex-col h-full gap-4">
+            <div className="flex justify-between">
+              <span className="text-base text-text-primary-default">
+                {t("settings.manageRoleDialog.predefinedRoles")}
               </span>
             </div>
             {isLoadingRoles ? (
-              t('settings.manageRoleDialog.loading')
+              renderSkeletonRoleRows(6)
             ) : (
-              <div className='flex flex-col gap-2 max-h-96 overflow-auto scrollbar-hide'>
+              <div className="flex flex-col gap-2 max-h-96 overflow-auto scrollbar-hide">
                 {roles?.map((role: Role) => (
                   <button
                     key={role.id}
@@ -195,8 +225,8 @@ export function ManageRoleDialog({
                     className={`flex items-center gap-4 px-4 py-1.5 rounded cursor-pointer select-none 
                     ${
                       selectedRole?.id === role.id
-                        ? 'bg-background-secondary-focus'
-                        : 'bg-background-secondary-default'
+                        ? "bg-background-secondary-focus"
+                        : "bg-background-secondary-default"
                     }`}
                   >
                     {selectedRole?.id === role.id && (
@@ -204,7 +234,7 @@ export function ManageRoleDialog({
                     )}
                     <Label
                       htmlFor={role.code}
-                      className='leading-6 cursor-pointer'
+                      className="leading-6 cursor-pointer"
                     >
                       {role.title}
                     </Label>
@@ -213,17 +243,17 @@ export function ManageRoleDialog({
               </div>
             )}
           </div>
-          <Separator orientation='vertical' />
-          <div className='flex-1 flex  flex-col h-full gap-4'>
-            <div className='flex justify-between items-center'>
-              <span className='text-base text-text-primary-default'>
-                {t('settings.manageRoleDialog.show')}
+          <Separator orientation="vertical" />
+          <div className="flex-1 flex  flex-col h-full gap-4">
+            <div className="flex justify-between items-center">
+              <span className="text-base text-text-primary-default">
+                {t("settings.manageRoleDialog.show")}
               </span>
               <Select
                 onValueChange={(value) => changePermissionsGroups(value)}
                 defaultValue={defaultPermissionsGroups[0].code}
               >
-                <SelectTrigger className='w-[200px] text-primary'>
+                <SelectTrigger className="w-[200px] text-primary">
                   <SelectValue
                     placeholder={defaultPermissionsGroups[0].title}
                   />
@@ -234,8 +264,8 @@ export function ManageRoleDialog({
                       {group.title}
                     </SelectItem>
                   ))}
-                  <Separator orientation='horizontal' />
-                  {permissionsGroups?.map((group: any) => (
+                  <Separator orientation="horizontal" />
+                  {permissionsGroups?.map((group: GroupPermissions) => (
                     <SelectItem key={group.code} value={group.code}>
                       {group.title}
                     </SelectItem>
@@ -243,32 +273,32 @@ export function ManageRoleDialog({
                 </SelectContent>
               </Select>
             </div>
-            <div className='flex flex-col justify-evenly gap-2 max-h-96 overflow-auto scrollbar-hide'>
+            <div className="flex flex-col justify-evenly gap-2 max-h-96 overflow-auto scrollbar-hide">
               {isLoadingPermissionsGroups ? (
-                t('settings.manageRoleDialog.loading')
+                renderSkeletonPermissionRows(12)
               ) : (
                 <>
-                  {permissionsGroupsToShow?.map((group: any) => (
+                  {permissionsGroupsToShow?.map((group: GroupPermissions) => (
                     <div key={group.code}>
-                      <span className='text-sm text-text-secondary-default'>
+                      <span className="text-sm text-text-secondary-default">
                         {group.title}
                       </span>
-                      <div className='flex flex-col justify-evenly gap-2 max-h-96'>
-                        {group.permissions.map((permission: any) => (
+                      <div className="flex flex-col justify-evenly gap-2 max-h-96">
+                        {group.permissions.map((permission: Permission) => (
                           <div
                             key={permission?.id}
                             className={`flex items-center justify-between bg-secondary px-4 py-1.5 rounded-md ${
                               permission?.default
-                                ? 'bg-background-secondary-hover opacity-50 cursor-not-allowed'
-                                : 'bg-background-secondary-default'
+                                ? "bg-background-secondary-hover opacity-50 cursor-not-allowed"
+                                : "bg-background-secondary-default"
                             }`}
                           >
                             <Label
                               htmlFor={permission?.code}
                               className={`leading-5 ${
                                 permission?.default
-                                  ? 'cursor-not-allowed'
-                                  : 'cursor-pointer'
+                                  ? "cursor-not-allowed"
+                                  : "cursor-pointer"
                               }`}
                             >
                               {permission?.title}
@@ -282,8 +312,8 @@ export function ManageRoleDialog({
                               onCheckedChange={() =>
                                 selectPermission(permission)
                               }
-                              className='cursor-pointer'
-                              disabled={permission?.isActive}
+                              className="cursor-pointer"
+                              disabled={permission?.default}
                             />
                           </div>
                         ))}
@@ -295,27 +325,27 @@ export function ManageRoleDialog({
             </div>
           </div>
         </div>
-        <DialogFooter className='sm:justify-end pt-4'>
-          <div className='w-full flex justify-between items-center'>
-            <Button type='button' variant='secondary'>
-              {t('settings.manageRoleDialog.resendTheOtp')}
+        <DialogFooter className="sm:justify-end pt-4">
+          <div className="w-full flex justify-between items-center">
+            <Button type="button" variant="secondary">
+              {t("settings.manageRoleDialog.resendTheOtp")}
             </Button>
-            <div className='flex items-center gap-4'>
+            <div className="flex items-center gap-4">
               <DialogClose asChild>
                 <Button
-                  type='button'
-                  variant='outline'
-                  className='cursor-pointer'
+                  type="button"
+                  variant="outline"
+                  className="cursor-pointer"
                 >
-                  {t('settings.manageRoleDialog.cancel')}
+                  {t("settings.manageRoleDialog.cancel")}
                 </Button>
               </DialogClose>
               <Button
-                type='button'
-                className='cursor-pointer'
+                type="button"
+                className="cursor-pointer"
                 onClick={handleSave}
               >
-                {t('settings.manageRoleDialog.save')}
+                {t("settings.manageRoleDialog.save")}
               </Button>
             </div>
           </div>
