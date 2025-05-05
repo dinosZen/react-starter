@@ -3,7 +3,7 @@ import { DataTable } from "../../shared/DataTable";
 import { AgentDialog } from "./components/AddNewAgentDialog";
 import SearchBar from "../../shared/SearchBar";
 import FiltersDropdown from "./components/FiltersDropdown";
-import { useAgentsTable } from "./useAgentsTable";
+import { useAgentsTable } from "./hooks/useAgentsTable";
 import { useAgentColumns } from "../../../table-columns/AgentColumns";
 import { useMemo, useState } from "react";
 import { DeleteAgentDialog } from "./components/DeleteAgentDialog";
