@@ -30,9 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/toast";
 import * as z from "zod";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { agentRoleOptions } from "@/constants/settings";
 import { addNewAgent } from "@/features/settings/api";
 import axios from "axios";

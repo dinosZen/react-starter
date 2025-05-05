@@ -18,18 +18,7 @@ vi.mock("react-i18next", async () => {
 });
 
 /** ── sonner ────────────────────────────────────────────────────────────── */
-// vi.mock("sonner", () => {
-//   // `toast` is *callable* and also has named helpers → reproduce that shape
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   const toastFn: any = vi.fn(); // the “callable” toast()
-//   toastFn.success = vi.fn();
-//   toastFn.error = vi.fn();
-//   toastFn.warning = vi.fn();
-//   toastFn.dismiss = vi.fn();
-//   toastFn.custom = vi.fn(); // <── this one was missing
 
-//   return { toast: toastFn };
-// });
 vi.mock("@/components/ui/toast", async () => {
   const actual = await vi.importActual<typeof import("@/components/ui/toast")>(
     "@/components/ui/toast"
@@ -41,3 +30,11 @@ vi.mock("@/components/ui/toast", async () => {
 
   return { ...actual, toast: spyToast };
 });
+
+// plug a mutable mock here so each test can .resolve / .reject as it wants
+export const addNewAgentMock = vi.fn();
+
+/* IMPORTANT: path MUST match the import in AgentDialog.tsx */
+vi.mock("@/features/settings/api", () => ({
+  addNewAgent: addNewAgentMock,
+}));

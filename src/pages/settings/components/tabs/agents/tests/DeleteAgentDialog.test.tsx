@@ -32,12 +32,14 @@ const renderDialog = (
 };
 
 const user = userEvent.setup();
+/* ------------------------------------------------------------------ */
 
 test("renders agent name and disables delete by default", () => {
   renderDialog();
   expect(screen.getByText(/John Doe/i)).toBeInTheDocument();
   expect(screen.getByRole("button", { name: /delete/i })).toBeDisabled();
 });
+/* ------------------------------------------------------------------ */
 
 test("enables delete button after checkbox check", async () => {
   renderDialog();
@@ -45,6 +47,7 @@ test("enables delete button after checkbox check", async () => {
   fireEvent.click(checkbox);
   expect(screen.getByRole("button", { name: /delete/i })).not.toBeDisabled();
 });
+/* ------------------------------------------------------------------ */
 
 test("calls delete and closes on success", async () => {
   const onClose = vi.fn();
@@ -59,6 +62,7 @@ test("calls delete and closes on success", async () => {
     expect(onClose).toHaveBeenCalled();
   });
 });
+/* ------------------------------------------------------------------ */
 
 test("shows error toast when agent id is missing", async () => {
   const { toast: uiToast } = await import("@/components/ui/toast");
