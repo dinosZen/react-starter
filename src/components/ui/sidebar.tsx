@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useSidebarStore } from "@/store/sidebar";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -66,6 +67,7 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile();
   const [openMobile, setOpenMobile] = React.useState(false);
+  const { toggleCollapse } = useSidebarStore();
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -82,8 +84,9 @@ function SidebarProvider({
 
       // This sets the cookie to keep the sidebar state.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      toggleCollapse();
     },
-    [setOpenProp, open]
+    [open, setOpenProp, toggleCollapse]
   );
 
   // Helper to toggle the sidebar.
@@ -272,7 +275,7 @@ function SidebarTrigger({
       {...props}
     >
       <ArrowLeftFromLine
-        className={`transition-transform duration-300 transform ${
+        className={`transition-transform duration-200 transform ${
           state === "collapsed" ? "rotate-180" : ""
         }`}
       />

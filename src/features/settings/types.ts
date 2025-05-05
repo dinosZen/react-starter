@@ -67,6 +67,7 @@ export interface Permission {
   deletedAt: string | null;
   id: number;
   isActive: boolean;
+  default: boolean;
   title: string;
   updatedAt: string;
 }
