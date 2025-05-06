@@ -60,6 +60,7 @@ export default function FiltersDropdown({
           options={agentRoleOptions}
           values={roles}
           onChange={setRoles}
+          displayLimit={2}
         />
 
         <FilterSection
@@ -67,6 +68,7 @@ export default function FiltersDropdown({
           options={statusOptions}
           values={statuses}
           onChange={setStatuses}
+          displayLimit={3}
         />
 
         <div className="flex items-center justify-end gap-2 pt-2">
