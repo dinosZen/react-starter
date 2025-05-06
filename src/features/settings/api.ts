@@ -96,8 +96,6 @@ export function useAgents({
   });
 }
 
-<<<<<<< Updated upstream
-=======
 //Update agent
 export const updateAgent = async (vars: {
   agentId: string;
@@ -108,14 +106,12 @@ export const updateAgent = async (vars: {
   return response.data;
 };
 
->>>>>>> Stashed changes
 //Delete an agent
 export const deleteAgent = async (agentId: string) => {
   const response = await api.delete(`/agents/${agentId}`);
   return response.data;
 };
 
-<<<<<<< Updated upstream
 //Add new agent
 export async function addNewAgent(data: {
   firstName: string;
@@ -125,7 +121,7 @@ export async function addNewAgent(data: {
 }) {
   const response = await api.post("/agents/create", data);
   return response.data;
-=======
+}
 //Get all roles
 export function useRoles({
   page,
@@ -162,5 +158,4 @@ export function useRoles({
     gcTime: 10 * 60 * 1000,
     refetchOnMount: false,
   });
->>>>>>> Stashed changes
 }
