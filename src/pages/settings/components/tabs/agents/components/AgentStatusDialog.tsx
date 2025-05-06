@@ -11,8 +11,12 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/toast";
-import { deleteAgent } from "@/features/settings/api";
-import { AgentStatusDialogProps } from "@/features/settings/types";
+import { updateAgent } from "@/features/settings/api";
+import {
+  AgentStatusDialogProps,
+  AgentPatchPayload,
+} from "@/features/settings/types";
+import { Loader } from "lucide-react";
 
 export function AgentStatusDialog({
   agent,
@@ -23,8 +27,13 @@ export function AgentStatusDialog({
 
   const queryClient = useQueryClient();
 
-  const deleteAgentMutation = useMutation({
-    mutationFn: deleteAgent,
+  type UpdateAgentVars = {
+    agentId: string;
+    data: AgentPatchPayload;
+  };
+
+  const updateAgentMutation = useMutation<unknown, unknown, UpdateAgentVars>({
+    mutationFn: ({ agentId, data }) => updateAgent({ agentId, data }),
     onSuccess: () => {
       toast.success(t("success"), {
         description: t("agent.status-successfully-updated"),
@@ -35,7 +44,7 @@ export function AgentStatusDialog({
       onClose();
     },
     onError: (err: unknown) => {
-      console.error("Delete error", err);
+      console.error("Status change error", err);
       if (err instanceof Error) {
         toast.error(err.message);
       } else {
@@ -46,9 +55,12 @@ export function AgentStatusDialog({
     },
   });
 
-  const handleConfirmDelete = async () => {
+  const handleStatusChange = async () => {
     if (agent.id !== undefined) {
-      await deleteAgentMutation.mutateAsync(agent.id.toString());
+      await updateAgentMutation.mutateAsync({
+        agentId: agent.id.toString(),
+        data: { status: "INACTIVE" },
+      });
     } else {
       toast.error(t("error"), {
         description: t("agent.delete-error"),
@@ -84,8 +96,20 @@ export function AgentStatusDialog({
           <Button variant="outline" onClick={() => onClose()}>
             {t("cancel")}
           </Button>
-          <Button variant="default" onClick={handleConfirmDelete}>
-            {t("agent.deactivate")}
+          <Button
+            onClick={handleStatusChange}
+            variant="default"
+            className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={updateAgentMutation.status === "pending"}
+          >
+            {updateAgentMutation.status === "pending" ? (
+              <span>
+                {t("agent.deactivateing")}{" "}
+                <Loader className="inline animate-spin" />
+              </span>
+            ) : (
+              t("agent.deactivate")
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

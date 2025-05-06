@@ -1,6 +1,11 @@
 import api from "@/api/axios";
 import { useQuery } from "@tanstack/react-query";
-import { AgentsQueryParams, GroupPermissions, Role } from "./types";
+import {
+  AgentsQueryParams,
+  GroupPermissions,
+  Role,
+  AgentPatchPayload,
+} from "./types";
 
 type FilterField = "role" | "perm" | "status";
 
@@ -61,7 +66,6 @@ export function useAgents({
   orderBy = "role",
   order = "DESC",
   roles,
-  //perms,
   statuses,
 }: AgentsQueryParams) {
   const queryKey = [
@@ -72,7 +76,6 @@ export function useAgents({
     orderBy,
     order,
     roles,
-    //perms,
     statuses,
   ] as const;
 
@@ -93,12 +96,26 @@ export function useAgents({
   });
 }
 
+<<<<<<< Updated upstream
+=======
+//Update agent
+export const updateAgent = async (vars: {
+  agentId: string;
+  data: AgentPatchPayload;
+}) => {
+  const { agentId, data } = vars;
+  const response = await api.patch(`/agents/${agentId}`, data);
+  return response.data;
+};
+
+>>>>>>> Stashed changes
 //Delete an agent
 export const deleteAgent = async (agentId: string) => {
   const response = await api.delete(`/agents/${agentId}`);
   return response.data;
 };
 
+<<<<<<< Updated upstream
 //Add new agent
 export async function addNewAgent(data: {
   firstName: string;
@@ -108,4 +125,42 @@ export async function addNewAgent(data: {
 }) {
   const response = await api.post("/agents/create", data);
   return response.data;
+=======
+//Get all roles
+export function useRoles({
+  page,
+  size,
+  search = "",
+  orderBy = "role",
+  order = "DESC",
+  roles,
+  statuses,
+}: AgentsQueryParams) {
+  const queryKey = [
+    "roles",
+    page,
+    size,
+    search,
+    orderBy,
+    order,
+    roles,
+    statuses,
+  ] as const;
+
+  const requestBody: AgentsRequestBody = {
+    page,
+    size,
+    search: search || undefined,
+    orderBy: orderBy || undefined,
+    order,
+    filters: buildFilters({ roles, statuses }),
+  };
+  return useQuery({
+    queryKey,
+    queryFn: () => api.post("/roles", requestBody).then((r) => r.data),
+    staleTime: Infinity,
+    gcTime: 10 * 60 * 1000,
+    refetchOnMount: false,
+  });
+>>>>>>> Stashed changes
 }

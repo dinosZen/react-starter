@@ -9,6 +9,16 @@ export interface Agent {
   page?: number;
 }
 
+export interface AgentUpdatePayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role?: string;
+  status?: string;
+  permissionsIds?: number[];
+}
+
+export type AgentPatchPayload = Partial<AgentUpdatePayload>;
 export interface DeleteAgentDialogProps {
   readonly agent: Agent;
   readonly isOpen: boolean;

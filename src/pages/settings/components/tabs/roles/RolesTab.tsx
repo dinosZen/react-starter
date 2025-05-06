@@ -1,18 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { DataTable } from "../../shared/DataTable";
-import { AgentDialog } from "./components/AddNewAgentDialog";
 import SearchBar from "../../shared/SearchBar";
 import FiltersDropdown from "./components/FiltersDropdown";
-import { useAgentsTable } from "./hooks/useAgentsTable";
-import { useAgentColumns } from "../../../table-columns/AgentColumns";
+import { useRolesTable } from "./hooks/useRolesTable";
+import { useRoleColumns } from "../../../table-columns/RoleColumns";
 import { useMemo, useState } from "react";
 import { DeleteAgentDialog } from "./components/DeleteAgentDialog";
 import { ManageRoleDialog } from "../../ManageRoleDialog";
 import { Agent, AgentsQueryParams } from "@/features/settings/types";
 import { Button } from "@/components/ui/button";
-import { AgentStatusDialog } from "./components/AgentStatusDialog";
 
-export function AgentsTab() {
+export function RolesTab() {
   const {
     params,
     sorting,
@@ -25,16 +23,15 @@ export function AgentsTab() {
     updateFilters,
     currentFilters,
     resetAll,
-  } = useAgentsTable();
+  } = useRolesTable();
 
   const { t } = useTranslation();
   const [agentToDelete, setAgentToDelete] = useState<Agent | null>(null);
   const [agentToManageRole, setAgentToManageRole] = useState<Agent | null>(
     null
   );
-  const [agentStatusChange, setAgentStatusChange] = useState<Agent | null>(
-    null
-  );
+
+  console.log("data", data);
 
   const handleApplyFilters = (
     f: Partial<Pick<AgentsQueryParams, "roles" | "statuses">>
@@ -53,19 +50,14 @@ export function AgentsTab() {
   const handleOpenManageRoleDialog = (agent: Agent) => {
     setAgentToManageRole(agent);
   };
-  const handleOpenStatusDialog = (agent: Agent) => {
-    setAgentStatusChange(agent);
-  };
 
   const handleCloseDialogs = () => {
     setAgentToDelete(null);
     setAgentToManageRole(null);
-    setAgentStatusChange(null);
   };
-  const getAgentsColumns = useAgentColumns({
+  const getAgentsColumns = useRoleColumns({
     onDeleteClick: handleOpenDeleteDialog,
     onManageRoleClick: handleOpenManageRoleDialog,
-    onStatusClick: handleOpenStatusDialog,
   });
   const hasActiveFilters = useMemo(() => {
     const { roles = [], statuses = [] } = currentFilters;
@@ -102,7 +94,6 @@ export function AgentsTab() {
             {t("clear-filters")}
           </Button>
         </div>
-        <AgentDialog />
       </div>
       <DataTable
         columns={agentsColumns}
@@ -127,13 +118,6 @@ export function AgentsTab() {
       {agentToDelete && (
         <DeleteAgentDialog
           agent={agentToDelete}
-          isOpen={true}
-          onClose={handleCloseDialogs}
-        />
-      )}
-      {agentStatusChange && (
-        <AgentStatusDialog
-          agent={agentStatusChange}
           isOpen={true}
           onClose={handleCloseDialogs}
         />
