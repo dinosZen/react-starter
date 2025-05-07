@@ -4,6 +4,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import Login from "@/pages/login/Login";
 import SetPasswordPage from "@/pages/login/SetPassword";
 import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
+import SomethingWentWrongPage from "@/pages/login/SomethingWentWrong";
 import ValidateTwoFactor from "@/pages/login/ValidateLogin";
 import Reports from "@/pages/Reports";
 import Settings from "@/pages/settings";
@@ -133,8 +134,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/set-password",
+    path: "/accept-invitation",
     element: <SetPasswordPage />,
+  },
+  {
+    path: "/something-went-wrong",
+    element: <SomethingWentWrongPage />,
   },
 ]);
 

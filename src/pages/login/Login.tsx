@@ -4,16 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLogin } from "@/features/auth/hooks";
+import { loginSchema } from "@/features/auth/schemas";
 import { useState } from "react";
-import { z } from "zod";
-
-const loginSchema = z.object({
-  email: z.string().min(1, "Email is required"),
-  password: z.string().min(1, "Password is required"),
-});
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
   const login = useLogin();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -60,16 +57,16 @@ export default function LoginPage() {
         <div className="flex justify-center flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
-              Login
+              {t("login.title")}
             </span>
             <span className="text-base text-text-primary-default">
-              Please enter your email and password to access your account!
+              {t("login.description")}
             </span>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-white">
-                Email
+                {t("login.input.email")}
               </Label>
               <Input
                 id="email"
@@ -85,7 +82,7 @@ export default function LoginPage() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-white">
-                Password
+                {t("login.input.password")}
               </Label>
               <Input
                 id="password"
@@ -99,13 +96,15 @@ export default function LoginPage() {
               )}
             </div>
             <div className="flex justify-between">
-              <Button variant="link">Forgot yout password?</Button>
+              <Button variant="link">{t("login.forgotPassword")}</Button>
               <Button
                 variant="default"
                 disabled={login.isPending}
                 type="submit"
               >
-                {login.isPending ? "Loading..." : "Confirm"}
+                {login.isPending
+                  ? t("login.button.loading")
+                  : t("login.button.confirm")}
               </Button>
             </div>
           </form>

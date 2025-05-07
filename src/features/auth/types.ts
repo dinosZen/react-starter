@@ -53,6 +53,11 @@ export interface ValidateResponse {
   };
 }
 
+export interface CreatePasswordRequest {
+  password: string;
+  guid: string;
+}
+
 export interface JwtPartialUser {
   id: number;
   email: string;

@@ -6,7 +6,7 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import {
   InputOTP,
@@ -17,9 +17,11 @@ import { useValidate } from "@/features/auth/hooks";
 import { twoFacotorCodeSchema } from "@/features/auth/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 export default function ValidateTwoFactor() {
+  const { t } = useTranslation();
   const validate = useValidate();
   const form = useForm<z.infer<typeof twoFacotorCodeSchema>>({
     resolver: zodResolver(twoFacotorCodeSchema),
@@ -29,7 +31,7 @@ export default function ValidateTwoFactor() {
   });
 
   function onSubmit(data: z.infer<typeof twoFacotorCodeSchema>) {
-    validate.mutate(data)
+    validate.mutate(data);
   }
 
   return (
@@ -44,10 +46,10 @@ export default function ValidateTwoFactor() {
         <div className="flex justify-center flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
-              Two-Factor Authentication
+              {t("validateLogin.title")}
             </span>
             <span className="text-base text-text-primary-default">
-              Enter the code provided by your app:
+              {t("validateLogin.description")}
             </span>
           </div>
           <Form {...form}>
@@ -77,7 +79,11 @@ export default function ValidateTwoFactor() {
                 )}
               />
 
-              <Button type="submit">Verify</Button>
+              <Button type="submit" disabled={validate.isPending}>
+                {validate.isPending
+                  ? t("validateLogin.button.loading")
+                  : t("validateLogin.button.verify")}
+              </Button>
             </form>
           </Form>
         </div>

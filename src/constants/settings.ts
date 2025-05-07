@@ -308,6 +308,88 @@ export const userProfileMockData = {
     { label: "Created at", value: "02 Feb 2024" },
     { label: "Last updated at", value: "17 Apr 2025 - 13:26 CET" },
   ],
+  financialDetailsData: {
+    paymentMethods: [
+      {
+        type: "Card",
+        provider: "Visa",
+        details: "**** **** **** 4321",
+        status: "Active",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        type: "Bank",
+        provider: "Erste Bank",
+        details: "HR65 1001 0051 8630 0016",
+        status: "Inactive",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        type: "Bank",
+        provider: "Erste Bank",
+        details: "HR65 1001 0051 8630 0016",
+        status: "Pending",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+    ],
+    beneficiaries: [
+      {
+        name: "Stephen Royce",
+        type: "Bank Account",
+        details: "**** **** **** 4321",
+        verified: true,
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        name: "Ana’s BTC Wallet",
+        type: "Crypto Wallet",
+        details: "HR65 1001 0051 8630 0016",
+        verified: true,
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        name: "Freelance USD Payee",
+        type: "Bank Account",
+        details: "US64 BOFA 1234 5678 9012",
+        verified: false,
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+    ],
+    feesStructure: [
+      {
+        feeType: "Spot Trading Fee",
+        value: "0.10%",
+        effectiveSince: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        feeType: "Futures Trading Fee",
+        value: "0.05%",
+        effectiveSince: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        feeType: "Deposit Fee (SEPA)",
+        value: "0.00%",
+        effectiveSince: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+    ],
+    limits: [
+      {
+        limitType: "Daily Fiat Withdrawal",
+        value: "€10,000",
+        scope: "Account",
+      },
+      {
+        limitType: "Monthly Crypto Out",
+        value: "25 BTC",
+        scope: "Account",
+      },
+      {
+        limitType: "Max Concurrent Trades",
+        value: "150",
+        scope: "Trading",
+      },
+    ],
+  },
   settingsData: [
     { label: "Two-factor authentication", value: "Enabled" },
     { label: "Email notifications", value: "Enabled" },
