@@ -5,8 +5,14 @@ import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { loginUser, logoutUser, validateUser, verifyUser } from "./api";
-import { LoginRequest, VerifyRequest } from "./types";
+import {
+  createPassword,
+  loginUser,
+  logoutUser,
+  validateUser,
+  verifyUser,
+} from "./api";
+import { CreatePasswordRequest, LoginRequest, VerifyRequest } from "./types";
 
 export function useLogin() {
   const { setSecret } = useTwoFactorStore();
@@ -29,7 +35,7 @@ export function useLogin() {
         if (error.response.status === 404 || error.response.status === 401) {
           toast(t("login.toast.incorrectCredentials"));
         } else {
-          toast.error(t("login.toast.somethinWentWrong"));
+          toast.error(t("login.toast.somethingWentWrong"));
         }
       } else {
         console.error("Error:", error.message);
@@ -57,7 +63,7 @@ export function useVerify() {
         if (error.response.status === 401) {
           toast(t("verifyLogin.toast.incorrectCode"));
         } else {
-          toast.error(t("verifyLogin.toast.somethinWentWrong"));
+          toast.error(t("verifyLogin.toast.somethingWentWrong"));
         }
       } else {
         console.error("Error:", error.message);
@@ -83,7 +89,31 @@ export function useValidate() {
         if (error.response.status === 401) {
           toast(t("validateLogin.toast.incorrectCode"));
         } else {
-          toast.error(t("validateLogin.toast.somethinWentWrong"));
+          toast.error(t("validateLogin.toast.somethingWentWrong"));
+        }
+      } else {
+        console.error("Error:", error.message);
+      }
+    },
+  });
+}
+
+export function useSetPassword() {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: (data: CreatePasswordRequest) => createPassword(data),
+    onSuccess: () => {
+      navigate("/login");
+    },
+    onError: (error: AxiosError) => {
+      if (error.response) {
+        console.error("Error:", error.response.data);
+        if (error.response.status === 401) {
+          toast(t("setPassword.toast.tokenExpired"));
+        } else {
+          toast.error(t("setPassword.toast.somethingWentWrong"));
         }
       } else {
         console.error("Error:", error.message);

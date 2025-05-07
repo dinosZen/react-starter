@@ -107,24 +107,82 @@
     "updatedSuccessfully": "",
     "deletedSuccessfully": "",
     "deleteConfirmation": "",
-    "deleteConfirmationText": ""
+    "deleteConfirmationText": "",
+    "financialDetails": {
+      "paymentMethods": {
+        "type": "Type",
+        "provider": "Provider",
+        "details": "Details",
+        "status": "Status",
+        "addedOn": "Added on"
+      }
+    }
   },
   "login": {
+    "title": "Login",
+    "description": "Please enter your email and password to access your account!",
+    "forgotPassword": "Forgot your password?",
+    "input": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "button": {
+      "confirm": "Confirm",
+      "loading": "Loading..."
+    },
     "toast": {
       "incorrectCredentials": "Incorrect email or password. Please try again.",
-      "somethinWentWrong": "Something went wrong. Please try again."
+      "somethingWentWrong": "Something went wrong. Please try again."
     }
   },
   "validateLogin": {
+    "title": "Two-Factor authentication",
+    "description": "Enter the code from your authentification app to continue",
+    "button": {
+      "verify": "Verify",
+      "loading": "Loading..."
+    },
     "toast": {
       "incorrectCode": "The code you entered is incorrect.",
-      "somethinWentWrong": "Something went wrong. Please try again."
+      "somethingWentWrong": "Something went wrong. Please try again."
     }
   },
   "verifyLogin": {
+    "title": "One last step...",
+    "descriptionStep1": "Download the “Google Authenticator” app from your store",
+    "descriptionStep2": "Scan this QR Code using your app:",
+    "descriptionStep3": "Enter the code provided by your app:",
+    "button": {
+      "verify": "Verify",
+      "loading": "Loading..."
+    },
     "toast": {
       "incorrectCode": "The code you entered is incorrect.",
-      "somethinWentWrong": "Something went wrong. Please try again."
+      "somethingWentWrong": "Something went wrong. Please try again."
+    }
+  },
+  "setPassword": {
+    "title": "Set password",
+    "description": "To access your account, please create a password.",
+    "input": {
+      "password": "Password",
+      "repeatPassword": "Repeat password"
+    },
+    "button": {
+      "confirm": "Confirm",
+      "loading": "Loading..."
+    },
+    "toast": {
+      "tokenExpired": "This password setup link has expired. Please request a new one.",
+      "somethingWentWrong": "Something went wrong. Please try again."
+    }
+  },
+  "somethingWentWrong": {
+    "title": "Oops! Something’s not right",
+    "description": "It looks like this link is no longer valid or you haven’t been invited to access this page. If you’re expecting an invitation, please check your email or contact us for help.",
+    "button": {
+      "visitOurWebsite": "Visit our website",
+      "contactOurSupport": "Contact our support"
     }
   },
   "search": "Search",

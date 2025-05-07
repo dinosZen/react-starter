@@ -1,5 +1,6 @@
 import api from "@/api/axios";
 import {
+  CreatePasswordRequest,
   LoginRequest,
   LoginResponse,
   ValidateRequest,
@@ -22,6 +23,13 @@ export async function validateUser(
   data: ValidateRequest
 ): Promise<ValidateResponse> {
   const response = await api.post("/auth/2fa/validate-login", data);
+  return response.data;
+}
+
+export async function createPassword(
+  data: CreatePasswordRequest
+): Promise<ValidateResponse> {
+  const response = await api.post("/auth/create-password", data);
   return response.data;
 }
 

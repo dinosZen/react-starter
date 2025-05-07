@@ -3,12 +3,19 @@ import cambixLogo from "@/assets/images/logos/loginLogo.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLogin } from "@/features/auth/hooks";
-import { loginSchema } from "@/features/auth/schemas";
+import { useSetPassword } from "@/features/auth/hooks";
+import { setPasswordSchema } from "@/features/auth/schemas";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 
 export default function SetPasswordPage() {
-  const login = useLogin();
+  const setPassword = useSetPassword();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+ 
+  console.log(token)
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -28,15 +35,19 @@ export default function SetPasswordPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = loginSchema.safeParse(formData);
+    const parsed = setPasswordSchema.safeParse(formData);
 
     if (!parsed.success) {
       const fieldErrors = parsed.error.formErrors.fieldErrors;
       setErrors({
-        password: fieldErrors.email?.[0],
-        confirmPassword: fieldErrors.password?.[0],
+        password: fieldErrors.password?.[0],
+        confirmPassword: fieldErrors.confirmPassword?.[0],
       });
+      return;
     }
+
+    setErrors({});
+    // setPassword.mutate(parsed.data.password);
   };
 
   return (
@@ -51,16 +62,16 @@ export default function SetPasswordPage() {
         <div className="flex justify-center flex-col gap-10 flex-1">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
-              Set password
+              {t("setPassword.title")}
             </span>
             <span className="text-base text-text-primary-default">
-              To access your account, please create a password.
+              {t("setPassword.description")}
             </span>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-white">
-                Password
+                {t("setPassword.input.password")}
               </Label>
               <Input
                 id="password"
@@ -76,11 +87,11 @@ export default function SetPasswordPage() {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password" className="text-white">
-                Repeat password
+                {t("setPassword.input.repeatPassword")}
               </Label>
               <Input
                 id="confirm-password"
-                name="confirm-password"
+                name="confirmPassword"
                 type="password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -94,10 +105,12 @@ export default function SetPasswordPage() {
             <div className="flex">
               <Button
                 variant="default"
-                disabled={login.isPending}
+                disabled={setPassword.isPending}
                 type="submit"
               >
-                {login.isPending ? "Loading..." : "Confirm"}
+                {setPassword.isPending
+                  ? t("setPassword.button.loading")
+                  : t("setPassword.button.confirm")}
               </Button>
             </div>
           </form>

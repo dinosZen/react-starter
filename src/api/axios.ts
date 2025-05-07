@@ -42,7 +42,8 @@ api.interceptors.response.use(
 
     const isAuthRoute =
       originalRequest?.url?.includes("/auth") &&
-      !originalRequest?.url?.includes("/auth/logout");
+      !originalRequest?.url?.includes("/auth/logout") &&
+      !originalRequest?.url?.includes("/auth/create-password");
     const isUnauthorized = error.response?.status === 401;
 
     if (isAuthRoute) {

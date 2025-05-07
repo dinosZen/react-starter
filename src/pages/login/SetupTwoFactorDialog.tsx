@@ -23,11 +23,13 @@ import { jwtDecode } from "jwt-decode";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 export default function SetupTwoFactor() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const verify = useVerify();
   const { secret } = useTwoFactorStore();
   const userCookie = getCookieValue("partial_token");
@@ -65,20 +67,20 @@ export default function SetupTwoFactor() {
         </div>
         <div className="flex justify-center flex-col gap-6 flex-1">
           <span className="text-3xl font-bold text-text-primary-default">
-            One last step...
+            {t("verifyLogin.title")}
           </span>
           <span className="text-base text-text-primary-default">
-            1. Download the “Google Authenticator” app from your store
+            1. {t("verifyLogin.descriptionStep1")}
           </span>
           <span className="text-base text-text-primary-default">
-            2. Scan this QR Code using your app:
+            2. {t("verifyLogin.descriptionStep2")}
           </span>
           <QRCodeSVG
             value={`otpauth://totp/cambix:${user.email}?secret=${secret}&issuer=Cambix`}
             size={185}
           />
           <span className="text-base text-text-primary-default">
-            3. Enter the code provided by your app:
+            3. {t("verifyLogin.descriptionStep3")}
           </span>
           <Form {...form}>
             <form
@@ -107,7 +109,11 @@ export default function SetupTwoFactor() {
                 )}
               />
 
-              <Button type="submit">Verify</Button>
+              <Button type="submit" disabled={verify.isPending}>
+                {verify.isPending
+                  ? t("verifyLogin.button.loading")
+                  : t("verifyLogin.button.verify")}
+              </Button>
             </form>
           </Form>
         </div>

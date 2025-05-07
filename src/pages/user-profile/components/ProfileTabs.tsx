@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User } from "@/types/user";
+import { FinancialDetailsTab } from "./tabs/financial-details/FinancialDetailsTab";
 import { PersonalDetailsTab } from "./tabs/personal-details/PersonalDetailsTab";
 
 export type TabItem = {
@@ -58,7 +59,29 @@ export const ProfileTabs = ({
               />
             )}
           </TabsContent>
-          <TabsContent value="financial">Contacts...</TabsContent>
+          <TabsContent value="financial">
+            {" "}
+            {userData?.contactsData?.length === 0 &&
+            userData?.personalInfoData?.length === 0 &&
+            userData?.settingsData?.length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-text-secondary-default text-lg">
+                  No personal details available!
+                </p>
+              </div>
+            ) : (
+              <FinancialDetailsTab
+                financialDetailsData={
+                  userData?.financialDetailsData ?? {
+                    paymentMethods: [],
+                    beneficiaries: [],
+                    feesStructure: [],
+                    limits: [],
+                  }
+                }
+              />
+            )}
+          </TabsContent>
           <TabsContent value="compliance">Compliance...</TabsContent>
           <TabsContent value="documents">Documents...</TabsContent>
           <TabsContent value="wallets">Wallets...</TabsContent>
