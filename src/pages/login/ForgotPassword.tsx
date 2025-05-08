@@ -3,27 +3,22 @@ import cambixLogo from "@/assets/images/logos/loginLogo.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSetPassword } from "@/features/auth/hooks";
-import { setPasswordSchema } from "@/features/auth/schemas";
+import { useForgotPassword } from "@/features/auth/hooks";
+import { forgotPasswordSchema } from "@/features/auth/schemas";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function SetPasswordPage() {
-  const setPassword = useSetPassword();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
- 
-  console.log(token)
+export default function ForgotPassword() {
+  const forgotPassword = useForgotPassword();
   const { t } = useTranslation();
   const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
+    email: "",
   });
 
   const [errors, setErrors] = useState<{
-    password?: string;
-    confirmPassword?: string;
+    email?: string;
   }>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,19 +30,18 @@ export default function SetPasswordPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = setPasswordSchema.safeParse(formData);
+    const parsed = forgotPasswordSchema.safeParse(formData);
 
     if (!parsed.success) {
       const fieldErrors = parsed.error.formErrors.fieldErrors;
       setErrors({
-        password: fieldErrors.password?.[0],
-        confirmPassword: fieldErrors.confirmPassword?.[0],
+        email: fieldErrors.email?.[0],
       });
       return;
     }
 
     setErrors({});
-    // setPassword.mutate(parsed.data.password);
+    forgotPassword.mutate(parsed.data);
   };
 
   return (
@@ -62,55 +56,42 @@ export default function SetPasswordPage() {
         <div className="flex justify-center flex-col gap-10 flex-1 w-md">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
-              {t("setPassword.title")}
+              {t("forgotPassword.title")}
             </span>
             <span className="text-base text-text-primary-default">
-              {t("setPassword.description")}
+              {t("forgotPassword.description")}
             </span>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email" className="text-white">
-                {t("setPassword.input.password")}
+                {t("login.input.email")}
               </Label>
               <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
+                id="email"
+                name="email"
+                type="text"
+                value={formData.email}
                 onChange={handleChange}
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password" className="text-white">
-                {t("setPassword.input.repeatPassword")}
-              </Label>
-              <Input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-            <div className="flex">
+            <div className="flex justify-between">
+              <Button variant="link" asChild>
+                <Link to="/login">
+                  <ArrowLeft /> {t("forgotPassword.button.backToLogin")}
+                </Link>
+              </Button>
               <Button
                 variant="default"
-                disabled={setPassword.isPending}
+                disabled={forgotPassword.isPending}
                 type="submit"
               >
-                {setPassword.isPending
-                  ? t("setPassword.button.loading")
-                  : t("setPassword.button.confirm")}
+                {forgotPassword.isPending
+                  ? t("forgotPassword.button.loading")
+                  : t("forgotPassword.button.resetMyPassword")}
               </Button>
             </div>
           </form>

@@ -7,12 +7,18 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
   createPassword,
+  forgotPassword,
   loginUser,
   logoutUser,
   validateUser,
   verifyUser,
 } from "./api";
-import { CreatePasswordRequest, LoginRequest, VerifyRequest } from "./types";
+import {
+  CreatePasswordRequest,
+  ForgotPasswordRequest,
+  LoginRequest,
+  VerifyRequest,
+} from "./types";
 
 export function useLogin() {
   const { setSecret } = useTwoFactorStore();
@@ -115,6 +121,27 @@ export function useSetPassword() {
         } else {
           toast.error(t("setPassword.toast.somethingWentWrong"));
         }
+      } else {
+        console.error("Error:", error.message);
+      }
+    },
+  });
+}
+
+export function useForgotPassword() {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: (data: ForgotPasswordRequest) => forgotPassword(data),
+    onSuccess: () => {
+      navigate("/login");
+      toast(t("forgotPassword.toast.emailSent"));
+    },
+    onError: (error: AxiosError) => {
+      if (error.response) {
+        console.error("Error:", error.response.data);
+        toast.error(t("forgotPassword.toast.somethingWentWrong"));
       } else {
         console.error("Error:", error.message);
       }

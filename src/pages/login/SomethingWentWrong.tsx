@@ -8,15 +8,15 @@ export default function SomethingWentWrongPage() {
 
   return (
     <div className="flex min-h-full justify-center bg-background-secondary-default py-20 px-10 gap-10">
-      <div className="flex flex-col justify-between min-w-[450px]">
+      <div className="flex flex-col justify-between">
         <div className="flex items-center gap-2">
           <img src={cambixLogo} alt="Cambix" />
           <span className="text-lg font-semibold text-text-primary-default">
             Cambix
           </span>
         </div>
-        <div className="flex justify-center flex-col gap-6 flex-1">
-          <div className="flex flex-col gap-4 max-w-lg">
+        <div className="flex justify-center flex-col gap-6 flex-1 w-md">
+          <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
               {t("somethingWentWrong.title")}
             </span>
