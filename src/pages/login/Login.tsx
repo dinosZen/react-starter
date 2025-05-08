@@ -7,6 +7,7 @@ import { useLogin } from "@/features/auth/hooks";
 import { loginSchema } from "@/features/auth/schemas";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export default function LoginPage() {
   const login = useLogin();
@@ -47,14 +48,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-full justify-center bg-background-secondary-default py-20 px-10 gap-10">
-      <div className="flex flex-col justify-between min-w-[450px]">
+      <div className="flex flex-col justify-between">
         <div className="flex items-center gap-2">
           <img src={cambixLogo} alt="Cambix" />
           <span className="text-lg font-semibold text-text-primary-default">
             Cambix
           </span>
         </div>
-        <div className="flex justify-center flex-col gap-10 flex-1">
+        <div className="flex justify-center flex-col gap-10 flex-1 w-md">
           <div className="flex flex-col gap-4">
             <span className="text-3xl font-bold text-text-primary-default">
               {t("login.title")}
@@ -96,7 +97,9 @@ export default function LoginPage() {
               )}
             </div>
             <div className="flex justify-between">
-              <Button variant="link">{t("login.forgotPassword")}</Button>
+              <Button variant="link" asChild>
+                <Link to="/forgot-password">{t("login.forgotPassword")}</Link>
+              </Button>
               <Button
                 variant="default"
                 disabled={login.isPending}

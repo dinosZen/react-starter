@@ -177,6 +177,22 @@
       "somethingWentWrong": "Something went wrong. Please try again."
     }
   },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "description": "To reset your password, please enter the email address of your Cambix account.",
+    "input": {
+      "email": "Email"
+    },
+    "button": {
+      "backToLogin": "Back to login",
+      "resetMyPassword": "Reset my password",
+      "loading": "Loading..."
+    },
+    "toast": {
+      "emailSent": "If an account with the provided email exists, you will receive password reset instructions shortly.",
+      "somethingWentWrong": "Something went wrong. Please try again."
+    }
+  },
   "somethingWentWrong": {
     "title": "Oops! Something’s not right",
     "description": "It looks like this link is no longer valid or you haven’t been invited to access this page. If you’re expecting an invitation, please check your email or contact us for help.",

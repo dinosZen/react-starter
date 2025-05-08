@@ -11,6 +11,13 @@ export const loginSchema = z.object({
     .min(8, "Please enter a valid password (min 8 characters)"),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, "This field is required")
+    .email("Please enter a valid email address"),
+});
+
 export const setPasswordSchema = z
   .object({
     password: z

@@ -1,6 +1,9 @@
 import api from "@/api/axios";
 import {
   CreatePasswordRequest,
+  CreatePasswordResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
   ValidateRequest,
@@ -28,8 +31,15 @@ export async function validateUser(
 
 export async function createPassword(
   data: CreatePasswordRequest
-): Promise<ValidateResponse> {
+): Promise<CreatePasswordResponse> {
   const response = await api.post("/auth/create-password", data);
+  return response.data;
+}
+
+export async function forgotPassword(
+  data: ForgotPasswordRequest
+): Promise<ForgotPasswordResponse> {
+  const response = await api.post("/auth/forgot-password", data);
   return response.data;
 }
 

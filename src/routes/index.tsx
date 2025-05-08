@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import LoadingFallback from "@/components/LoadingFallback";
 import ErrorPage from "@/pages/ErrorPage";
+import ForgotPassword from "@/pages/login/ForgotPassword";
 import Login from "@/pages/login/Login";
 import SetPasswordPage from "@/pages/login/SetPassword";
 import SetupTwoFactor from "@/pages/login/SetupTwoFactorDialog";
@@ -136,6 +137,10 @@ const router = createBrowserRouter([
   {
     path: "/accept-invitation",
     element: <SetPasswordPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
   },
   {
     path: "/something-went-wrong",

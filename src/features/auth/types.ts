@@ -58,6 +58,20 @@ export interface CreatePasswordRequest {
   guid: string;
 }
 
+export interface CreatePasswordResponse {
+  message: string;
+  data: unknown;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+  data: unknown;
+}
+
 export interface JwtPartialUser {
   id: number;
   email: string;
