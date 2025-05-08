@@ -5,12 +5,12 @@ import FiltersDropdown from "./components/FiltersDropdown";
 import { useRolesTable } from "./hooks/useRolesTable";
 import { useRoleColumns } from "../../../table-columns/RoleColumns";
 import { useMemo, useState } from "react";
-import { DeleteAgentDialog } from "./components/DeleteAgentDialog";
-import { ManageRoleDialog } from "../../ManageRoleDialog";
-import { Agent, AgentsQueryParams } from "@/features/settings/types";
+import { DeleteRoleDialog } from "./components/DeleteRoleDialog";
+//import { ManageRoleDialog } from "../../ManageRoleDialog";
+import { Role, RolesQueryParams } from "@/features/settings/types";
 import { Button } from "@/components/ui/button";
 
-export function RolesTab() {
+export function RolesTab({ isActive }: { isActive: boolean }) {
   const {
     params,
     sorting,
@@ -23,53 +23,53 @@ export function RolesTab() {
     updateFilters,
     currentFilters,
     resetAll,
-  } = useRolesTable();
+  } = useRolesTable(isActive);
 
   const { t } = useTranslation();
-  const [agentToDelete, setAgentToDelete] = useState<Agent | null>(null);
-  const [agentToManageRole, setAgentToManageRole] = useState<Agent | null>(
-    null
-  );
+
+  const [roleToDelete, setRoleToDelete] = useState<Role | null>(null);
+
+  const [roleToManageRole, setRoleToManageRole] = useState<Role | null>(null);
 
   console.log("data", data);
 
-  const handleApplyFilters = (
-    f: Partial<Pick<AgentsQueryParams, "roles" | "statuses">>
-  ) => updateFilters(f);
+  const handleApplyFilters = (f: Partial<Pick<RolesQueryParams, "group">>) =>
+    updateFilters(f);
 
   const handleResetFilters = () =>
     updateFilters({
-      roles: [],
-      statuses: [],
+      group: [],
     });
 
-  const handleOpenDeleteDialog = (agent: Agent) => {
-    setAgentToDelete(agent);
+  const handleOpenDeleteDialog = (role: Role) => {
+    setRoleToDelete(role);
   };
 
-  const handleOpenManageRoleDialog = (agent: Agent) => {
-    setAgentToManageRole(agent);
+  const handleOpenManageRoleDialog = (role: Role) => {
+    setRoleToManageRole(role);
   };
 
   const handleCloseDialogs = () => {
-    setAgentToDelete(null);
-    setAgentToManageRole(null);
+    setRoleToDelete(null);
+
+    setRoleToManageRole(null);
   };
-  const getAgentsColumns = useRoleColumns({
+
+  const getRolesColumns = useRoleColumns({
     onDeleteClick: handleOpenDeleteDialog,
+
     onManageRoleClick: handleOpenManageRoleDialog,
   });
+
   const hasActiveFilters = useMemo(() => {
-    const { roles = [], statuses = [] } = currentFilters;
+    const { group = [] } = currentFilters;
+
     return (
-      (rawSearch ?? "").trim() !== "" ||
-      sorting.length > 0 ||
-      roles.length > 0 ||
-      statuses.length > 0
+      (rawSearch ?? "").trim() !== "" || sorting.length > 0 || group.length > 0
     );
   }, [rawSearch, sorting, currentFilters]);
 
-  const agentsColumns = getAgentsColumns();
+  const rolesColumns = getRolesColumns();
 
   return (
     <>
@@ -80,11 +80,13 @@ export function RolesTab() {
             placeholder={t("search-placeholder")}
             onChange={setRawSearch}
           />
+
           <FiltersDropdown
             currentFilters={currentFilters}
             onApply={handleApplyFilters}
             onReset={handleResetFilters}
           />
+
           <Button
             variant="ghost"
             className="md:inline-flex pl-0"
@@ -95,8 +97,9 @@ export function RolesTab() {
           </Button>
         </div>
       </div>
+
       <DataTable
-        columns={agentsColumns}
+        columns={rolesColumns}
         data={data?.data ?? []}
         isLoading={isLoading}
         sorting={sorting}
@@ -104,20 +107,24 @@ export function RolesTab() {
         onPaginationChange={onPageChange}
         paginationData={{
           page: params.page,
+
           size: params.size,
+
           total: data?.totalPages ?? 1,
         }}
       />
-      {agentToManageRole && (
+
+      {/* {roleToManageRole && (
         <ManageRoleDialog
-          agent={agentToManageRole}
-          isOpen={true}
-          onClose={handleCloseDialogs}
+        role={roleToManageRole}
+        isOpen={true}
+        onClose={handleCloseDialogs}
         />
-      )}
-      {agentToDelete && (
-        <DeleteAgentDialog
-          agent={agentToDelete}
+        )} */}
+
+      {roleToDelete && (
+        <DeleteRoleDialog
+          role={roleToDelete}
           isOpen={true}
           onClose={handleCloseDialogs}
         />

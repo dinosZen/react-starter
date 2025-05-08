@@ -6,8 +6,20 @@ import { AgentsQueryParams } from "@/features/settings/types";
 import { SortingState, Updater } from "@tanstack/react-table";
 import useDebounce from "@/hooks/use-debounce";
 
-export function useAgentsTable() {
+export function useAgentsTable(isActive: boolean) {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [didReset, setDidReset] = useState(false);
+
+  useEffect(() => {
+    if (isActive && !didReset) {
+      resetAll();
+      setDidReset(true);
+    } else if (!isActive && didReset) {
+      setDidReset(false);
+    }
+  }, [isActive, didReset]);
+
   const getNum = (k: string, f: number) => Number(searchParams.get(k) ?? f);
 
   const parseCsv = (k: string) =>

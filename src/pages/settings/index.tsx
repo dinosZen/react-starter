@@ -6,6 +6,7 @@ function Settings() {
   const [activeTab, setActiveTab] = useState("agents");
 
   const handleTabChange = (tabId: string) => {
+    //set the active tab
     setActiveTab(tabId);
   };
 
