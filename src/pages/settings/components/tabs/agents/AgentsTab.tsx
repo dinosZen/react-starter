@@ -12,7 +12,7 @@ import { Agent, AgentsQueryParams } from "@/features/settings/types";
 import { Button } from "@/components/ui/button";
 import { AgentStatusDialog } from "./components/AgentStatusDialog";
 
-export function AgentsTab() {
+export function AgentsTab({ isActive }: { isActive: boolean }) {
   const {
     params,
     sorting,
@@ -25,7 +25,7 @@ export function AgentsTab() {
     updateFilters,
     currentFilters,
     resetAll,
-  } = useAgentsTable();
+  } = useAgentsTable(isActive);
 
   const { t } = useTranslation();
   const [agentToDelete, setAgentToDelete] = useState<Agent | null>(null);
@@ -136,7 +136,6 @@ export function AgentsTab() {
           agent={agentStatusChange}
           isOpen={true}
           onClose={handleCloseDialogs}
-          //mode="activation"
         />
       )}
     </>

@@ -7,6 +7,7 @@ import {
   ArrowUpDown,
   MoreVertical,
   Pencil,
+  PowerIcon,
   PowerOff,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/components/ui/toast";
+import { updateAgent } from "@/features/settings/api";
+import { AgentPatchPayload } from "@/features/settings/types";
 
 type GetAgentsColumnsProps = {
   onDeleteClick: (agent: Agent) => void;
@@ -30,10 +35,37 @@ export const useAgentColumns = ({
   onStatusClick,
 }: GetAgentsColumnsProps): (() => ColumnDef<Agent>[]) => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  type UpdateAgentVars = {
+    agentId: string;
+    data: AgentPatchPayload;
+  };
+
+  const updateAgentMutation = useMutation<unknown, unknown, UpdateAgentVars>({
+    mutationFn: ({ agentId, data }) => updateAgent({ agentId, data }),
+    onSuccess: () => {
+      toast.success(t("success"), {
+        description: t("agent.status-successfully-updated"),
+      });
+      // refetch agents
+      queryClient.invalidateQueries({ queryKey: ["agents"] });
+    },
+    onError: (err: unknown) => {
+      console.error("Status change error", err);
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error(t("error"), {
+          description: t("unknown-error"),
+        });
+      }
+    },
+  });
 
   return () => [
     {
-      accessorKey: "name",
+      accessorKey: "firstName",
       header: ({ column }) => {
         return (
           <Button
@@ -55,9 +87,7 @@ export const useAgentColumns = ({
       cell: ({ row }) => {
         const agent = row.original;
 
-        return agent.status?.toLowerCase() === "pending" ? (
-          <span className="ml-2 text-gray-500">-</span>
-        ) : (
+        return (
           <span className="ml-2">
             {agent.firstName} {agent.lastName}
           </span>
@@ -193,6 +223,10 @@ export const useAgentColumns = ({
               <DropdownMenuItem
                 onClick={() => onManageRoleClick(agent)}
                 className="cursor-pointer hover:bg-background-secondary-default"
+                disabled={
+                  agent.status?.toLowerCase() ===
+                  t("agent.pending").toLowerCase()
+                }
               >
                 <Pencil className="h-7 w-10" /> Edit agent role
               </DropdownMenuItem>
@@ -202,12 +236,40 @@ export const useAgentColumns = ({
               >
                 <Trash2 /> Delete agent
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => onStatusClick(agent)}
-                className="cursor-pointer hover:bg-background-secondary-default"
-              >
-                <PowerOff /> Deactivate
-              </DropdownMenuItem>
+              {agent.status?.toLowerCase() ===
+              t("agent.inactive").toLowerCase() ? (
+                <DropdownMenuItem
+                  onClick={() =>
+                    updateAgentMutation.mutateAsync({
+                      agentId: agent.id.toString(),
+                      data: { status: "ACTIVE" },
+                    })
+                  }
+                  className="cursor-pointer hover:bg-background-secondary-default"
+                >
+                  <PowerIcon className="h-7 w-10" /> {t("agent.activate")}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  onClick={() => onStatusClick(agent)}
+                  className="cursor-pointer hover:bg-background-secondary-default"
+                  disabled={
+                    agent.status?.toLowerCase() ===
+                    t("agent.pending").toLowerCase()
+                  }
+                >
+                  {agent.status?.toLowerCase() ===
+                  t("agent.active").toLowerCase() ? (
+                    <PowerOff className="h-7 w-10" />
+                  ) : (
+                    <PowerIcon className="h-7 w-10" />
+                  )}{" "}
+                  {agent.status?.toLowerCase() ===
+                  t("agent.active").toLowerCase()
+                    ? t("agent.deactivate")
+                    : t("agent.activate")}
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -40,7 +40,7 @@ export const FilterSection = ({
         options={options}
         value={values}
         onValueChange={onChange}
-        placeholder={`${t("select")} ${label.toLowerCase()}`}
+        placeholder={`${t("select")} ${translatedLabel.toLowerCase()}`}
         insideBadges={false}
       />
 

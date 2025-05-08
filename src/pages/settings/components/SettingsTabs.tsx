@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgentsTab } from "./tabs/agents/AgentsTab";
+import { RolesTab } from "./tabs/roles/RolesTab";
 
 export type TabItem = {
   id: string;
@@ -32,9 +33,11 @@ export const SettingsTabs = ({
       </TabsList>
       <div>
         <TabsContent value="agents">
-          <AgentsTab />
+          <AgentsTab isActive={activeTab === "agents"} />
         </TabsContent>
-        <TabsContent value="roles">Rolesssss</TabsContent>
+        <TabsContent value="roles">
+          <RolesTab isActive={activeTab === "roles"} />
+        </TabsContent>
         <TabsContent value="notifications">Notifications...</TabsContent>
         <TabsContent value="support & Help">Support & Help...</TabsContent>
       </div>
