@@ -140,7 +140,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/forgot-password",
-    element: <ForgotPassword />,
+    element: (
+      <LoginRedirect>
+        <ForgotPassword />
+      </LoginRedirect>
+    ),
   },
   {
     path: "/something-went-wrong",
