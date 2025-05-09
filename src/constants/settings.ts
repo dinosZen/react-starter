@@ -256,6 +256,62 @@ export const userProfileMockData = {
       },
     ],
   },
+  complianceData: {
+    customerRiskProfile: {
+      riskLevel: "Medium",
+      riskScore: "Medium (62/100)",
+      sanctionsScreening: {
+        clear: true,
+        checkData: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      kycQuestionnare: true,
+      vpnUsage: "Yes (flagged 3x last 30d)",
+      ipAdressUsed: "View List (14 total)",
+    },
+    monthlyActivityOverview: {
+      monthlyIncomingVolume: "€12,540",
+      monthlyOutgoingVolume: "€10,870",
+      monthlyExchangeVolume: "€7,200",
+      monthlyWalletTransactions: "22",
+      monthlyExchangeTransactions: "15",
+    },
+    accountPurposeAndSourceOfFunds: {
+      accountPurpose: "Trading and investment",
+      sourceOfFunds: "Employment income + savings",
+      employmentStatus: "Employed full-time",
+    },
+    verificationAndSecurity: {
+      verificationStatus: "✅ Identified (email, phone, docs verified)",
+      verificationLevel: "Level 2",
+      twoFaEnabled: "✅ Yes (TOTP)",
+    },
+    accountState: {
+      state: "Active",
+      reason: "-",
+    },
+    latestActions: [
+      {
+        action: "EDD Request",
+        status: "✅ Sent",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        action: "ODD Request",
+        status: "✅ Sent",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+      {
+        action: "Re-KYC",
+        status: "❌ Not Sent",
+        addedOn: "-",
+      },
+      {
+        action: "SOF Request",
+        status: "⏳ Pending",
+        addedOn: new Date("2024-12-01T10:30:00Z").toISOString(),
+      },
+    ],
+  },
   settingsData: [
     { label: "Two-factor authentication", value: "Enabled" },
     { label: "Email notifications", value: "Enabled" },

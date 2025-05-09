@@ -1,18 +1,18 @@
-import * as React from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
+import * as React from "react";
 
+import { PaginationSkeleton } from "@/components/ui/pagination-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import { DataTablePagination } from "@/components/ui/table-pagination";
 import {
   Table,
   TableBody,
@@ -21,9 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "./Table";
-import { DataTablePagination } from "@/components/ui/table-pagination";
-import { Skeleton } from "@/components/ui/skeleton";
-import { PaginationSkeleton } from "@/components/ui/pagination-skeleton";
 
 interface ApiPaginationData {
   page: number;

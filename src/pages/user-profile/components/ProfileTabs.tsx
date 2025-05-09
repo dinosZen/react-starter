@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User } from "@/types/user";
+import { ComplienceTab } from "./tabs/complience/ComplienceTab";
 import { FinancialDetailsTab } from "./tabs/financial-details/FinancialDetailsTab";
 import { PersonalDetailsTab } from "./tabs/personal-details/PersonalDetailsTab";
 
@@ -60,29 +61,29 @@ export const ProfileTabs = ({
             )}
           </TabsContent>
           <TabsContent value="financial">
-            {" "}
-            {userData?.contactsData?.length === 0 &&
-            userData?.personalInfoData?.length === 0 &&
-            userData?.settingsData?.length === 0 ? (
+            {!userData?.financialDetailsData ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-text-secondary-default text-lg">
-                  No personal details available!
+                  No financial details available!
                 </p>
               </div>
             ) : (
               <FinancialDetailsTab
-                financialDetailsData={
-                  userData?.financialDetailsData ?? {
-                    paymentMethods: [],
-                    beneficiaries: [],
-                    feesStructure: [],
-                    limits: [],
-                  }
-                }
+                financialDetailsData={userData?.financialDetailsData}
               />
             )}
           </TabsContent>
-          <TabsContent value="compliance">Compliance...</TabsContent>
+          <TabsContent value="compliance">
+            {!userData?.complianceData ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-text-secondary-default text-lg">
+                  No compliance details available!
+                </p>
+              </div>
+            ) : (
+              <ComplienceTab compliancesData={userData?.complianceData} />
+            )}
+          </TabsContent>
           <TabsContent value="documents">Documents...</TabsContent>
           <TabsContent value="wallets">Wallets...</TabsContent>
           <TabsContent value="legal">Legal...</TabsContent>
