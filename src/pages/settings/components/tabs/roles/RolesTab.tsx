@@ -31,8 +31,6 @@ export function RolesTab({ isActive }: { isActive: boolean }) {
 
   const [roleToManageRole, setRoleToManageRole] = useState<Role | null>(null);
 
-  console.log("data", data);
-
   const handleApplyFilters = (f: Partial<Pick<RolesQueryParams, "group">>) =>
     updateFilters(f);
 

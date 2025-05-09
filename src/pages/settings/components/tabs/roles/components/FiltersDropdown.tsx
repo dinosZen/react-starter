@@ -56,6 +56,7 @@ export default function FiltersDropdown({
     setGroup([]);
     onReset();
   };
+
   useEffect(() => {
     setGroup(currentFilters.group || []);
   }, [currentFilters]);
