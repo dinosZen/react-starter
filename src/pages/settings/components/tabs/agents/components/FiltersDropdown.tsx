@@ -6,10 +6,12 @@ import {
   PopoverTrigger,
   PopoverClose,
 } from "@/components/ui/popover";
-import { Funnel } from "lucide-react";
+import { Funnel, Loader } from "lucide-react";
 import { FilterSection } from "../../../shared/FilterSection";
-import { agentRoleOptions, statusOptions } from "@/constants/settings";
+import { statusOptions } from "@/constants/settings";
 import { useTranslation } from "react-i18next";
+import { useRoles } from "@/features/settings/api";
+import { Role, RolesQueryParams } from "@/features/settings/types";
 
 export default function FiltersDropdown({
   currentFilters,
@@ -29,6 +31,7 @@ export default function FiltersDropdown({
     setStatuses([]);
     onReset();
   };
+
   useEffect(() => {
     setRoles(currentFilters.roles || []);
     setStatuses(currentFilters.statuses || []);
@@ -42,6 +45,49 @@ export default function FiltersDropdown({
   const filtersLength = roles.length + statuses.length;
   const filtersText = filtersLength ? `(${filtersLength})` : "";
 
+  const params: RolesQueryParams = {
+    page: 1,
+    size: 10,
+  };
+  const {
+    data,
+    isLoading: isLoadingRoles,
+    isError: isErrorRoles,
+    error: rolesError,
+  } = useRoles(params);
+
+  // Extracting roles for the select component
+  const extractGroups = (roles?: { data?: Role[] }) => {
+    if (!roles?.data || !Array.isArray(roles.data)) {
+      return [];
+    }
+
+    const uniqueGroups = new Map();
+
+    roles.data.forEach((role) => {
+      const { id, title } = role;
+
+      if (!uniqueGroups.has(id)) {
+        uniqueGroups.set(id, { id, title });
+      }
+    });
+
+    return Array.from(uniqueGroups.values()).map((item) => ({
+      value: String(item.id),
+      label: item.title,
+    }));
+  };
+
+  const agentRoleOptions = extractGroups(data);
+
+  if (isLoadingRoles) {
+    return (
+      <Button variant="outline" className="gap-2">
+        <Loader className="inline animate-spin" /> {t("filters")} {filtersText}
+      </Button>
+    );
+  }
+
   return (
     <Popover>
       <PopoverTrigger
@@ -54,15 +100,21 @@ export default function FiltersDropdown({
       </PopoverTrigger>
       <PopoverContent className="w-80 space-y-6 p-4">
         <p className="text-md mb-4">{t("filter-by")}:</p>
-
-        <FilterSection
-          label="role"
-          options={agentRoleOptions}
-          values={roles}
-          onChange={setRoles}
-          displayLimit={2}
-        />
-
+        {isErrorRoles ? (
+          <div className="text-red-500">
+            {t("error")} {rolesError?.message || t("unknown-error")}
+          </div>
+        ) : (
+          <>
+            <FilterSection
+              label="role"
+              options={agentRoleOptions}
+              values={roles}
+              onChange={setRoles}
+              displayLimit={2}
+            />
+          </>
+        )}
         <FilterSection
           label="status"
           options={statusOptions}

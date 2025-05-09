@@ -11,7 +11,7 @@ type GetRolesColumnsProps = {
   onManageRoleClick: (role: Role) => void;
 };
 
-export const extractGroupsFromRole = (role: Role) => {
+const extractGroupsFromRole = (role: Role) => {
   // Map to hold unique groups by ID (prevents duplicates)
   const uniqueGroups = new Map();
   // Check if role and permissions exist

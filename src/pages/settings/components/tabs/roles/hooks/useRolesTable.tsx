@@ -55,7 +55,7 @@ export function useRolesTable(isActive: boolean) {
       : []
   );
 
-  const { data, isLoading, isFetching } = useRoles(params);
+  const { data, isLoading, isFetching, isError, error } = useRoles(params);
 
   const isLoadingAgents = isLoading || isFetching;
 
@@ -126,6 +126,8 @@ export function useRolesTable(isActive: boolean) {
     sorting,
     data,
     isLoading: isLoadingAgents,
+    isError,
+    error,
     rawSearch,
     setRawSearch,
     onSortChange,

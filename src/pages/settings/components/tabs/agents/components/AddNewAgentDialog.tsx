@@ -31,11 +31,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "@/components/ui/toast";
 import * as z from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { agentRoleOptions } from "@/constants/settings";
-import { addNewAgent } from "@/features/settings/api";
+import { addNewAgent, useRoles } from "@/features/settings/api";
 import axios from "axios";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Role, RolesQueryParams } from "@/features/settings/types";
 
 export function AgentDialog() {
   const { t } = useTranslation();
@@ -140,6 +140,36 @@ export function AgentDialog() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     mutate(values);
   }
+
+  const params: RolesQueryParams = {
+    page: 1,
+    size: 10,
+  };
+  const { data, isLoading, isFetching, isError, error } = useRoles(params);
+
+  // Extracting roles for the select component
+  const extractGroups = (roles?: { data?: Role[] }) => {
+    if (!roles?.data || !Array.isArray(roles.data)) {
+      return [];
+    }
+
+    const uniqueGroups = new Map();
+
+    roles.data.forEach((role) => {
+      const { id, title } = role;
+
+      if (!uniqueGroups.has(id)) {
+        uniqueGroups.set(id, { id, title });
+      }
+    });
+
+    return Array.from(uniqueGroups.values()).map((item) => ({
+      value: String(item.id),
+      label: item.title,
+    }));
+  };
+
+  const agentRoleOptions = extractGroups(data);
 
   return (
     <Dialog
